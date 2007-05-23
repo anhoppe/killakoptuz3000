@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<behavior type="waypoint" x="1.5" y="0" waittime="500" v="0.003">
+</behavior>
+
+<behavior type="waypoint" x="-0.5" y="0" waittime="500" v="0.0035">
+</behavior>

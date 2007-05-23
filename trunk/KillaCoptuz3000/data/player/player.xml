@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<texturelist>
+   <texture key="playerheli" basefilename="heliB" hullpoints="24" gfxType="tga"/>
+</texturelist>
+
+<object xpos="0.0" ypos="1.0" width="1.0" height="0.5" gfxType="tga" hitpoints="100">
+   <texturelist>
+      <texture key="playerheli" />
+   </texturelist>
+</object>
+
