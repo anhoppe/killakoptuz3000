@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<level xmin="-10." ymin="-1.5" xmax="10." ymax="1.5" music="./sound/GameOver.mp3">
+
+   <object name="sky" cycleInterval="10" xpos="-16.0" ypos="-2.0" width="32.0" height="4.5" gfxType="tga" background="1">
+      <texturelist>
+         <texture basefilename="./gfx/sky"/>
+      </texturelist>
+   </object>
+
+   <object name="water" cycleInterval="10" xpos="-0.0" ypos="-2.0" width="4.0" height="0.5" gfxType="tga" background="1">
+      <texturelist>
+         <texture basefilename="./gfx/water"/>
+      </texturelist>
+   </object>
+
+   <object name="haus" cycleInterval="10" xpos="2.0" ypos="-1.8" width="0.5" height="0.5" gfxType="tga">
+      <texturelist>
+         <texture basefilename="./gfx/haus"/>
+      </texturelist>
+   </object>
+
+   <object name="haus2" cycleInterval="2" xpos="-6.6" ypos="-1.8" width="1.5" height="1.5" gfxType="tga">
+      <texturelist>
+         <texture basefilename="./gfx/bunker"/>
+      </texturelist>
+   </object>
+
+   <object name="moschee" cycleInterval="2" xpos="3.5" ypos="-1.8" width="1.0" height="1.0" gfxType="tga">
+      <texturelist>
+         <texture basefilename="./gfx/moschee" hullpoints="12"/>
+      </texturelist>
+   </object>
+
+   <object name="akw" cycleInterval="5" xpos="-2.5" ypos="-1.8" width="1.3" height="1.3" gfxType="tga">
+      <texturelist>
+         <texture basefilename="./gfx/akw" hullpoints="12"/>
+      </texturelist>
+   </object>
+
+   <object name="puff" cycleInterval="7" xpos="-5.0" ypos="-1.8" width="1.5" height="2" gfxType="tga">
+      <texturelist>
+         <texture basefilename="./gfx/puff" hullpoints="12"/>
+      </texturelist>
+   </object>
+
+   <object name="wtc" cycleInterval="7" xpos="5.0" ypos="-1.8" width="1.2" height="2.5" gfxType="tga">
+      <texturelist>
+         <texture basefilename="./gfx/wtc" hullpoints="16"/>
+      </texturelist>
+   </object>
+
+   <object name="cannon" cycleInterval="7" xpos="-3.1" ypos="-1.8" width="0.5" height="0.5" gfxType="tga" type="enemy">
+      <texturelist>
+         <texture basefilename="./gfx/base" hullpoints="8"/>
+      </texturelist>
+
+      <weapon name="gunA" minAngle="-45" maxAngle="45" cycleInterval="7" xpos="0.1" ypos="0.1" width=".2" height=".3" gfxType="tga" maxShots="2" framesPShot="100" shotRadius="2.0">
+         <texturelist>
+            <texture basefilename="./gfx/gunA"/>
+         </texturelist>
+         <shot name="shot1" cycleInterval="2" xpos="0.0" ypos="0.3" width="0.2" height="0.2" gfxType="tga" v="0.02">
+            <texturelist>
+               <texture basefilename="./gfx/shot"/>
+            </texturelist>
+         </shot>
+      </weapon>
+   </object>
+
+
+   <object name="cannon" cycleInterval="7" xpos="2.8" ypos="-1.8" width="0.5" height="0.5" gfxType="tga" type="enemy">
+      <texturelist>
+         <texture basefilename="./gfx/base" hullpoints="8"/>
+      </texturelist>
+
+      <weapon name="gunA" minAngle="-45" maxAngle="45" cycleInterval="7" xpos="0.1" ypos="0.1" width=".2" height=".3" gfxType="tga" maxShots="2" framesPShot="100" shotRadius="2.0">
+         <texturelist>
+            <texture basefilename="./gfx/gunA"/>
+         </texturelist>
+         <shot name="shot1" cycleInterval="2" xpos="0.0" ypos="0.3" width="0.2" height="0.2" gfxType="tga" v="0.02">
+            <texturelist>
+               <texture basefilename="./gfx/shot"/>
+            </texturelist>
+         </shot>
+      </weapon>
+   </object>
+
+   <object name="tank" cycleInterval="7" xpos="-6.0" ypos="-1.8" width="0.8" height="0.4" gfxType="tga" type="enemy">
+      <texturelist>
+         <texture basefilename="./gfx/tank" hullpoints="12"/>
+      </texturelist>
+      <script filename="./scripts/tankmove1.xml">
+      </script>
+      <weapon name="gunA" minAngle="-45" maxAngle="45" cycleInterval="7" xpos="0.2" ypos="0.05" width=".2" height=".3" gfxType="tga" maxShots="5" framesPShot="100" shotRadius="5.0">
+         <texturelist>
+            <texture basefilename="./gfx/tankgun"/>
+         </texturelist>
+         <shot name="shot1" cycleInterval="2" xpos="0.0" ypos="0.15" width="0.1" height="0.2" gfxType="tga" v="0.02">
+            <texturelist>
+               <texture basefilename="./gfx/shotB"/>
+            </texturelist>
+         </shot>
+      </weapon>
+   </object>
+   
+   <object name="tank" cycleInterval="7" xpos="1.0" ypos="-1.8" width="0.8" height="0.4" gfxType="tga" type="enemy">
+      <texturelist>
+         <texture basefilename="./gfx/battletruck" hullpoints="12"/>
+      </texturelist>
+      <script filename="./scripts/tankmove1.xml">
+      </script>
+      <weapon name="rocketlauncher" minAngle="-30" maxAngle="40" cycleInterval="7" xpos="0.2" ypos="0.01" width=".2" height=".5" gfxType="tga" maxShots="5" framesPShot="20" shotRadius="5.">
+         <texturelist>
+            <texture basefilename="./gfx/rocketlauncher"/>
+         </texturelist>
+         <shot name="shotB" cycleInterval="2" xpos="0.0" ypos="0.2" width="0.12" height="0.25" gfxType="tga" v="0.02">
+            <texturelist>
+               <texture basefilename="./gfx/rocketA"/>
+            </texturelist>
+         </shot>
+      </weapon>
+   </object>
+</level>

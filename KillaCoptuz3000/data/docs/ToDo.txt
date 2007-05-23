@@ -1,0 +1,46 @@
+KillaKoptuZ3000 
+===============
+TODO:
+-----
+
+* (11.05.2007) CVS einrichten
+
+* (11.05.2007) Drehzentrum von CObjects und dann darum drehen...
+
+* (11.05.2007) Bresenheim Linienalg implementieren (CPolygon::getHullPoint)   
+
+* (11.05.2007) Alle Warnings (aus eigenen Files) beseitigen
+
+* (11.05.2007) Helisteuerung verbessern
+
+* (11.05.2007) Schadensmodell für Sprites
+
+* (11.05.2007) Explosionen (2. Texturelist?)
+
+* (11.05.2007) SoundFX implementieren
+
+* (11.05.2007) PNG Loader zu langsam
+
+* (11.05.2007) Rotation und Richtung bei CSprite Objekten anwenden (und nicht nur bei CPlayer)
+
+* (11.05.2007) Memory leaks abdichten
+
+* (11.05.2007) Fehlerhafte XML Files ohne Absturz überstehen
+
+* (11.05.2007) Leveleditor
+
+* (12.05.2007) Player braucht Waffen und Shots
+
+* (12.05.2007) Alle möglichen Eigenschaften von Player in XML File
+
+* (12.05.2007) Kollision - alles mit allem (beim update jeweils testen)
+
+
+DONE:
+------
+* (12.05.2007) Kollision
+   * (12.05.2007) Zahl der Polygonpunkte optional über XML Skript einstellbar machen      
+   * (12.05.2007) Polygone einfach An- Abstellbar machen für Debugging      
+   * (11.05.2007) Drehen und Mitbewegen der Polyliste viiiel zu langsam. Abhilfe?
+   
+* (12.05.2007) XML File für Player   
