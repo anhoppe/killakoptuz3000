@@ -1,15 +1,15 @@
-#summary KillaCoptuz3000.
+#summary KillaKoptuz3000.
 
 = Introduction =
 
-KillaCoptuz3000 Wiki includes game planning.
+KillaKoptuz3000 Wiki includes game planning.
 
 
 = Details =
 
 We are some dump asses so lazy that we never thought to accomplish anything in live. But those days are over now: We decided to developed KillaKoptuz3000, *THE* (hey, bold is cool) kickass- motherfucking incredible 21st century shooting experience of the newest generation.
 
-Featuring a choplifter like 2D realtime action simulation, you slip into the role of a heroic hrelicopter pilot, working for an incredibly responsible and environmental corporation that take orders from decent, broadly loved companies like Microsoft to rescue trapped OpenSource developers, among others.
+Featuring a choplifter like 2D realtime action simulation, you slip into the role of a heroic helicopter pilot, working for an incredibly responsible and environmental corporation that takes orders from decent, broadly loved companies like Microsoft to rescue trapped OpenSource developers, among others.
 
 Prepare to be blasted.
 
