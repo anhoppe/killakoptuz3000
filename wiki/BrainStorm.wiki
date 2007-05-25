@@ -1,0 +1,21 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+All Level / Weapon System / Kick-Ass / Megafun Ideas here, please
+
+
+= Game Ideas =
+
+== Weaponsystems ==
+  * Each vehicle a player can use should have several 'gun points' where diffrent weapon systems can be installed. So with many diffrent installable systems we get the kick of designing them in the gameplay
+
+
+== Levelideas ==
+
+=== Possible Hostages ===
+  *  OpenSource Programmers
+  *  Bavarian killer gamers
+  *  scientology members hunted by the vatican (later UFOs)
+  *  The entiry US governmant from crazy G8-Enemies
+  *  Chinese people from the Japanese
