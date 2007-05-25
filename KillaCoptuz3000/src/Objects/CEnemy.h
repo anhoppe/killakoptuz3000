@@ -24,6 +24,8 @@ public:
    CEnemy(TiXmlNode* t_nodePtr);
    ~CEnemy();
 
+   virtual VeObjectType getType() { return e_enemy; };
+
    virtual bool load(TiXmlNode* t_nodePtr);
    
    virtual void update(CLevel* t_levelPtr, std::vector<CObject*>::iterator& t_it, std::vector<CObject*>::iterator& t_endIt);

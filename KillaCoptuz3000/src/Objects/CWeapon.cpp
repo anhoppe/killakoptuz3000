@@ -15,6 +15,7 @@
 #include "Objects/CShot.h"
 #include "CLevel.h"
 #include "Functions.h"
+#include "globals.h"
 
 #define MAX_FIRE_ANGLE_DEVIATION 10
 
@@ -35,7 +36,10 @@ CWeapon::CWeapon(float t_xPos, float t_yPos)
 
 CWeapon::CWeapon(TiXmlNode* t_nodePtr)
 {
+   m_angle           = 0.0;
    m_framesSinceShot = 0;
+   m_shotPtr         = 0;
+
    load(t_nodePtr);
 }
 
@@ -108,7 +112,7 @@ void CWeapon::update(CLevel* t_levelPtr, std::vector<CObject*>::iterator& t_it, 
 //    std::list<CShot*>::iterator   a_it;
 // 
    float a_playerDist = 0.;
-   float a_trackAngle;
+   float a_trackAngle = 0.;
    float a_oldAngle = m_angle;
 
    if(m_trackIndex < m_trackList.size())
@@ -141,22 +145,32 @@ void CWeapon::update(CLevel* t_levelPtr, std::vector<CObject*>::iterator& t_it, 
    //////////////////////////////////////////////////////////////////////////
    // Shooting
    // 1.) New shots
-   if (/*m_maxShots > m_shotList.size() && */
-       m_framesSinceShot >= m_framesPerShot &&
-       a_playerDist <= m_shotRadius &&
-       fabs(m_angle - a_trackAngle) <= MAX_FIRE_ANGLE_DEVIATION)
+   if(m_parentPtr != g_playerPtr)
    {
-      // Create a new shot
-      CShot* a_shotPtr = new CShot(m_shotPtr);
-      a_shotPtr->m_xPos += m_xPos + m_width/2.0;
-      a_shotPtr->m_yPos += m_yPos + m_height/2.0;
-      a_shotPtr->m_angle = m_angle;
-      // a_shotPtr->m_hullPolygonPtr->translate(m_xPos + m_width/2.0, m_yPos + m_height/2.0);
-      // a_shotPtr->m_hullPolygonPtr->rotate(-m_angle, a_shotPtr->m_xPos + a_shotPtr->m_width/2.0, a_shotPtr->m_yPos + a_shotPtr->m_height/2.0);
+      if (/*m_maxShots > m_shotList.size() && */
+         m_framesSinceShot >= m_framesPerShot &&
+         a_playerDist <= m_shotRadius &&
+         fabs(m_angle - a_trackAngle) <= MAX_FIRE_ANGLE_DEVIATION)
+      {
+         // Create a new shot
+         if(0 != m_shotPtr)
+         {
+            CShot* a_shotPtr = new CShot(m_shotPtr);
+            a_shotPtr->m_xPos += m_xPos + m_width/2.0;
+            a_shotPtr->m_yPos += m_yPos + m_height/2.0;
+            a_shotPtr->m_angle = m_angle;
+            // a_shotPtr->m_hullPolygonPtr->translate(m_xPos + m_width/2.0, m_yPos + m_height/2.0);
+            // a_shotPtr->m_hullPolygonPtr->rotate(-m_angle, a_shotPtr->m_xPos + a_shotPtr->m_width/2.0, a_shotPtr->m_yPos + a_shotPtr->m_height/2.0);
 
-      CLevel::M_addList.push_back(a_shotPtr);
-      m_framesSinceShot = 0;
-   }   
+            CLevel::M_addList.push_back(a_shotPtr);
+            m_framesSinceShot = 0;
+         }
+      }   
+   }
+   else
+   {
+      m_angle = m_parentPtr->m_angle;
+   }
 
    m_framesSinceShot++;
 

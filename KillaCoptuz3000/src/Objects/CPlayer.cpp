@@ -17,8 +17,11 @@
 #define _USE_MATH_DEFINES
 #endif
 #include <math.h>
+
 #include "Functions.h"
 #include "globals.h"
+
+#include "Objects/CWeapon.h"
 
 #define ACCEL_DELTA     .00004
 #define GRAVITY_VALUE   .0006
@@ -120,8 +123,12 @@ void CPlayer::updatePlayer(CLevel* t_levelPtr)
 
    // Update position if (1) no collision and (2) the position is allowed for the level
    // Movement in y
+   m_dx = 0.;
+   m_dy = 0.;
+
    if (positionAllowed(m_xPos, m_yPos + m_velocityY, t_levelPtr))
    {
+      m_dy = m_velocityY;
       m_yPos += m_velocityY;         
    }
    else      
@@ -130,10 +137,13 @@ void CPlayer::updatePlayer(CLevel* t_levelPtr)
    // Movement in x
    if (positionAllowed(m_xPos + m_velocityX, m_yPos, t_levelPtr))
    {
+      m_dx = m_velocityX;
       m_xPos += m_velocityX;         
    }
    else               
+   {
       m_velocityX = 0.0;
+   }
 }
 
 // Check if position of player is allowed by level description
@@ -189,6 +199,8 @@ bool CPlayer::loadPlayer(std::string t_fileName)
       r_ret = r_ret & getAttributeStr(a_elemPtr, "hitpoints", a_str);
       m_hitPoints = atoi(a_str.c_str());      
 
+      //////////////////////////////////////////////////////////////////////////
+      // load texture list
       a_subNodePtr = a_nodePtr->FirstChild("texturelist");
 
       TiXmlNode*  a_subSubNodePtr = 0;
@@ -208,10 +220,34 @@ bool CPlayer::loadPlayer(std::string t_fileName)
       }
 
       //////////////////////////////////////////////////////////////////////////
+      // load player weapons
+      CWeapon* a_weaponPtr = 0;
+
+      a_subNodePtr = a_nodePtr->FirstChild("weapon");
+      
+      for(a_subNodePtr = a_nodePtr->FirstChild("weapon"); a_subNodePtr; a_subNodePtr = a_nodePtr->IterateChildren("weapon", a_subNodePtr))
+      {
+         a_elemPtr = a_subNodePtr->ToElement();
+
+         // Create a new weapon
+         a_weaponPtr = new CWeapon(a_subNodePtr);
+
+         // Make initial weapon position relative to host
+         a_weaponPtr->m_xPos += m_xPos;
+         a_weaponPtr->m_yPos += m_yPos;
+
+         //a_weaponPtr->m_trackList.push_back(static_cast<CObject*>(g_playerPtr));
+
+         a_weaponPtr->m_parentPtr = this;
+
+         CLevel::M_objects.push_back(a_weaponPtr);
+      }
+
+
+      //////////////////////////////////////////////////////////////////////////
       // read player texture list
       a_nodePtr = a_doc.FirstChild("texturelist");
       g_level.loadTextureMap(a_nodePtr);
-
    }
 
    return r_ret;

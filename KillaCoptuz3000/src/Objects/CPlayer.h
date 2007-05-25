@@ -20,6 +20,8 @@ class CPlayer : public CSprite
 public:
    CPlayer();   
 
+   virtual VeObjectType getType() { return e_player; };
+
    // Update player position (keys and flying 'physics')
    void updatePlayer(CLevel*t_levelPtr);
 

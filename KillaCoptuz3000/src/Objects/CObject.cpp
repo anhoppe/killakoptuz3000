@@ -466,50 +466,55 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
          CPolygon* a_polygonAPtr = CLevel::M_textureMap[t_firstPtr->m_textureKeys[t_firstPtr->m_activeAnimationPhase]]->m_hullPolygonPtr;
          CPolygon* a_polygonBPtr = CLevel::M_textureMap[t_secondPtr->m_textureKeys[t_secondPtr->m_activeAnimationPhase]]->m_hullPolygonPtr;
          
-         // Scale polygon A to correct width and height
-         a_polygonAPtr->rescale(t_firstPtr->m_width / a_polygonAPtr->m_width, t_firstPtr->m_height / a_polygonAPtr->m_height);     
-
-         // Translate polygon A to correct position
-         a_polygonAPtr->translate(t_firstPtr->m_xPos, t_firstPtr->m_yPos);
-
-         // Rotate polygon A
-         a_polygonAPtr->rotate(-t_firstPtr->m_angle, t_firstPtr->m_xPos + t_firstPtr->m_width/2.0, t_firstPtr->m_yPos + t_firstPtr->m_height/2.0);
-
-         // Scale polygon B to correct width and height
-         a_polygonBPtr->rescale(t_secondPtr->m_width / a_polygonBPtr->m_width, t_secondPtr->m_height / a_polygonBPtr->m_height);     
-
-         // Translate polygon B to correct position
-         a_polygonBPtr->translate(t_secondPtr->m_xPos, t_secondPtr->m_yPos);
-
-         // Rotate polygon B
-         a_polygonBPtr->rotate(-t_secondPtr->m_angle, t_secondPtr->m_xPos + t_secondPtr->m_width/2.0, t_secondPtr->m_yPos + t_secondPtr->m_height/2.0);
-
-         for (a_n = 0; a_n < a_polygonAPtr->m_points.size(); a_n++)
+         if((0 != a_polygonAPtr) &&
+            (0 != a_polygonBPtr)    )
          {
-            if (a_polygonBPtr->isInside(a_polygonAPtr->m_points[a_n]))
+
+            // Scale polygon A to correct width and height
+            a_polygonAPtr->rescale(t_firstPtr->m_width / a_polygonAPtr->m_width, t_firstPtr->m_height / a_polygonAPtr->m_height);     
+
+            // Translate polygon A to correct position
+            a_polygonAPtr->translate(t_firstPtr->m_xPos, t_firstPtr->m_yPos);
+
+            // Rotate polygon A
+            a_polygonAPtr->rotate(-t_firstPtr->m_angle, t_firstPtr->m_xPos + t_firstPtr->m_width/2.0, t_firstPtr->m_yPos + t_firstPtr->m_height/2.0);
+
+            // Scale polygon B to correct width and height
+            a_polygonBPtr->rescale(t_secondPtr->m_width / a_polygonBPtr->m_width, t_secondPtr->m_height / a_polygonBPtr->m_height);     
+
+            // Translate polygon B to correct position
+            a_polygonBPtr->translate(t_secondPtr->m_xPos, t_secondPtr->m_yPos);
+
+            // Rotate polygon B
+            a_polygonBPtr->rotate(-t_secondPtr->m_angle, t_secondPtr->m_xPos + t_secondPtr->m_width/2.0, t_secondPtr->m_yPos + t_secondPtr->m_height/2.0);
+
+            for (a_n = 0; a_n < a_polygonAPtr->m_points.size(); a_n++)
             {
-               r_ret = true;
-               break;
+               if (a_polygonBPtr->isInside(a_polygonAPtr->m_points[a_n]))
+               {
+                  r_ret = true;
+                  break;
+               }
             }
+
+            // Undo of: Rotate polygon A
+            a_polygonAPtr->rotate(t_firstPtr->m_angle, t_firstPtr->m_xPos + t_firstPtr->m_width/2.0, t_firstPtr->m_yPos + t_firstPtr->m_height/2.0);
+
+            // Undo of: Translate polygon A to correct position
+            a_polygonAPtr->translate(-t_firstPtr->m_xPos, -t_firstPtr->m_yPos);
+
+            // Undo of: Scale polygon A to correct width and height
+            a_polygonAPtr->rescale(a_polygonAPtr->m_width / t_firstPtr->m_width, a_polygonAPtr->m_height / t_firstPtr->m_height);     
+
+            // Undo of: Rotate polygon B
+            a_polygonBPtr->rotate(t_secondPtr->m_angle, t_secondPtr->m_xPos + t_secondPtr->m_width/2.0, t_secondPtr->m_yPos + t_secondPtr->m_height/2.0);
+
+            // Undo of: Translate polygon B to correct position
+            a_polygonBPtr->translate(- t_secondPtr->m_xPos, - t_secondPtr->m_yPos);
+
+            // Undo of: Scale polygon B to correct width and height
+            a_polygonBPtr->rescale(a_polygonBPtr->m_width / t_secondPtr->m_width, a_polygonBPtr->m_height / t_secondPtr->m_height);                 
          }
-
-         // Undo of: Rotate polygon A
-         a_polygonAPtr->rotate(t_firstPtr->m_angle, t_firstPtr->m_xPos + t_firstPtr->m_width/2.0, t_firstPtr->m_yPos + t_firstPtr->m_height/2.0);
-
-         // Undo of: Translate polygon A to correct position
-         a_polygonAPtr->translate(-t_firstPtr->m_xPos, -t_firstPtr->m_yPos);
-
-         // Undo of: Scale polygon A to correct width and height
-         a_polygonAPtr->rescale(a_polygonAPtr->m_width / t_firstPtr->m_width, a_polygonAPtr->m_height / t_firstPtr->m_height);     
-
-         // Undo of: Rotate polygon B
-         a_polygonBPtr->rotate(t_secondPtr->m_angle, t_secondPtr->m_xPos + t_secondPtr->m_width/2.0, t_secondPtr->m_yPos + t_secondPtr->m_height/2.0);
-
-         // Undo of: Translate polygon B to correct position
-         a_polygonBPtr->translate(- t_secondPtr->m_xPos, - t_secondPtr->m_yPos);
-
-         // Undo of: Scale polygon B to correct width and height
-         a_polygonBPtr->rescale(a_polygonBPtr->m_width / t_secondPtr->m_width, a_polygonBPtr->m_height / t_secondPtr->m_height);                 
       }               
    }
 
@@ -524,9 +529,16 @@ void CObject::update(CLevel* t_levelPtr, std::vector<CObject*>::iterator& t_it, 
    // collision detection
    for(a_it = t_it; a_it != t_endIt; a_it++)
    {
-      if(isCollided(this, *a_it))
+      // do only update if not both are from type object
+      if(!((this->getType()==e_object) && 
+           ((*a_it)->getType() == e_object)
+          )
+        )
       {
-         this->collisionImpact((*a_it));
+         if(isCollided(this, *a_it))
+         {
+            this->collisionImpact((*a_it));
+         }
       }
    }
 }

@@ -47,6 +47,7 @@ void timerCallback(int value)
    if(!g_level.m_levelOver)
    {
       g_playerPtr->updatePlayer(&g_level);
+      g_level.updateLevel();
    }
 
    switch (value)
@@ -84,11 +85,14 @@ void renderScene(void)
    {      
       glTranslatef(-g_playerPtr->m_xPos, 0.0, 0.0);
 
-      g_level.updateLevel();
+      //////////////////////////////////////////////////////////////////////////
+      // draw the level
+      g_level.drawLevel();
 
+      //////////////////////////////////////////////////////////////////////////
       // Can be deleted (hit point output)
       char a_str[100];
-      itoa(g_playerPtr->m_hitPoints, a_str, 10);
+      _itoa_s(g_playerPtr->m_hitPoints, a_str, 10);
       renderBitmapString(g_playerPtr->m_xPos + 2.3, 1.5, a_str, GLUT_BITMAP_8_BY_13);
    }
 
@@ -190,8 +194,11 @@ void processNormalKeys(unsigned char key, int x, int y)
 {
    switch (key) 
    {
-   case 32: // Space
+   case 32: // Space flips th player direction
       g_playerPtr->flip();
+      break;
+   case 'c': // player fires primary weapon
+      //g_playerPtr->fire();
       break;
    }
 }
@@ -239,7 +246,7 @@ void pressKey(int key, int x, int y)
       break;
    case GLUT_KEY_DOWN:
       g_playerPtr->m_downPressed  = true;
-      break;      
+      break;
    }
 
    // Check for modifying keys pressed (shift, ctrl, alt)
@@ -275,11 +282,11 @@ bool initGame()
 {
    bool r_ret;
 
-   // load the player   
-   r_ret = g_playerPtr->loadPlayer("data/player/player.xml");
-
    // 'load' the level...
-   r_ret = r_ret && g_level.load("data/levels/level3.xml");
+   r_ret = g_level.load("data/levels/level3.xml");
+
+   // load the player   
+   r_ret &= g_playerPtr->loadPlayer("data/player/player.xml");
 
    return r_ret;
 }

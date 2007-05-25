@@ -23,6 +23,9 @@ public:
    CSprite();
    CSprite(float t_xPos, float t_yPos);
    ~CSprite();
+
+   virtual VeObjectType getType() { return e_sprite; };
+
   
    // Draws the object via OpenGL
    virtual void draw();
