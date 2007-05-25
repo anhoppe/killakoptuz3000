@@ -2,11 +2,16 @@
 
 <texturelist>
    <texture key="playerheli" basefilename="heliB" hullpoints="24" gfxType="tga"/>
+   <texture key="playergun" basefilename="heliBgun" gfxType="tga"/>
 </texturelist>
 
-<object xpos="0.0" ypos="1.0" width="1.0" height="0.5" gfxType="tga" hitpoints="100">
+<object xpos="0.0" ypos="1.0" width="1.0" height="0.5" hitpoints="1000000">
    <texturelist>
       <texture key="playerheli" />
    </texturelist>
+   <weapon minAngle="0" maxAngle="0" cycleInterval="7" xpos="0.8" ypos="0.15" width=".15" height=".08" maxShots="5" framesPShot="80" shotRadius="5." background="1">
+      <texturelist>
+         <texture key="playergun"/>
+      </texturelist>
+   </weapon>
 </object>
-

@@ -50,14 +50,14 @@ CTexture::CTexture(TiXmlElement* t_elemPtr)
          {
             if(getAttributeStr(t_elemPtr, "gfxType", a_gfxType))
             {
-               loadTextureBase(this, a_baseFileName, a_gfxType, atoi(a_str.c_str()));
+               assert(loadTextureBase(this, a_baseFileName, a_gfxType, atoi(a_str.c_str())));
             }
          }                 
          else
          {
             if(getAttributeStr(t_elemPtr, "gfxType", a_gfxType))
             {
-               loadTextureBase(this, a_baseFileName, a_gfxType);
+               assert(loadTextureBase(this, a_baseFileName, a_gfxType));
             }
          }
       }      

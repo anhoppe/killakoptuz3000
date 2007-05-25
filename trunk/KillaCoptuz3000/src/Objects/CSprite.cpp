@@ -53,7 +53,10 @@ CSprite::~CSprite()
 void CSprite::draw()
 {
    glEnable( GL_TEXTURE_2D );
-   glBindTexture(GL_TEXTURE_2D, CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]]->m_textureIdVector[m_activeTexture]);
+   std::string a0 = m_textureKeys[m_activeAnimationPhase];
+   CTexture* a1 = CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]];
+   GLuint a2 = a1->m_textureIdVector[m_activeTexture];
+   glBindTexture(GL_TEXTURE_2D, a2/*CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]]->m_textureIdVector[m_activeTexture]*/);
 
    if (m_activeTexture==1)
    {

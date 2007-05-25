@@ -207,10 +207,8 @@ void CLevel::updateLevel()
 
    for(a_it = M_objects.begin(); a_it != M_objects.end(); a_it++)
    {
-       (*a_it)->update(this, a_it+1, M_objects.end());
-
-      (*a_it)->draw();
-   }  
+      (*a_it)->update(this, a_it+1, M_objects.end());
+   }
 
    // remove all objects from the delete list
    while(M_deleteList.size() > 0)
@@ -242,6 +240,16 @@ void CLevel::updateLevel()
    {
       M_objects.push_back(M_addList.back());
       M_addList.pop_back();
+   }
+}
+
+void CLevel::drawLevel()
+{
+   std::vector<CObject*>::iterator  a_it;
+
+   for(a_it = M_objects.begin(); a_it != M_objects.end(); a_it++)
+   {
+      (*a_it)->draw();
    }
 }
 

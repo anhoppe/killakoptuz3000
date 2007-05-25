@@ -21,6 +21,16 @@
 
 class CLevel;
 
+enum VeObjectType
+{
+   e_object = 1,
+   e_sprite = 2,
+   e_enemy  = 3,
+   e_shot   = 4,
+   e_weapon = 5,
+   e_player = 6
+};
+
 class CObject
 {
    //////////////////////////////////////////////////////////////////////////
@@ -31,6 +41,9 @@ public:
    CObject(TiXmlNode* t_nodePtr);
 
    ~CObject();
+
+   /** returns the type of the object */
+   virtual VeObjectType getType() { return e_object; };
 
    /** Draws the object via OpenGL */
    virtual void draw();

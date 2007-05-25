@@ -35,7 +35,11 @@ public:
    /** loads texture list from level xml and stores it in std::map object */
    bool loadTextureMap(TiXmlNode* t_nodePtr);
 
+   /** Updates all individuals in the level */
    void updateLevel();
+
+   /** Draws all individuals */
+   void drawLevel();
 
    // Cycle textures of all objects
    void nextTexture();
