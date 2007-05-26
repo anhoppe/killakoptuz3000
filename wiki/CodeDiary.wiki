@@ -1,0 +1,20 @@
+CommanderZZ Code Blog - You will love it
+
+= Introduction =
+
+Here we present our development diary. Some sort of improved bible in the future.
+
+
+= Details =
+
+We started in 22th of april 2007 (new era 0, a.k.k.), this blog is created on 27th of may 2007 (or, as we like it, 0:13, 5. Feb 0 a.k.k.). You get it, pal?
+
+== Sat/sun 26/27 May 2007 ==
+Kyra (drained 1.5h with esoteric mambo jambo), Hoppe, Fabian
+
+
+  * Added explosions to player and objects, first time we and the enemy (a nice little truck) exploded.
+  * Created/found new problems with collision
+
+
+
