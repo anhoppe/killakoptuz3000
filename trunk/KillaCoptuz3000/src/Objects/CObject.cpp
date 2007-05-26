@@ -14,14 +14,12 @@
 #include "Functions.h"
 #include "lodepng.h"
 #include "CLevel.h"
-
+#include "globals.h"
 #include "CTexture.h"
 
 #include <stdio.h>
 #include <string>
 
-
-extern bool g_showHull;
 
 CObject::CObject()
 {
@@ -72,7 +70,7 @@ void CObject::nextTexture()
 }
 
 // Return: number of textures in m_textureIdVector
-unsigned int CObject::getTextureCount()
+size_t CObject::getTextureCount()
 {
    return CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]]->m_textureIdVector.size();
 }
@@ -149,53 +147,8 @@ bool CObject::load(TiXmlNode* t_nodePtr)
    {
       m_isBackground = false;
    }   
-
-   // Loop over all children of <object>
-//    for(a_nodePtr = t_nodePtr->FirstChild(); a_nodePtr; a_nodePtr = t_nodePtr->IterateChildren(a_nodePtr))
-//    {
-//       a_elemPtr = a_nodePtr->ToElement();
-// 
-//       if(!strcmp("texturelist", a_elemPtr->Value()))
-//       {
-//          loadTextureList(a_nodePtr);
-//       }      
-//    }
-
    return r_ret;
 }
-
-// bool CObject::loadTextureList(TiXmlNode* t_nodePtr)
-// {
-//    TiXmlNode*     a_nodePtr = 0;
-//    TiXmlElement*  a_elemPtr = 0;
-//    std::string    a_baseFileName;
-//    std::string    a_str;
-// 
-//    bool r_ret = true;
-// 
-// 
-//    // loop over all base file names in the texture list
-//    for(a_nodePtr = t_nodePtr->FirstChild(); a_nodePtr; a_nodePtr = t_nodePtr->IterateChildren(a_nodePtr))
-//    {
-//       if (!strcmp(a_nodePtr->Value(), "texture"))
-//       {      
-//          a_elemPtr = a_nodePtr->ToElement();
-//          if (getAttributeStr(a_elemPtr, "basefilename", a_baseFileName))
-//          {
-//             if (getAttributeStr(a_elemPtr, "hullpoints", a_str))
-//             {
-//                loadTextureBase(a_baseFileName, atoi(a_str.c_str()));
-//             }                 
-//             else
-//             {
-//                loadTextureBase(a_baseFileName);
-//             }
-//          }      
-//       }
-//    }
-// 
-//    return r_ret;
-// }
 
 void CObject::draw() 
 {
@@ -314,7 +267,8 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
    CPoint         a_p1, a_p2, a_p3, a_p4;
    CPoint         a_o1, a_o2, a_o3, a_o4;
    CLine          a_pl1, a_pl2, a_pl3, a_pl4;
-   CLine          a_ol1, a_ol2, a_ol3, a_ol4;
+   CLine          a_ol1, a_ol2, a_ol3, a_ol4;   
+   CPoint         a_middlePoint1, a_middlePoint2;
 
    // We can only collide with non - background objects
    if(t_firstPtr->m_isBackground || t_secondPtr->m_isBackground)
@@ -322,7 +276,7 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
       r_ret = false;
    }
    else
-   {
+   {     
       // Object 1 square coordinates
       a_o1.x = t_firstPtr->m_xPos;
       a_o1.y = t_firstPtr->m_yPos;
@@ -335,35 +289,6 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
 
       a_o4.x = t_firstPtr->m_xPos;
       a_o4.y = t_firstPtr->m_yPos + t_firstPtr->m_height;
-
-      // Rotate with first object angle   
-      CPoint a_middlePoint = CPoint(a_o1.x + t_firstPtr->m_width/2, a_o1.y + t_firstPtr->m_height/2);
-      a_o1 = a_o1 - a_middlePoint;
-      a_o2 = a_o2 - a_middlePoint;
-      a_o3 = a_o3 - a_middlePoint;
-      a_o4 = a_o4 - a_middlePoint;
-
-      a_o1.rotate(t_firstPtr->m_angle);   
-      a_o2.rotate(t_firstPtr->m_angle);
-      a_o3.rotate(t_firstPtr->m_angle);
-      a_o4.rotate(t_firstPtr->m_angle);
-
-      a_o1 = a_o1 + a_middlePoint;
-      a_o2 = a_o2 + a_middlePoint;
-      a_o3 = a_o3 + a_middlePoint;
-      a_o4 = a_o4 + a_middlePoint;
-     
-      a_ol1.p1 = a_o1;
-      a_ol1.p2 = a_o2;
-
-      a_ol2.p1 = a_o2;
-      a_ol2.p2 = a_o3;
-
-      a_ol3.p1 = a_o3;
-      a_ol3.p2 = a_o4;
-
-      a_ol4.p1 = a_o4;
-      a_ol4.p2 = a_o1;
 
       // Object 2 square coordinates  
       a_p1.x = t_secondPtr->m_xPos;
@@ -378,22 +303,52 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
       a_p4.x = t_secondPtr->m_xPos;        
       a_p4.y = t_secondPtr->m_yPos + t_secondPtr->m_height;
 
-      // Rotate with helicopter angle
-      a_middlePoint = CPoint(a_p1.x + t_secondPtr->m_width/2, a_p1.y + t_secondPtr->m_height/2);
-      a_p1 = a_p1 - a_middlePoint;
-      a_p2 = a_p2 - a_middlePoint;
-      a_p3 = a_p3 - a_middlePoint;
-      a_p4 = a_p4 - a_middlePoint;
+      a_middlePoint1 = CPoint(a_o1.x + t_firstPtr->m_width/2, a_o1.y + t_firstPtr->m_height/2);
+      a_middlePoint2 = CPoint(a_p1.x + t_secondPtr->m_width/2, a_p1.y + t_secondPtr->m_height/2);
 
-      a_p1.rotate(t_secondPtr->m_angle);   
-      a_p2.rotate(t_secondPtr->m_angle);
-      a_p3.rotate(t_secondPtr->m_angle);
-      a_p4.rotate(t_secondPtr->m_angle);
+      // Rotate with first object angle         
+      a_o1 = a_o1 - a_middlePoint1;
+      a_o2 = a_o2 - a_middlePoint1;
+      a_o3 = a_o3 - a_middlePoint1;
+      a_o4 = a_o4 - a_middlePoint1;
 
-      a_p1 = a_p1 + a_middlePoint;
-      a_p2 = a_p2 + a_middlePoint;
-      a_p3 = a_p3 + a_middlePoint;
-      a_p4 = a_p4 + a_middlePoint;
+      a_o1.rotate(-t_firstPtr->m_angle);   
+      a_o2.rotate(-t_firstPtr->m_angle);
+      a_o3.rotate(-t_firstPtr->m_angle);
+      a_o4.rotate(-t_firstPtr->m_angle);
+
+      a_o1 = a_o1 + a_middlePoint1;
+      a_o2 = a_o2 + a_middlePoint1;
+      a_o3 = a_o3 + a_middlePoint1;
+      a_o4 = a_o4 + a_middlePoint1;
+     
+      a_ol1.p1 = a_o1;
+      a_ol1.p2 = a_o2;
+
+      a_ol2.p1 = a_o2;
+      a_ol2.p2 = a_o3;
+
+      a_ol3.p1 = a_o3;
+      a_ol3.p2 = a_o4;
+
+      a_ol4.p1 = a_o4;
+      a_ol4.p2 = a_o1;
+
+      // Rotate Object2 with object angle      
+      a_p1 = a_p1 - a_middlePoint2;
+      a_p2 = a_p2 - a_middlePoint2;
+      a_p3 = a_p3 - a_middlePoint2;
+      a_p4 = a_p4 - a_middlePoint2;
+
+      a_p1.rotate(-t_secondPtr->m_angle);   
+      a_p2.rotate(-t_secondPtr->m_angle);
+      a_p3.rotate(-t_secondPtr->m_angle);
+      a_p4.rotate(-t_secondPtr->m_angle);
+
+      a_p1 = a_p1 + a_middlePoint2;
+      a_p2 = a_p2 + a_middlePoint2;
+      a_p3 = a_p3 + a_middlePoint2;
+      a_p4 = a_p4 + a_middlePoint2;
 
       // Lines
       a_pl1.p1 = a_p1;
@@ -460,7 +415,7 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
       // Check all polygon points for being inside target polygon
       //////////////////////////////////////////////////////////////////////////
       if (r_ret)
-      {         
+      {                  
          r_ret = false;
 
          CPolygon* a_polygonAPtr = CLevel::M_textureMap[t_firstPtr->m_textureKeys[t_firstPtr->m_activeAnimationPhase]]->m_hullPolygonPtr;

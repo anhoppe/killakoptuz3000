@@ -12,9 +12,9 @@
 #include "CPoint.h"
 #include "CLevel.h"
 #include "glut.h"
+#include "globals.h"
 #include <memory.h>
 
-extern bool g_showHull;
 
 CSprite::CSprite()
 {
@@ -28,11 +28,6 @@ CSprite::CSprite()
 void CSprite::flip()
 {
    m_direction = !m_direction;
-
-//    if(0 != m_hullPolygonPtr)
-//    {
-//       m_hullPolygonPtr->flip(m_xPos + m_width/2.0);
-//    }
 }
 
 CSprite::CSprite(float t_xPos, float t_yPos)
@@ -91,11 +86,38 @@ void CSprite::draw()
    glPopMatrix();
    glDisable( GL_TEXTURE_2D );
 
+   //////////////////////////////////////////////////////////////////////////
+   // The following section is for hull drawing (only for debugging purposes)
+   //////////////////////////////////////////////////////////////////////////
+   // DEBUG: Show Hull
+   if (g_showBox)
+   {
+      // Show bounding rect
+      glPushMatrix();
+      glTranslatef(m_xPos + m_width/2.0, m_yPos + m_height/2.0, 0.0);
+      if (m_direction)
+      {
+         glRotatef(180.0, 0., 1., 0);
+      }
+      glRotatef(m_angle, 0., 0., 1.);   
+      glTranslatef(-m_xPos - m_width/2.0, -m_yPos - m_height/2.0, 0.0);
+
+      glColor4f(1.0,1.0,1.0,0.5);
+      glBegin(GL_LINE_LOOP);
+      glVertex2d(m_xPos,m_yPos);
+      glVertex2d(m_width+m_xPos,m_yPos);
+      glVertex2d(m_width+m_xPos,m_height+m_yPos);
+      glVertex2d(m_xPos,m_height+m_yPos);
+      glEnd();
+      glPopMatrix();
+      glColor4f(1.0,1.0,1.0,1.0);
+   }
+
+   // DEBUG: Show Hull poly
    CPolygon* a_polygonPtr = CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]]->m_hullPolygonPtr;
    if (g_showHull && 0 != a_polygonPtr)
-   {      
-      // DEBUG: SHOW POLYGON HULL FOR COLLISION DETECTION
-
+   {         
+      glColor4f(1.0,1.0,1.0,0.5);
       // Scale polygon to correct width and height
       a_polygonPtr->rescale(m_width / a_polygonPtr->m_width, m_height / a_polygonPtr->m_height);     
 
@@ -111,8 +133,7 @@ void CSprite::draw()
          a_polygonPtr->flip(m_xPos + m_width/2.0);
       }
 
-      glBegin(GL_LINE_LOOP);
-      glColor3f(1.0,1.0,1.0);
+      glBegin(GL_LINE_LOOP);      
       std::vector<CPoint*>::iterator a_it;
       for (a_it = a_polygonPtr->m_points.begin(); a_it != a_polygonPtr->m_points.end(); a_it++)
       {      
@@ -135,6 +156,7 @@ void CSprite::draw()
       // Undo of: Scale polygon to correct width and height
       a_polygonPtr->rescale(a_polygonPtr->m_width / m_width, a_polygonPtr->m_height / m_height);
 
+      glColor4f(1.0,1.0,1.0,1.0);
       // DEBUG END
    }
 }

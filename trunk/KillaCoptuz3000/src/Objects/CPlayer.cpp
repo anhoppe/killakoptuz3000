@@ -20,7 +20,6 @@
 
 #include "Functions.h"
 #include "globals.h"
-
 #include "Objects/CWeapon.h"
 
 #define ACCEL_DELTA     .00004

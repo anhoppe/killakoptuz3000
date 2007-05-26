@@ -27,24 +27,24 @@ public:
    virtual VeObjectType getType() { return e_sprite; };
 
   
-   // Draws the object via OpenGL
+   /** Draws the object via OpenGL*/
    virtual void draw();
 
-   // Switches direction
+   /** Switches direction*/
    void flip();
 
-   // Get tracking angle to tracked object
+   /** Get tracking angle to tracked object*/
    float trackAngle(float t_trgX, float t_trgY);
    
-   // direction
+   /** direction*/
    bool                    m_direction;
-   // Objects to track
+   /** Objects to track*/
    std::vector<CObject*>   m_trackList;
-   // Tracked object index
+   /** Tracked object index*/
    unsigned int            m_trackIndex;
-   // Script of sprite
+   /** Script of sprite*/
    CScript*                m_scriptPtr;      
-   // Behavior structure
+   /** Behavior structure*/
    SBehaviorData           m_behaviorData;
 
 };

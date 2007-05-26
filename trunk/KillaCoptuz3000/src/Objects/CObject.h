@@ -51,11 +51,11 @@ public:
    /** updates itself (scripted behavior) and all children */
    virtual void update(CLevel* m_levelPtr, std::vector<CObject*>::iterator& t_it, std::vector<CObject*>::iterator& t_endIt);
 
-   // Cycles the textures
+   /** Cycles the textures */
    void nextTexture();
 
-   // Return: number of textures in m_textureIdVector
-   unsigned int getTextureCount();
+   /** Return: number of textures in m_textureIdVector */
+   size_t getTextureCount();
 
    /** Collision functions */
    static bool    segmentsIntersect(CLine l1, CLine l2);

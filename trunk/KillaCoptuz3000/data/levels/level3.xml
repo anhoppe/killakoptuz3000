@@ -44,7 +44,7 @@
             <texture key="shore"/>
          </texturelist>
       </object>
-      <object cycleInterval="20" xpos="7.2" ypos="-2.0" width="2.5" height="1.5">
+      <object cycleInterval="20" xpos="7.2" ypos="-2.0" width="2.6" height="1.5">
          <texturelist>
             <texture key="islandPart1"/>
          </texturelist>
@@ -65,7 +65,7 @@
             <texturelist>
                <texture key="rocketlauncher"/>
             </texturelist>
-            <shot cycleInterval="2" xpos="0.0" ypos="0.2" width="0.12" height="0.25" v="0.02">
+            <shot cycleInterval="2" xpos="0.0" ypos="0.2" width="0.12" height="0.25" v="0.01">
                <texturelist>
                   <texture key="rocketA"/>
                </texturelist>
