@@ -33,6 +33,8 @@ CObject::CObject()
    m_damagePoints          = 1;
    m_isDeleted             = false;
    m_activeAnimationPhase  = 0;
+   m_explosionIndex        = -1;
+   m_isDying               = false;
 }
 
 CObject::CObject(TiXmlNode* t_nodePtr)
@@ -46,6 +48,8 @@ CObject::CObject(TiXmlNode* t_nodePtr)
    m_damagePoints          = 1;
    m_isDeleted             = false;
    m_activeAnimationPhase  = 0;
+   m_explosionIndex        = -1;
+   m_isDying               = false;
 
    load(t_nodePtr);
 }
@@ -60,6 +64,7 @@ void CObject::nextTexture()
    if (m_timeCounter >= m_cycleInterval)
    {
       m_activeTexture++;
+      
       if (m_activeTexture >= CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]]->m_textureIdVector.size())
       {
          m_activeTexture = 0;
@@ -75,6 +80,17 @@ size_t CObject::getTextureCount()
    return CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]]->m_textureIdVector.size();
 }
 
+void CObject::deleteChildren()
+{
+   std::vector<CObject*>::iterator a_it;
+
+   for(a_it = m_children.begin(); a_it != m_children.end(); a_it++)
+   {
+      CLevel::M_deleteList.push_back(*a_it);
+   }
+   m_children.clear();
+}
+
 bool CObject::load(TiXmlNode* t_nodePtr)
 {
    TiXmlNode*     a_nodePtr      = 0;
@@ -84,7 +100,8 @@ bool CObject::load(TiXmlNode* t_nodePtr)
    TiXmlElement*  a_subElemPtr   = 0;
 
 
-   std::string    a_str;
+   std::string    a_str          = "";
+   std::string    a_dummy        = "";
    bool           r_ret          = true;
    
 
@@ -117,6 +134,13 @@ bool CObject::load(TiXmlNode* t_nodePtr)
          a_subElemPtr = a_subNodePtr->ToElement();
 
          r_ret &= getAttributeStr(a_subElemPtr, "key", a_str);
+
+
+         // check if explosion sequence exists
+         if(getAttributeStr(a_subElemPtr, "explosion", a_dummy))
+         {
+            m_explosionIndex = m_textureKeys.size();
+         }
 
          if(r_ret)
          {
@@ -415,7 +439,8 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
       // Check all polygon points for being inside target polygon
       //////////////////////////////////////////////////////////////////////////
       if (r_ret)
-      {                  
+      {   
+         return true;
          r_ret = false;
 
          CPolygon* a_polygonAPtr = CLevel::M_textureMap[t_firstPtr->m_textureKeys[t_firstPtr->m_activeAnimationPhase]]->m_hullPolygonPtr;
@@ -496,6 +521,29 @@ void CObject::update(CLevel* t_levelPtr, std::vector<CObject*>::iterator& t_it, 
          }
       }
    }
+
+   // object deletes itself as soon as it get hit
+   if(!this->m_isDeleted && m_hitPoints < 0 && !m_invincible)
+   {
+      deleteChildren();
+      if(!m_isDying && (m_explosionIndex != -1))
+      {
+         m_activeTexture = 0;
+         m_activeAnimationPhase = m_explosionIndex;
+         m_isDying = true;
+         m_cycleInterval = 10;
+      }
+      else
+      {
+         if((m_activeTexture >= (CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]]->m_textureIdVector.size())-1) ||
+            (m_explosionIndex == -1))
+         {
+            CLevel::M_deleteList.push_back(this);
+            m_isDeleted = true;
+         }
+      }
+   }
+
 }
 
 
@@ -503,12 +551,6 @@ void CObject::collisionImpact(CObject* t_objectPtr, bool t_checkOther)
 {
    m_hitPoints -= t_objectPtr->m_damagePoints;
 
-   // object deletes itself as soon as it get hit
-   if(!this->m_isDeleted && m_hitPoints < 0 && !m_invincible)
-   {
-      CLevel::M_deleteList.push_back(this);
-      this->m_isDeleted = true;
-   }
 
    if(t_checkOther)
    {

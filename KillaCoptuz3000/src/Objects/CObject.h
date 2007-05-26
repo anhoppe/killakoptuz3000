@@ -57,6 +57,9 @@ public:
    /** Return: number of textures in m_textureIdVector */
    size_t getTextureCount();
 
+   /** Puts all children into the CLevel::M_deleteList */
+   void deleteChildren();
+
    /** Collision functions */
    static bool    segmentsIntersect(CLine l1, CLine l2);
    static int     ccw(CPoint p0, CPoint p1, CPoint p2);
@@ -74,17 +77,22 @@ public:
    /** Flag shows that object is already in the delete list (to avoid double deletion) */
    bool                 m_isDeleted;
 
+   bool                 m_isDying;
+
    /** Absolute position */
    float                m_xPos;
    float                m_yPos;
    float                m_width;
-   float                m_height;   
+   float                m_height;
 
    int                  m_cycleInterval;
 
    bool                 m_isBackground;
 
    std::string          m_gfxType;
+
+   /** Index of the explosion (death) sequence */
+   int                  m_explosionIndex;
 
    // Active texture (zero based index)
    unsigned int         m_activeTexture;
@@ -95,8 +103,8 @@ public:
    float                m_angle;
 
    /** Remember movement deltas for children updates */
-   float       m_dx;
-   float       m_dy;
+   float                m_dx;
+   float                m_dy;
 
 
    /** Hit points */
@@ -112,6 +120,9 @@ protected:
    // List of textures for the object
 //    std::vector <GLuint> m_textureIdVector;
    std::vector<std::string>   m_textureKeys;
+
+   // list of children
+   std::vector<CObject*>      m_children;
 
    // Time counter for animation
    int                  m_timeCounter;   

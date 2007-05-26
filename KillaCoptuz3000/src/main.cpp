@@ -198,7 +198,10 @@ void processNormalKeys(unsigned char key, int x, int y)
       g_playerPtr->flip();
       break;
    case 'c': // player fires primary weapon
-      //g_playerPtr->fire();
+      g_playerPtr->fireWeapon();
+      break;
+   case 'n': // player switches weapon
+      g_playerPtr->nextWeapon();
       break;
    }
 }

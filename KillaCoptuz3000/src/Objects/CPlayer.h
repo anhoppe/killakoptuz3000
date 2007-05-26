@@ -11,7 +11,9 @@
 #ifndef CPLAYER_H
 #define CPLAYER_H
 
+#include <vector>
 #include "Objects/CSprite.h"
+#include "Objects/CWeapon.h"
 
 class CLevel;
 
@@ -22,11 +24,17 @@ public:
 
    virtual VeObjectType getType() { return e_player; };
 
-   // Update player position (keys and flying 'physics')
+   /** Update player position (keys and flying 'physics') */
    void updatePlayer(CLevel*t_levelPtr);
 
-   // Check if position of player is inside level
+   /** Check if position of player is inside level */
    bool positionAllowed(float t_x, float t_y, CLevel*t_levelPtr);
+
+   /** Fire the active weapon */
+   void fireWeapon();
+
+   /** Switch to next weapon */
+   void nextWeapon();
 
    bool loadPlayer(std::string t_fileName);
 
@@ -38,7 +46,7 @@ public:
    bool m_downPressed;
    bool m_shiftPressed;
 
-   // helicopter acceleration vector
+   /** helicopter acceleration vector */
    double m_accel;
 
    double m_maxAccel;
@@ -47,6 +55,12 @@ public:
    double m_velocityY;
 
    double m_velocityMax;
+
+   /** List of weapons */
+   std::vector<CWeapon*>  m_weaponList;
+
+   /** Index of active weapon */
+   unsigned int         m_activeWeapon;
 };
 
 #endif

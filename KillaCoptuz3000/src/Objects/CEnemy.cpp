@@ -77,7 +77,11 @@ bool CEnemy::load(TiXmlNode* t_nodePtr)
 
          a_weaponPtr->m_parentPtr = this;
 
+         // put into object list
          CLevel::M_objects.push_back(a_weaponPtr);
+
+         // remember child pointer
+         m_children.push_back(a_weaponPtr);
       }
       else if(a_str == "script")
       {
