@@ -46,6 +46,8 @@ CPlayer::CPlayer()
 
    m_velocityMax  = .007;
    m_isBackground = false;
+
+   m_activeWeapon = 0;
 }
 
 void CPlayer::updatePlayer(CLevel* t_levelPtr)
@@ -108,7 +110,10 @@ void CPlayer::updatePlayer(CLevel* t_levelPtr)
    //////////////////////////////////////////////////////////////////////////
    // Adjust rotor cycling to acceleration
    //////////////////////////////////////////////////////////////////////////
-   m_cycleInterval = (int)fabs(m_maxAccel - m_accel)/m_maxAccel;   
+   if(!m_isDying)
+   {
+      m_cycleInterval = (int)fabs(m_maxAccel - m_accel)/m_maxAccel;   
+   }
 
    //////////////////////////////////////////////////////////////////////////
    // Update velocity
@@ -167,7 +172,8 @@ bool CPlayer::loadPlayer(std::string t_fileName)
    TiXmlNode*     a_subNodePtr   = 0;
    TiXmlElement*  a_subElemPtr   = 0;
    TiXmlDocument  a_doc;
-   std::string    a_str;
+   std::string    a_str          = "";
+   std::string    a_dummy        = "";
    
    bool           r_ret          = true;
    
@@ -211,6 +217,12 @@ bool CPlayer::loadPlayer(std::string t_fileName)
          {
             r_ret &= getAttributeStr(a_subElemPtr, "key", a_str);
 
+            // check if explosion sequence exists
+            if(getAttributeStr(a_subElemPtr, "explosion", a_dummy))
+            {
+               m_explosionIndex = m_textureKeys.size();
+            }
+
             if(r_ret)
             {
                m_textureKeys.push_back(a_str);
@@ -233,11 +245,12 @@ bool CPlayer::loadPlayer(std::string t_fileName)
 
          // Make initial weapon position relative to host
          a_weaponPtr->m_xPos += m_xPos;
-         a_weaponPtr->m_yPos += m_yPos;
-
-         //a_weaponPtr->m_trackList.push_back(static_cast<CObject*>(g_playerPtr));
+         a_weaponPtr->m_yPos += m_yPos;         
 
          a_weaponPtr->m_parentPtr = this;
+
+         // Add the new weapon to the weapon list
+         m_weaponList.push_back(a_weaponPtr);
 
          CLevel::M_objects.push_back(a_weaponPtr);
       }
@@ -252,9 +265,22 @@ bool CPlayer::loadPlayer(std::string t_fileName)
    return r_ret;
 }
 
-
-
 void CPlayer::collisionImpact(CObject* t_objectPtr)
 {
-   int tol = 0;
+
+}
+
+void CPlayer::fireWeapon()
+{   
+   if (m_activeWeapon < m_weaponList.size())
+   {
+       m_weaponList[m_activeWeapon]->fire();
+   }
+}
+
+void CPlayer::nextWeapon()
+{
+   m_activeWeapon++;
+
+   m_activeWeapon = m_activeWeapon % m_weaponList.size();
 }

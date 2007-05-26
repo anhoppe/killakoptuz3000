@@ -187,7 +187,10 @@ bool CLevel::loadTextureMap(TiXmlNode* t_nodePtr)
 
             if(r_ret)
             {
-               M_textureMap[a_key] = new CTexture(a_elemPtr);
+               if(M_textureMap[a_key] == 0)
+               {
+                  M_textureMap[a_key] = new CTexture(a_elemPtr);
+               }
             }
          }
       }
@@ -200,10 +203,6 @@ void CLevel::updateLevel()
 {
    std::vector<CObject*>::iterator  a_it;
    CObject*                         a_objectPtr = 0;
-
-
-   M_deleteList.clear();
-   M_addList.clear();
 
    for(a_it = M_objects.begin(); a_it != M_objects.end(); a_it++)
    {

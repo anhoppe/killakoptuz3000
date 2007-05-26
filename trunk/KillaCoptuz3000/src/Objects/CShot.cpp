@@ -38,7 +38,9 @@ CShot::CShot(CShot* t_shotPtr)
 
    m_isBackground    = t_shotPtr->m_isBackground;
 
-   m_gfxType         = t_shotPtr->m_gfxType;
+   m_explosionIndex  = t_shotPtr->m_explosionIndex;
+
+   m_activeAnimationPhase  = t_shotPtr->m_activeAnimationPhase;
 
    unsigned int a_i;
 
@@ -52,7 +54,7 @@ CShot::CShot(CShot* t_shotPtr)
    m_activeTexture   = t_shotPtr->m_activeTexture;
    m_timeCounter     = 0;
 
-   m_v               = t_shotPtr->m_v;
+   m_v               = t_shotPtr->m_v;   
 }
 
 CShot::CShot(TiXmlNode* t_nodePtr)
@@ -120,11 +122,7 @@ bool CShot::positionAllowed(float t_x, float t_y, CLevel* t_levelPtr)
 
 void CShot::collisionImpact(CObject* t_objectPtr, bool t_checkOther /* = true */)
 {
-      // shot deletes itself as soon as it get hit
-   if(!this->m_isDeleted)
-   {
-      CLevel::M_deleteList.push_back(this);
-      this->m_isDeleted = true;
-   }
+   // shot deletes itself as soon as it get hit
+
    CObject::collisionImpact(t_objectPtr, t_checkOther);
 }
