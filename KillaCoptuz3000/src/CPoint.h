@@ -16,6 +16,8 @@ public:
    CPoint operator*(float t_a);
    CPoint operator+(CPoint& t_point);   
    CPoint operator-(CPoint& t_point);
+
+   float dist(CPoint& t_p);
 };
 
 class CLine

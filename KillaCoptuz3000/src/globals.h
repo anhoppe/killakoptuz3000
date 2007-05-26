@@ -5,7 +5,7 @@
 	file path:	c:\source\KillaCoptuz3000\KillaCoptuz3000\Data\Header
 	file base:	globals
 	file ext:	h
-	author:		Fabian
+	author:		Fabs
 	
 	purpose:	
 *********************************************************************/
@@ -18,6 +18,9 @@ class CLevel;
 //////////////////////////////////////////////////////////////////////////
 // global variables
 //////////////////////////////////////////////////////////////////////////
+
+// Show bounding boxes for collision detection
+extern bool     g_showBox;
 
 // Show hull polygons for collision detection
 extern bool     g_showHull;

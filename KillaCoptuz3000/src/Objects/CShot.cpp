@@ -106,13 +106,13 @@ void CShot::update(CLevel* t_levelPtr, std::vector<CObject*>::iterator& t_it, st
 // Check if position is allowed by level description
 bool CShot::positionAllowed(float t_x, float t_y, CLevel* t_levelPtr)
 {
-   if (t_x > t_levelPtr->m_maxX)
+   if (t_x > 1.2*t_levelPtr->m_maxX)
       return false;
-   if (t_x < t_levelPtr->m_minX)
+   if (t_x < 1.2*t_levelPtr->m_minX)
       return false;
-   if (t_y > t_levelPtr->m_maxY)
+   if (t_y > 1.2*t_levelPtr->m_maxY)
       return false;
-   if (t_y < t_levelPtr->m_minY)   
+   if (t_y < 1.2*t_levelPtr->m_minY)   
       return false;   
 
    return true;

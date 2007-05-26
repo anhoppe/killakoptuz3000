@@ -51,3 +51,8 @@ float CPoint::getAngle()
    }
    return r_ret;
 }
+
+float CPoint::dist(CPoint& t_p)
+{
+   return (sqrt((t_p.x-this->x)*(t_p.x-this->x) + (t_p.y-this->y)*(t_p.y-this->y)));
+}
