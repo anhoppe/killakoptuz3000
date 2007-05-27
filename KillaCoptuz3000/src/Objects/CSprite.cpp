@@ -23,6 +23,8 @@ CSprite::CSprite()
    m_behaviorData.m_dyPtr  = 0;
    m_angle                 = 0.0;
    m_direction             = false;
+   m_startAngle            = 0.0;
+
 }
 
 void CSprite::flip()
@@ -38,6 +40,8 @@ CSprite::CSprite(float t_xPos, float t_yPos)
    m_behaviorData.m_dxPtr  = 0;
    m_behaviorData.m_dyPtr  = 0;
    m_angle                 = 0.0;
+   m_startAngle            = 0.0;
+
 }
 
 CSprite::~CSprite()
@@ -64,9 +68,17 @@ void CSprite::draw()
    // rotate around parent angle
    if(m_parentPtr != 0)
    {
-      glTranslatef(m_xPos + m_width/2.0 - m_parentPtr->m_width/2., m_yPos + m_height/2.0 - m_parentPtr->m_height/2., 0.0);
+      glTranslatef(m_parentPtr->m_xPos + m_parentPtr->m_width/2.0, m_parentPtr->m_yPos + m_parentPtr->m_height/2.0, 0.0);
+      if(0 != m_parentPtr)
+      {
+         if(static_cast<CSprite*>(m_parentPtr)->m_direction)
+         {
+            glRotatef(180.0, 0., 1., 0);
+         }
+      }
+      
       glRotatef(m_parentPtr->m_angle, 0., 0., 1.);
-      glTranslatef(-m_xPos - m_width/2.0 + m_parentPtr->m_width/2., -m_yPos - m_height/2.0 + m_parentPtr->m_height/2., 0.0);
+      glTranslatef(-m_parentPtr->m_xPos - m_parentPtr->m_width/2.0, -m_parentPtr->m_yPos - m_parentPtr->m_height/2.0, 0.0);
    }      
    //////////////////////////////////////////////////////////////////////////
    // rotate around own axis
@@ -75,7 +87,7 @@ void CSprite::draw()
    {
       glRotatef(180.0, 0., 1., 0);
    }
-   glRotatef(m_angle, 0., 0., 1.);   
+   glRotatef(m_angle+m_startAngle, 0., 0., 1.);   
    glTranslatef(-m_xPos - m_width/2.0, -m_yPos - m_height/2.0, 0.0);
 
    glBegin( GL_QUADS );

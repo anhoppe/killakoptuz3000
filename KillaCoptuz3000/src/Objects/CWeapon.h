@@ -39,7 +39,6 @@ public:
 
    float             m_minAngle;
    float             m_maxAngle;
-   float             m_startAngle;
 
    unsigned int      m_maxShots;
    unsigned int      m_framesPerShot;
@@ -50,4 +49,5 @@ public:
 };
 
 #endif
+
 
