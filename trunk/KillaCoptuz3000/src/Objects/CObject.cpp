@@ -29,6 +29,7 @@ CObject::CObject()
    m_dx                    = 0.;
    m_dy                    = 0.;
    m_hitPoints             = 1;
+   m_maxHitPoints          = m_hitPoints;
    m_invincible            = false;
    m_damagePoints          = 1;
    m_isDeleted             = false;
@@ -45,6 +46,7 @@ CObject::CObject(TiXmlNode* t_nodePtr)
    m_angle                 = 0.;   
    m_dx                    = 0.;
    m_hitPoints             = 1;
+   m_maxHitPoints          = m_hitPoints;
    m_invincible            = false;
    m_damagePoints          = 1;
    m_isDeleted             = false;
@@ -153,7 +155,8 @@ bool CObject::load(TiXmlNode* t_nodePtr)
 
    if (getAttributeStr(a_elemPtr, "hitpoints", a_str))
    {
-      m_hitPoints = atoi(a_str.c_str());
+      m_hitPoints    = atoi(a_str.c_str());
+      m_maxHitPoints = m_hitPoints;
    }
    else
    {
@@ -540,21 +543,8 @@ void CObject::update(CLevel* t_levelPtr, std::vector<CObject*>::iterator& t_it, 
          m_activeAnimationPhase = m_explosionIndex;
          m_isDying              = true;
 
-         // Speed of explosion, depending on type of object
-         switch(getType())
-         {
-            case e_player:
-               m_cycleInterval = 15;
-               break;
-            case e_enemy:
-               m_cycleInterval = 10;
-               break;
-            case e_shot:
-               m_cycleInterval = 2;
-               break;
-            default:
-               m_cycleInterval = 10;
-         }         
+         // Speed of explosion, depending on object hitpoints         
+         m_cycleInterval = 40*(m_maxHitPoints*1.0 / (m_maxHitPoints + 50));
       }
       else
       {

@@ -112,6 +112,7 @@ public:
 
    /** Hit points */
    int                  m_hitPoints;
+   int                  m_maxHitPoints;
 
    /** Damage points (to others) */
    int                  m_damagePoints;
