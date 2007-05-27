@@ -24,3 +24,6 @@ Hoppe, was still in the mood for ~0:45h
 
   * An object does not only rotate about it's own angle, but also around the parent angle, if it has a parent. That must still be done for the collision polygon
 
+Fabian too...
+
+  * CEnemy's can not collide with CObject's anymore, which allows them to drive on the ground 
