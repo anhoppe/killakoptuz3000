@@ -47,9 +47,6 @@ public:
    float             m_shotRadius;
 
    CShot*            m_shotPtr;
-
-   /** Pointer to parent object */
-   CObject*          m_parentPtr;
 };
 
 #endif

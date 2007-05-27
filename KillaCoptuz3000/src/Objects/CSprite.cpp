@@ -60,6 +60,16 @@ void CSprite::draw()
 
    glPushMatrix();
 
+   //////////////////////////////////////////////////////////////////////////
+   // rotate around parent angle
+   if(m_parentPtr != 0)
+   {
+      glTranslatef(m_xPos + m_width/2.0 - m_parentPtr->m_width/2., m_yPos + m_height/2.0 - m_parentPtr->m_height/2., 0.0);
+      glRotatef(m_parentPtr->m_angle, 0., 0., 1.);
+      glTranslatef(-m_xPos - m_width/2.0 + m_parentPtr->m_width/2., -m_yPos - m_height/2.0 + m_parentPtr->m_height/2., 0.0);
+   }      
+   //////////////////////////////////////////////////////////////////////////
+   // rotate around own axis
    glTranslatef(m_xPos + m_width/2.0, m_yPos + m_height/2.0, 0.0);
    if (m_direction)
    {

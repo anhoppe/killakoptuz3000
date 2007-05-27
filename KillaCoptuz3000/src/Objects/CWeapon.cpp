@@ -145,10 +145,10 @@ void CWeapon::update(CLevel* t_levelPtr, std::vector<CObject*>::iterator& t_it, 
    {
       controlAngle();
    }
-   else
-   {
-      m_angle = m_parentPtr->m_angle + m_startAngle;    
-   }
+//    else
+//    {
+//       m_angle = m_parentPtr->m_angle + m_startAngle;    
+//    }
 
    //////////////////////////////////////////////////////////////////////////
    // Shooting
@@ -177,7 +177,12 @@ void CWeapon::fire()
       CShot* a_shotPtr = new CShot(m_shotPtr);
       a_shotPtr->m_xPos += m_xPos + m_width/2.0;
       a_shotPtr->m_yPos += m_yPos + m_height/2.0;
-      a_shotPtr->m_angle = m_angle;
+      a_shotPtr->m_angle = m_angle + m_startAngle;
+
+      if(0 != m_parentPtr)
+      {
+         a_shotPtr->m_angle += m_parentPtr->m_angle;
+      }
 
       CLevel::M_addList.push_back(a_shotPtr);
       m_framesSinceShot = 0;
