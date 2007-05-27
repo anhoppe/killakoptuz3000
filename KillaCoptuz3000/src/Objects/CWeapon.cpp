@@ -198,7 +198,7 @@ void CWeapon::fire()
       if(static_cast<CSprite*>(m_parentPtr)->m_direction)
       {
          a_angle += 180.;
-         a_angle += m_parentPtr->m_angle;<<
+         a_angle += m_parentPtr->m_angle;
       }
       else
       {
