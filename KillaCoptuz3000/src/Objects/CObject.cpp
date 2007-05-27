@@ -513,7 +513,7 @@ void CObject::update(CLevel* t_levelPtr, std::vector<CObject*>::iterator& t_it, 
    {
       // do only update if not:
       // (1) both are from type object or
-      // (2) enemys and objects
+      // (2) enemys and objects or      
       if(!((this->getType()   == e_object) && ((*a_it)->getType() == e_object) ||
           ((this->getType()   == e_enemy)  && ((*a_it)->getType() == e_object)) ||
           ((this->getType()   == e_object) && ((*a_it)->getType() == e_enemy))
@@ -528,15 +528,32 @@ void CObject::update(CLevel* t_levelPtr, std::vector<CObject*>::iterator& t_it, 
    }
 
    // object deletes itself as soon as it get hit
-   if(!this->m_isDeleted && m_hitPoints < 0 && !m_invincible)
+   if(!m_isDeleted && m_hitPoints < 0 && !m_invincible)
    {
       deleteChildren();
+      
+      // Activate explosion (if one is given)
       if(!m_isDying && (m_explosionIndex != -1))
       {
-         m_activeTexture = 0;
+         m_activeTexture        = 0;
          m_activeAnimationPhase = m_explosionIndex;
-         m_isDying = true;
-         m_cycleInterval = 10;
+         m_isDying              = true;
+
+         // Speed of explosion, depending on type of object
+         switch(getType())
+         {
+            case e_player:
+               m_cycleInterval = 15;
+               break;
+            case e_enemy:
+               m_cycleInterval = 10;
+               break;
+            case e_shot:
+               m_cycleInterval = 2;
+               break;
+            default:
+               m_cycleInterval = 10;
+         }         
       }
       else
       {

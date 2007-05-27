@@ -20,7 +20,7 @@
             <texture key="base"/>         
          </texturelist>
 
-         <weapon name="gunA" minAngle="-45" maxAngle="45" cycleInterval="7" xpos="0.1" ypos="0.1" width=".2" height=".3" maxShots="2" framesPShot="200" shotRadius="4.1">
+         <weapon name="gunA" minAngle="-45" maxAngle="45" cycleInterval="7" xpos="0.6" ypos="0.1" width=".4" height=".3" maxShots="2" framesPShot="200" shotRadius="4.1">
             <texturelist>
                <texture key="gunA"/>
             </texturelist>
