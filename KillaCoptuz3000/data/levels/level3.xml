@@ -56,7 +56,7 @@
          </texturelist>
       </object>
 
-      <object name="tank" cycleInterval="7" xpos="6.0" ypos="-1.2" width="0.8" height="0.4" type="enemy" hitpoints="90">
+      <object name="tank" cycleInterval="7" xpos="6.0" ypos="-1.8" width="0.8" height="0.4" type="enemy" hitpoints="90">
          <texturelist>
             <texture key="battletruck"/>
             <texture key="explosion" explosion="1" />

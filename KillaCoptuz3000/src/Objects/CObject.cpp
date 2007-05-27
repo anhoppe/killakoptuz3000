@@ -509,9 +509,12 @@ void CObject::update(CLevel* t_levelPtr, std::vector<CObject*>::iterator& t_it, 
    // collision detection
    for(a_it = t_it; a_it != t_endIt; a_it++)
    {
-      // do only update if not both are from type object
-      if(!((this->getType()==e_object) && 
-           ((*a_it)->getType() == e_object)
+      // do only update if not:
+      // (1) both are from type object or
+      // (2) enemys and objects
+      if(!((this->getType()   == e_object) && ((*a_it)->getType() == e_object) ||
+          ((this->getType()   == e_enemy)  && ((*a_it)->getType() == e_object)) ||
+          ((this->getType()   == e_object) && ((*a_it)->getType() == e_enemy))
           )
         )
       {
