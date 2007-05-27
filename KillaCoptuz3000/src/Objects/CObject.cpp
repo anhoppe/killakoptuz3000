@@ -444,8 +444,7 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
       // Check all polygon points for being inside target polygon
       //////////////////////////////////////////////////////////////////////////
       if (r_ret)
-      {   
-         return true;
+      {            
          r_ret = false;
 
          CPolygon* a_polygonAPtr = CLevel::M_textureMap[t_firstPtr->m_textureKeys[t_firstPtr->m_activeAnimationPhase]]->m_hullPolygonPtr;
@@ -544,7 +543,7 @@ void CObject::update(CLevel* t_levelPtr, std::vector<CObject*>::iterator& t_it, 
          m_isDying              = true;
 
          // Speed of explosion, depending on object hitpoints         
-         m_cycleInterval = 40*(m_maxHitPoints*1.0 / (m_maxHitPoints + 50));
+         m_cycleInterval = 20*(m_maxHitPoints*1.0 / (m_maxHitPoints + 15));
       }
       else
       {
