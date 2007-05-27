@@ -203,6 +203,7 @@ bool CPlayer::loadPlayer(std::string t_fileName)
 
       r_ret = r_ret & getAttributeStr(a_elemPtr, "hitpoints", a_str);
       m_hitPoints = atoi(a_str.c_str());      
+      m_maxHitPoints = m_hitPoints;
 
       //////////////////////////////////////////////////////////////////////////
       // load texture list

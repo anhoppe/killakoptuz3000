@@ -58,6 +58,7 @@ CShot::CShot(CShot* t_shotPtr)
    m_invincible      = t_shotPtr->m_invincible;
 
    m_hitPoints       = t_shotPtr->m_hitPoints;
+   m_maxHitPoints    = t_shotPtr->m_maxHitPoints;
 }
 
 CShot::CShot(TiXmlNode* t_nodePtr)
