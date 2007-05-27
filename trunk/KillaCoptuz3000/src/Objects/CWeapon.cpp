@@ -32,7 +32,6 @@ CWeapon::CWeapon(float t_xPos, float t_yPos)
    m_framesSinceShot = 0;
    m_framesPerShot   = 100;
    m_shotPtr         = 0;
-   m_startAngle      = 0.0;
 }
 
 CWeapon::CWeapon(TiXmlNode* t_nodePtr)
@@ -40,7 +39,6 @@ CWeapon::CWeapon(TiXmlNode* t_nodePtr)
    m_angle           = 0.0;
    m_framesSinceShot = 0;
    m_shotPtr         = 0;
-   m_startAngle      = 0.0;
 
    load(t_nodePtr);
 }
@@ -171,17 +169,64 @@ void CWeapon::update(CLevel* t_levelPtr, std::vector<CObject*>::iterator& t_it, 
 
 void CWeapon::fire()
 {
+   float a_angle  = 0.;
+
    // Create a new shot
    if(0 != m_shotPtr)
    {
+      //////////////////////////////////////////////////////////////////////////
+      // create a new shot
       CShot* a_shotPtr = new CShot(m_shotPtr);
-      a_shotPtr->m_xPos += m_xPos + m_width/2.0;
-      a_shotPtr->m_yPos += m_yPos + m_height/2.0;
+
+
+      
+      //       a_shotPtr->m_xPos = m_xPos + m_width / 2.0;
+//       a_shotPtr->m_yPos = m_yPos + m_height / 2.0;
+
+
+      //////////////////////////////////////////////////////////////////////////
+      // set start position of the shot
+      a_shotPtr->m_xPos += m_xPos + m_width / 2.0;
+      a_shotPtr->m_yPos += m_yPos + m_height / 2.0;
+
+      CPoint a_pos(a_shotPtr->m_xPos,
+                   a_shotPtr->m_yPos);
+
+      a_pos.x -=  m_parentPtr->m_xPos + m_parentPtr->m_width/2.0;
+      a_pos.y -=  m_parentPtr->m_yPos + m_parentPtr->m_height/2.0;
+      
+      if(static_cast<CSprite*>(m_parentPtr)->m_direction)
+      {
+         a_angle += 180.;
+         a_angle += m_parentPtr->m_angle;<<
+      }
+      else
+      {
+         a_angle -= m_parentPtr->m_angle;
+      }
+      a_pos.rotate(a_angle);
+
+      a_pos.x += m_parentPtr->m_xPos + m_parentPtr->m_width/2.;
+      a_pos.y += m_parentPtr->m_yPos + m_parentPtr->m_height/2.;
+
+      a_shotPtr->m_xPos = a_pos.x;
+      a_shotPtr->m_yPos = a_pos.y;
+
+      //////////////////////////////////////////////////////////////////////////
+      // set direction of shot
       a_shotPtr->m_angle = m_angle + m_startAngle;
 
       if(0 != m_parentPtr)
       {
-         a_shotPtr->m_angle += m_parentPtr->m_angle;
+         if(static_cast<CSprite*>(m_parentPtr)->m_direction)
+         {
+             a_shotPtr->m_angle += 180;
+             a_shotPtr->m_angle -= m_parentPtr->m_angle;
+         }
+         else
+         {
+            a_shotPtr->m_angle += m_parentPtr->m_angle;
+         }
       }
 
       CLevel::M_addList.push_back(a_shotPtr);

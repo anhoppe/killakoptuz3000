@@ -46,6 +46,9 @@ public:
    CScript*                m_scriptPtr;      
    /** Behavior structure*/
    SBehaviorData           m_behaviorData;
+   
+   /** Start angle (only valid for child objects */
+   float                   m_startAngle;
 
 };
 
