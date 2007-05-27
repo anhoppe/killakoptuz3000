@@ -31,5 +31,5 @@ Fabian too...
 == Sun, 27 May 2007 ==
 Fabian has done some small things after swimming in the Werdersee:
 
-* Damage model will be applied for all objects
-* Speed of explosion depends on object hitpoints. The more hitpoints the more buum. Formula is inspired by [http://en.wikipedia.org/wiki/Michaelis-Menten_kinetics michaelis - menten].
+  * Damage model will be applied for all objects
+  * Speed of explosion depends on object hitpoints. The more hitpoints the more buum. Formula is inspired by [http://en.wikipedia.org/wiki/Michaelis-Menten_kinetics michaelis - menten].
