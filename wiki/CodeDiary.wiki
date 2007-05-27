@@ -19,7 +19,7 @@ Kyra (drained 1.5h with esoteric mambo jambo), Hoppe, Fabian
   * When many objects are present the game becomes veeery slow. We'll have to improve that!
 
 
-== Sun, 27 May 2007 ==
+== Sun, 27 May 2007 (Night) ==
 Hoppe, was still in the mood for ~0:45h
 
   * An object does not only rotate about it's own angle, but also around the parent angle, if it has a parent. That must still be done for the collision polygon
@@ -27,3 +27,9 @@ Hoppe, was still in the mood for ~0:45h
 Fabian too...
 
   * CEnemy's can not collide with CObject's anymore, which allows them to drive on the ground 
+
+== Sun, 27 May 2007 ==
+Fabian has done some small things after swimming in the Werdersee:
+
+* Damage model will be applied for all objects
+* Speed of explosion depends on object hitpoints. The more hitpoints the more buum. Formula is inspired by [http://en.wikipedia.org/wiki/Michaelis-Menten_kinetics michaelis - menten].
