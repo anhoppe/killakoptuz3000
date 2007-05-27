@@ -4,7 +4,7 @@
    <texture key="playerheli" basefilename="heliB" hullpoints="24" gfxType="tga"/>
    <texture key="playergun" basefilename="heliBgun" gfxType="tga"/>
    <texture key="explosion" basefilename="explosion" gfxType="tga"/>
-   <texture key="rocketB" basefilename="rocketA" gfxType="tga"/>
+   <texture key="rocketA" basefilename="rocketA" gfxType="tga"/>
 </texturelist>
 
 <object xpos="0.0" ypos="1.0" width="1.0" height="0.5" hitpoints="1000">
@@ -17,9 +17,9 @@
       <texturelist>
          <texture key="playergun"/>
       </texturelist>
-      <shot cycleInterval="2" xpos="0.0" ypos="0.0" width="0.12" height="0.25" v="0.1">
+      <shot cycleInterval="2" xpos="0.0" ypos="0.0" width="0.12" height="0.25" v="0.05" hitpoints="1">
          <texturelist>
-            <texture key="rocketB"/>
+            <texture key="rocketA"/>
             <texture key="explosion" explosion="1" />
          </texturelist>
       </shot>

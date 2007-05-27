@@ -49,12 +49,15 @@ CShot::CShot(CShot* t_shotPtr)
       m_textureKeys.push_back(t_shotPtr->m_textureKeys[a_i]);
    }
 
-//    m_hullPolygonPtr = new CPolygon(t_shotPtr->m_hullPolygonPtr);
-
    m_activeTexture   = t_shotPtr->m_activeTexture;
+
    m_timeCounter     = 0;
 
    m_v               = t_shotPtr->m_v;   
+
+   m_invincible      = t_shotPtr->m_invincible;
+
+   m_hitPoints       = t_shotPtr->m_hitPoints;
 }
 
 CShot::CShot(TiXmlNode* t_nodePtr)
@@ -118,11 +121,4 @@ bool CShot::positionAllowed(float t_x, float t_y, CLevel* t_levelPtr)
       return false;   
 
    return true;
-}
-
-void CShot::collisionImpact(CObject* t_objectPtr, bool t_checkOther /* = true */)
-{
-   // shot deletes itself as soon as it get hit
-
-   CObject::collisionImpact(t_objectPtr, t_checkOther);
 }
