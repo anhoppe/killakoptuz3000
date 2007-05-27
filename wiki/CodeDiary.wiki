@@ -16,7 +16,6 @@ Kyra (drained 1.5h with esoteric mambo jambo), Hoppe, Fabian
   * Added explosions to player and objects, first time we and the enemy (a nice little truck) exploded.
   * Created/found new problems with collision
   * Added shots to the player
-  * When many objects are present, the game turned out to get veeery slow. We'll have to improve this!
-
+  * When many objects are present the game becomes veeery slow. We'll have to improve that!
 
 
