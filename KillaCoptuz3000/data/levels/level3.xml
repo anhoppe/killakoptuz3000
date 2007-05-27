@@ -67,7 +67,7 @@
             <texturelist>
                <texture key="rocketlauncher"/>
             </texturelist>
-            <shot cycleInterval="2" xpos="0.0" ypos="0.2" width="0.12" height="0.25" v="0.01">
+            <shot cycleInterval="2" xpos="0.0" ypos="0.2" width="0.12" height="0.25" v="0.05" hitpoints="1">
                <texturelist>
                   <texture key="rocketA"/>
                   <texture key="explosion" explosion="1" />

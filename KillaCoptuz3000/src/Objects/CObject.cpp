@@ -527,11 +527,12 @@ void CObject::update(CLevel* t_levelPtr, std::vector<CObject*>::iterator& t_it, 
       }
    }
 
-   // object deletes itself as soon as it get hit
+   // Object deletion   
    if(!m_isDeleted && m_hitPoints < 0 && !m_invincible)
    {
       deleteChildren();
       
+      // Dying sequence:
       // Activate explosion (if one is given)
       if(!m_isDying && (m_explosionIndex != -1))
       {
@@ -557,6 +558,7 @@ void CObject::update(CLevel* t_levelPtr, std::vector<CObject*>::iterator& t_it, 
       }
       else
       {
+         // Delete object:
          if((m_activeTexture >= (CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]]->m_textureIdVector.size())-1) ||
             (m_explosionIndex == -1))
          {
