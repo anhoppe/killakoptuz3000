@@ -66,6 +66,9 @@ public:
    static bool    isCollided(CObject* t_firstPtr, CObject* t_secondPtr);
    virtual void   collisionImpact(CObject* t_objectPtr, bool t_checkOther = true);
 
+   /** Pointer to parent object */
+   CObject*          m_parentPtr;
+
 protected:
 
    virtual bool   load(TiXmlNode* t_nodePtr);    

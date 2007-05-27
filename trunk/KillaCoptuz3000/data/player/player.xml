@@ -7,7 +7,7 @@
    <texture key="rocketB" basefilename="rocketA" gfxType="tga"/>
 </texturelist>
 
-<object xpos="0.0" ypos="1.0" width="1.0" height="0.5" hitpoints="3000">
+<object xpos="0.0" ypos="1.0" width="1.0" height="0.5" hitpoints="1000">
    <texturelist>
       <texture key="playerheli" />
       <texture key="explosion" explosion="1" />

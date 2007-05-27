@@ -35,6 +35,7 @@ CObject::CObject()
    m_activeAnimationPhase  = 0;
    m_explosionIndex        = -1;
    m_isDying               = false;
+   m_parentPtr             = 0;
 }
 
 CObject::CObject(TiXmlNode* t_nodePtr)
@@ -50,6 +51,7 @@ CObject::CObject(TiXmlNode* t_nodePtr)
    m_activeAnimationPhase  = 0;
    m_explosionIndex        = -1;
    m_isDying               = false;
+   m_parentPtr             = 0;
 
    load(t_nodePtr);
 }
