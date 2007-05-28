@@ -38,3 +38,11 @@ Fabian has done some small things after swimming in the Werdersee:
 Hoppe: Sunday, cruddy sunday...
 
   * I did stuff on the player gun: it stays attached to the player accuratly. The shots have a correct angle and start position (even when heli is flipped).
+
+== Mon, 28 May 2007 ==
+Fabian: in the morning nebula...
+
+  * The player gun poly and rect are now rotated and flipped correctly
+  * Discovered a bad thing: When two shots hit each other, the poly disappears, because both use the same polygon... (in CObject::isCollided) Ahhh. Possible solution:
+
+   1. If (a_polygonAPtr == a_polygonBPtr) make a working copy of one... the code doesent get nicer by that.
