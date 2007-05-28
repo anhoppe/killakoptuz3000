@@ -66,9 +66,6 @@ public:
    static bool    isCollided(CObject* t_firstPtr, CObject* t_secondPtr);
    virtual void   collisionImpact(CObject* t_objectPtr, bool t_checkOther = true);
 
-   /** Pointer to parent object */
-   CObject*          m_parentPtr;
-
 protected:
 
    virtual bool   load(TiXmlNode* t_nodePtr);    
@@ -120,6 +117,9 @@ public:
    /** Flag if object is invincible (set if no hit points are defined in xml file) */
    int                  m_invincible;
 
+   /** Pointer to parent object */
+   CObject*          m_parentPtr;
+
 protected:
    // List of textures for the object
 //    std::vector <GLuint> m_textureIdVector;
@@ -129,7 +129,7 @@ protected:
    std::vector<CObject*>      m_children;
 
    // Time counter for animation
-   int                  m_timeCounter;   
+   int                        m_timeCounter;   
 };
 
 #endif
