@@ -50,18 +50,19 @@ CSprite::~CSprite()
 }
 
 void CSprite::draw()
-{
-   glEnable( GL_TEXTURE_2D );
+{  
    std::string a0 = m_textureKeys[m_activeAnimationPhase];
    CTexture* a1 = CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]];
-   GLuint a2 = a1->m_textureIdVector[m_activeTexture];
+   GLuint a2 = a1->m_textureIdVector[m_activeTexture];   
+
+   glEnable( GL_TEXTURE_2D );
    glBindTexture(GL_TEXTURE_2D, a2/*CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]]->m_textureIdVector[m_activeTexture]*/);
 
    if (m_activeTexture==1)
    {
       m_activeTexture = m_activeTexture;
    }
-
+   
    glPushMatrix();
 
    //////////////////////////////////////////////////////////////////////////
@@ -111,18 +112,53 @@ void CSprite::draw()
    //////////////////////////////////////////////////////////////////////////
    // The following section is for hull drawing (only for debugging purposes)
    //////////////////////////////////////////////////////////////////////////
-   // DEBUG: Show Hull
+   // DEBUG: Show Hull         
+
+   // If object has a parent, rotate with parent angle around parent center
+   float a_angle     = 0.0;
+   float a_xCenter   = 0.0;
+   float a_yCenter   = 0.0;
+   bool  a_direction = 0.0;
+   
+   if (0 != m_parentPtr)
+   {
+      // Object has parent, use parent coordinates
+      a_angle     = m_parentPtr->m_angle + m_angle;      
+      a_xCenter   = m_parentPtr->m_xPos + m_parentPtr->m_width/2.0;
+      a_yCenter   = m_parentPtr->m_yPos + m_parentPtr->m_height/2.0;
+      a_direction = static_cast<CSprite*>(m_parentPtr)->m_direction;
+   }
+   else
+   {
+      // Object has no parent, use own coordinates
+      a_angle     = m_angle;
+      a_xCenter   = m_xPos + m_width/2.0;
+      a_yCenter   = m_yPos + m_height/2.0;
+      a_direction = m_direction;
+   }
+
    if (g_showBox)
    {
       // Show bounding rect
       glPushMatrix();
-      glTranslatef(m_xPos + m_width/2.0, m_yPos + m_height/2.0, 0.0);
-      if (m_direction)
+
+      // Rotation around object (or parent, if present) center with a_angle
+      glTranslatef(a_xCenter, a_yCenter, 0.0);
+      if (a_direction)
       {
          glRotatef(180.0, 0., 1., 0);
       }
-      glRotatef(m_angle, 0., 0., 1.);   
-      glTranslatef(-m_xPos - m_width/2.0, -m_yPos - m_height/2.0, 0.0);
+      glRotatef(a_angle, 0.0, 0.0, 1.0);
+      glTranslatef(-a_xCenter, -a_yCenter, 0.0);
+
+      // Rotation around object angle with m_startAngle
+      glTranslatef(m_xPos + m_width/2.0, m_yPos + m_height/2.0, 0.0);
+      if (a_direction)
+      {
+         glRotatef(180.0, 0., 1., 0);
+      }
+      glRotatef(m_startAngle, 0.0, 0.0, 1.0);
+      glTranslatef(-m_xPos - m_width/2.0, -m_yPos - m_height/2.0, 0.0);      
 
       glColor4f(1.0,1.0,1.0,0.5);
       glBegin(GL_LINE_LOOP);
@@ -146,13 +182,22 @@ void CSprite::draw()
       // Translate polygon to correct position
       a_polygonPtr->translate(m_xPos, m_yPos);
 
+      // Add start angle to rotation
+      if (0.0 != m_startAngle)
+      {
+         a_polygonPtr->rotate(-m_startAngle, m_xPos + m_width/2.0, m_yPos + m_height/2.0);
+      }
+
       // Rotate polygon
-      a_polygonPtr->rotate(-m_angle, m_xPos + m_width/2.0, m_yPos + m_height/2.0);
+      a_polygonPtr->rotate(-a_angle, a_xCenter, a_yCenter);
 
       // Flip polygon
-      if (m_direction)
-      {
-         a_polygonPtr->flip(m_xPos + m_width/2.0);
+      if (a_direction)
+      {         
+         if (0 != m_parentPtr)
+            a_polygonPtr->flip(m_parentPtr->m_xPos + m_parentPtr->m_width/2.0);
+         else
+            a_polygonPtr->flip(m_xPos + m_width/2.0);
       }
 
       glBegin(GL_LINE_LOOP);      
@@ -164,13 +209,22 @@ void CSprite::draw()
       glEnd();
 
       // Undo of: Flip polygon
-      if (m_direction)
-      {
-         a_polygonPtr->flip(m_xPos + m_width/2.0);
+      if (a_direction)
+      {         
+         if (0 != m_parentPtr)
+            a_polygonPtr->flip(m_parentPtr->m_xPos + m_parentPtr->m_width/2.0);
+         else
+            a_polygonPtr->flip(m_xPos + m_width/2.0);
       }
 
       // Undo of: Rotate polygon
-      a_polygonPtr->rotate(m_angle, m_xPos + m_width/2.0, m_yPos + m_height/2.0);
+      a_polygonPtr->rotate(a_angle, a_xCenter, a_yCenter);
+
+      // Undo of: Add start angle to rotation
+      if (0.0 != m_startAngle)
+      {
+         a_polygonPtr->rotate(m_startAngle, m_xPos + m_width/2.0, m_yPos + m_height/2.0);
+      }
 
       // Undo of: Translate polygon to correct position
       a_polygonPtr->translate(-m_xPos, -m_yPos);
