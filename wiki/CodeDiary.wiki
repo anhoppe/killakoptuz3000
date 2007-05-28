@@ -44,5 +44,4 @@ Fabian: in the morning nebula...
 
   * The player gun poly and rect are now rotated and flipped correctly
   * Discovered a bad thing: When two shots hit each other, the poly disappears, because both use the same polygon... (in CObject::isCollided) Ahhh. Possible solution:
-
-   1. If (a_polygonAPtr == a_polygonBPtr) make a working copy of one... the code doesent get nicer by that.
+  If (a_polygonAPtr == a_polygonBPtr) make a working copy of one... the code doesent get nicer by that.
