@@ -69,7 +69,7 @@ void CObject::nextTexture()
    {
       m_activeTexture++;
       
-      if (m_activeTexture >= CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]]->m_textureIdVector.size())
+      if (m_activeTexture >= CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]->m_textureKey]->m_textureIdVector.size())
       {
          m_activeTexture = 0;
       }
@@ -81,7 +81,7 @@ void CObject::nextTexture()
 // Return: number of textures in m_textureIdVector
 size_t CObject::getTextureCount()
 {
-   return CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]]->m_textureIdVector.size();
+   return CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]->m_textureKey]->m_textureIdVector.size();
 }
 
 void CObject::deleteChildren()
@@ -97,16 +97,17 @@ void CObject::deleteChildren()
 
 bool CObject::load(TiXmlNode* t_nodePtr)
 {
-   TiXmlNode*     a_nodePtr      = 0;
-   TiXmlElement*  a_elemPtr      = 0;
+   TiXmlNode*     a_nodePtr         = 0;
+   TiXmlElement*  a_elemPtr         = 0;
 
-   TiXmlNode*     a_subNodePtr   = 0;
-   TiXmlElement*  a_subElemPtr   = 0;
+   TiXmlNode*     a_subNodePtr      = 0;
+   TiXmlElement*  a_subElemPtr      = 0;
 
+   CTextureInfo*  a_textureInfoPtr  = 0;
 
-   std::string    a_str          = "";
-   std::string    a_dummy        = "";
-   bool           r_ret          = true;
+   std::string    a_str             = "";
+   std::string    a_dummy           = "";
+   bool           r_ret             = true;
    
 
    a_elemPtr = t_nodePtr->ToElement();
@@ -139,6 +140,13 @@ bool CObject::load(TiXmlNode* t_nodePtr)
 
          r_ret &= getAttributeStr(a_subElemPtr, "key", a_str);
 
+         a_textureInfoPtr = new CTextureInfo;
+
+         // Create the polygon
+         a_textureInfoPtr->m_polygonPtr = new CPolygon(CLevel::M_textureMap[a_str]->m_hullPolygonPtr);
+
+         // Scale the new polygon
+         a_textureInfoPtr->m_polygonPtr->rescale(m_width / a_textureInfoPtr->m_polygonPtr->m_width, m_height / a_textureInfoPtr->m_polygonPtr->m_height);
 
          // check if explosion sequence exists
          if(getAttributeStr(a_subElemPtr, "explosion", a_dummy))
@@ -148,7 +156,8 @@ bool CObject::load(TiXmlNode* t_nodePtr)
 
          if(r_ret)
          {
-            m_textureKeys.push_back(a_str);
+            a_textureInfoPtr->m_textureKey = a_str;
+            m_textureKeys.push_back(a_textureInfoPtr);
          }
       }
    }
@@ -182,7 +191,7 @@ bool CObject::load(TiXmlNode* t_nodePtr)
 void CObject::draw() 
 {
    glEnable( GL_TEXTURE_2D );
-   glBindTexture(GL_TEXTURE_2D, CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]]->m_textureIdVector[m_activeTexture]);
+   glBindTexture(GL_TEXTURE_2D, CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]->m_textureKey]->m_textureIdVector[m_activeTexture]);
       
    glPushMatrix();
 
@@ -204,7 +213,8 @@ void CObject::draw()
    glPopMatrix();
    glDisable( GL_TEXTURE_2D );
 
-   CPolygon* a_polygonPtr = CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]]->m_hullPolygonPtr;
+   CPolygon* a_polygonPtr = m_textureKeys[m_activeAnimationPhase]->m_polygonPtr;
+
    if (g_showHull && 0 != a_polygonPtr)
    {      
       // DEBUG: SHOW POLYGON HULL FOR COLLISION DETECTION
@@ -445,17 +455,22 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
       //////////////////////////////////////////////////////////////////////////
       if (r_ret)
       {            
-         r_ret = false;
-
-         CPolygon* a_polygonAPtr = CLevel::M_textureMap[t_firstPtr->m_textureKeys[t_firstPtr->m_activeAnimationPhase]]->m_hullPolygonPtr;
-         CPolygon* a_polygonBPtr = CLevel::M_textureMap[t_secondPtr->m_textureKeys[t_secondPtr->m_activeAnimationPhase]]->m_hullPolygonPtr;
+//          CPolygon* a_polygonAPtr = CLevel::M_textureMap[t_firstPtr->m_textureKeys[t_firstPtr->m_activeAnimationPhase]]->m_hullPolygonPtr;
+//          CPolygon* a_polygonBPtr = CLevel::M_textureMap[t_secondPtr->m_textureKeys[t_secondPtr->m_activeAnimationPhase]]->m_hullPolygonPtr;
+         CPolygon* a_polygonAPtr = t_firstPtr->m_textureKeys[t_firstPtr->m_activeAnimationPhase]->m_polygonPtr;
+         CPolygon* a_polygonBPtr = t_secondPtr->m_textureKeys[t_secondPtr->m_activeAnimationPhase]->m_polygonPtr;
          
          if((0 != a_polygonAPtr) &&
             (0 != a_polygonBPtr)    )
          {
 
-            // Scale polygon A to correct width and height
-            a_polygonAPtr->rescale(t_firstPtr->m_width / a_polygonAPtr->m_width, t_firstPtr->m_height / a_polygonAPtr->m_height);     
+            if (t_firstPtr->getType() == e_shot || t_secondPtr->getType() == e_shot)
+            {
+               int willy = 10000; 
+            }
+
+//             Scale polygon A to correct width and height
+//             a_polygonAPtr->rescale(t_firstPtr->m_width / a_polygonAPtr->m_width, t_firstPtr->m_height / a_polygonAPtr->m_height);     
 
             // Translate polygon A to correct position
             a_polygonAPtr->translate(t_firstPtr->m_xPos, t_firstPtr->m_yPos);
@@ -463,8 +478,8 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
             // Rotate polygon A
             a_polygonAPtr->rotate(-t_firstPtr->m_angle, t_firstPtr->m_xPos + t_firstPtr->m_width/2.0, t_firstPtr->m_yPos + t_firstPtr->m_height/2.0);
 
-            // Scale polygon B to correct width and height
-            a_polygonBPtr->rescale(t_secondPtr->m_width / a_polygonBPtr->m_width, t_secondPtr->m_height / a_polygonBPtr->m_height);     
+//             // Scale polygon B to correct width and height
+//             a_polygonBPtr->rescale(t_secondPtr->m_width / a_polygonBPtr->m_width, t_secondPtr->m_height / a_polygonBPtr->m_height);     
 
             // Translate polygon B to correct position
             a_polygonBPtr->translate(t_secondPtr->m_xPos, t_secondPtr->m_yPos);
@@ -487,8 +502,8 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
             // Undo of: Translate polygon A to correct position
             a_polygonAPtr->translate(-t_firstPtr->m_xPos, -t_firstPtr->m_yPos);
 
-            // Undo of: Scale polygon A to correct width and height
-            a_polygonAPtr->rescale(a_polygonAPtr->m_width / t_firstPtr->m_width, a_polygonAPtr->m_height / t_firstPtr->m_height);     
+//             // Undo of: Scale polygon A to correct width and height
+//             a_polygonAPtr->rescale(a_polygonAPtr->m_width / t_firstPtr->m_width, a_polygonAPtr->m_height / t_firstPtr->m_height);     
 
             // Undo of: Rotate polygon B
             a_polygonBPtr->rotate(t_secondPtr->m_angle, t_secondPtr->m_xPos + t_secondPtr->m_width/2.0, t_secondPtr->m_yPos + t_secondPtr->m_height/2.0);
@@ -496,8 +511,10 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
             // Undo of: Translate polygon B to correct position
             a_polygonBPtr->translate(- t_secondPtr->m_xPos, - t_secondPtr->m_yPos);
 
-            // Undo of: Scale polygon B to correct width and height
-            a_polygonBPtr->rescale(a_polygonBPtr->m_width / t_secondPtr->m_width, a_polygonBPtr->m_height / t_secondPtr->m_height);                 
+//             // Undo of: Scale polygon B to correct width and height
+//             a_polygonBPtr->rescale(a_polygonBPtr->m_width / t_secondPtr->m_width, a_polygonBPtr->m_height / t_secondPtr->m_height);                 
+
+            int tol = 0;
          }
       }               
    }
@@ -506,7 +523,7 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
 }
 
 void CObject::update(CLevel* t_levelPtr, std::vector<CObject*>::iterator& t_it, std::vector<CObject*>::iterator& t_endIt)
-{
+{ 
    std::vector<CObject*>::iterator a_it;
 
    //////////////////////////////////////////////////////////////////////////
@@ -518,7 +535,8 @@ void CObject::update(CLevel* t_levelPtr, std::vector<CObject*>::iterator& t_it, 
       // (2) enemys and objects or      
       if(!((this->getType()   == e_object) && ((*a_it)->getType() == e_object) ||
           ((this->getType()   == e_enemy)  && ((*a_it)->getType() == e_object)) ||
-          ((this->getType()   == e_object) && ((*a_it)->getType() == e_enemy))
+          ((this->getType()   == e_object) && ((*a_it)->getType() == e_enemy)) ||
+          (isDescendent(*a_it)) 
           )
         )
       {
@@ -548,7 +566,7 @@ void CObject::update(CLevel* t_levelPtr, std::vector<CObject*>::iterator& t_it, 
       else
       {
          // Delete object:
-         if((m_activeTexture >= (CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]]->m_textureIdVector.size())-1) ||
+         if((m_activeTexture >= (CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]->m_textureKey]->m_textureIdVector.size())-1) ||
             (m_explosionIndex == -1))
          {
             CLevel::M_deleteList.push_back(this);
@@ -569,4 +587,46 @@ void CObject::collisionImpact(CObject* t_objectPtr, bool t_checkOther)
    {
       t_objectPtr->collisionImpact(this, false);
    }   
+}
+
+
+bool CObject::isAncestor(CObject* t_otherPtr)
+{   
+   CObject* a_objectPtr = this->m_parentPtr;
+
+   bool     r_ret       = false;
+
+   if (getType() == e_shot && t_otherPtr->getType() == e_player)
+   {
+      int blka = 2;
+   }
+
+   while (a_objectPtr != 0)  
+   {
+      if (a_objectPtr == t_otherPtr)
+      {
+         r_ret = true;
+      }
+      a_objectPtr = a_objectPtr->m_parentPtr;
+   }   
+
+   return r_ret;
+}
+
+bool CObject::isDescendent(CObject* t_otherPtr)
+{   
+   CObject* a_objectPtr =t_otherPtr->m_parentPtr;
+
+   bool     r_ret       = false;
+
+   while (a_objectPtr != 0)  
+   {
+      if (a_objectPtr == this)
+      {
+         r_ret = true;
+      }
+      a_objectPtr = a_objectPtr->m_parentPtr;
+   }   
+
+   return r_ret;
 }

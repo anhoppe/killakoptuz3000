@@ -87,6 +87,7 @@ bool CWeapon::load(TiXmlNode* t_nodePtr)
       if(!strcmp("shot", a_elemPtr->Value()))
       {
          m_shotPtr = new CShot(a_nodePtr);   
+         m_shotPtr->m_parentPtr = this;
          break;  
       }
       a_nodePtr = t_nodePtr->IterateChildren(a_nodePtr);      

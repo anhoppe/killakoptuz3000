@@ -31,6 +31,21 @@ enum VeObjectType
    e_player = 6
 };
 
+struct CTextureInfo
+{
+public:
+   CTextureInfo() {};
+   CTextureInfo(CTextureInfo* t_srcPtr)
+   {
+      m_textureKey = t_srcPtr->m_textureKey;
+      m_polygonPtr = new CPolygon(t_srcPtr->m_polygonPtr);
+   };
+
+   std::string m_textureKey;
+   CPolygon*   m_polygonPtr;
+};
+
+
 class CObject
 {
    //////////////////////////////////////////////////////////////////////////
@@ -41,6 +56,9 @@ public:
    CObject(TiXmlNode* t_nodePtr);
 
    ~CObject();
+
+   bool isAncestor(CObject* t_otherPtr);
+   bool isDescendent(CObject* t_otherPtr);
 
    /** returns the type of the object */
    virtual VeObjectType getType() { return e_object; };
@@ -97,6 +115,7 @@ public:
    // Active texture (zero based index)
    unsigned int         m_activeTexture;
 
+   // 
    unsigned int         m_activeAnimationPhase;
 
    // Angle of the sprite
@@ -118,18 +137,18 @@ public:
    int                  m_invincible;
 
    /** Pointer to parent object */
-   CObject*          m_parentPtr;
+   CObject*                   m_parentPtr;
 
 protected:
    // List of textures for the object
 //    std::vector <GLuint> m_textureIdVector;
-   std::vector<std::string>   m_textureKeys;
+   std::vector<CTextureInfo*>   m_textureKeys;
 
    // list of children
    std::vector<CObject*>      m_children;
 
    // Time counter for animation
-   int                        m_timeCounter;   
+   int                        m_timeCounter;
 };
 
 #endif

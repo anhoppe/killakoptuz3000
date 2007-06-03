@@ -40,6 +40,8 @@ public:
 
    CPoint getHullPoint(CPoint* t_startPointPtr, CPoint* t_imageCenterPtr, const unsigned char* t_imagePtr, unsigned int a_witdth);
 
+   CPolygon& operator=(CPolygon& t_srcPtr);
+
    // Points of polygon
    std::vector<CPoint*> m_points;
 
