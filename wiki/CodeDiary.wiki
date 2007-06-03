@@ -47,7 +47,8 @@ Fabian: in the morning nebula...
   If (a_polygonAPtr == a_polygonBPtr) make a working copy of one... the code doesent get nicer by that. Tried it. It is too slow, because this case happens so often... Probably we have to give each object it's own polygon back.
 
 == Sat/Sun, 2/3 Jun 2007 ==
-Hoppe and Fabian: Some disturbance by Meike, Willy and other things.
+Hoppe and Fabian: Some disturbance by Meike or Melanie (says Hoppe), Willy and other things.
 
   * Started to give each object it's polygon back
   * Lots of prob's... unsolved at 2:39... Puh!
+  * Discovered (and were unabe to solve until 3:41) strange collision detection bug. Polygons seem always to collide, when box test is positive. Why????????????
