@@ -46,7 +46,7 @@ CShot::CShot(CShot* t_shotPtr)
 
    for(a_i = 0; a_i < t_shotPtr->m_textureKeys.size(); a_i++)
    {      
-      m_textureKeys.push_back(t_shotPtr->m_textureKeys[a_i]);
+      m_textureKeys.push_back(new CTextureInfo(t_shotPtr->m_textureKeys[a_i]));
    }
 
    m_activeTexture   = t_shotPtr->m_activeTexture;
@@ -59,6 +59,8 @@ CShot::CShot(CShot* t_shotPtr)
 
    m_hitPoints       = t_shotPtr->m_hitPoints;
    m_maxHitPoints    = t_shotPtr->m_maxHitPoints;
+
+   m_parentPtr       = t_shotPtr->m_parentPtr;
 }
 
 CShot::CShot(TiXmlNode* t_nodePtr)

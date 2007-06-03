@@ -29,6 +29,9 @@ CPolygon::CPolygon(CPolygon* t_polygonPtr)
    {
       m_points.push_back(new CPoint(t_polygonPtr->m_points[a_i]->x, t_polygonPtr->m_points[a_i]->y));
    }
+
+   m_width  = t_polygonPtr->m_width;
+   m_height = t_polygonPtr->m_height;
 }
 
 
@@ -194,7 +197,6 @@ CPoint CPolygon::getHullPoint(CPoint* t_startPointPtr, CPoint* t_imageCenterPtr,
    int x1 = static_cast<int>(t_imageCenterPtr->x);
    unsigned int a_count = 0;
 
-   float dist;
    float min_dist = sqrt(a_deltaP.x*a_deltaP.x + a_deltaP.y*a_deltaP.y);   
 
    do
@@ -220,4 +222,23 @@ void CPolygon::rotate(float t_angle, float t_xCenter, float t_yCenter)
       (*a_it)->x += t_xCenter;
       (*a_it)->y += t_yCenter;
    }   
+}
+
+CPolygon& CPolygon::operator=(CPolygon& t_srcPtr)
+{
+   std::vector<CPoint*>::iterator   a_it;
+   CPoint*                          a_pointPtr  = 0;
+
+
+   // copy attributes
+   m_width = t_srcPtr.m_width;
+   m_height = t_srcPtr.m_height;
+
+   // copy point list
+   for(a_it = t_srcPtr.m_points.begin(); a_it != t_srcPtr.m_points.end(); a_it++)
+   {
+      a_pointPtr = new CPoint((*a_it)->x, (*a_it)->y);
+   }
+
+   return *this;
 }

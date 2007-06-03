@@ -51,8 +51,8 @@ CSprite::~CSprite()
 
 void CSprite::draw()
 {  
-   std::string a0 = m_textureKeys[m_activeAnimationPhase];
-   CTexture* a1 = CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]];
+   std::string a0 = m_textureKeys[m_activeAnimationPhase]->m_textureKey;
+   CTexture* a1 = CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]->m_textureKey];
    GLuint a2 = a1->m_textureIdVector[m_activeTexture];   
 
    glEnable( GL_TEXTURE_2D );
@@ -69,17 +69,20 @@ void CSprite::draw()
    // rotate around parent angle
    if(m_parentPtr != 0)
    {
-      glTranslatef(m_parentPtr->m_xPos + m_parentPtr->m_width/2.0, m_parentPtr->m_yPos + m_parentPtr->m_height/2.0, 0.0);
-      if(0 != m_parentPtr)
+      if (getType() != e_shot)
       {
-         if(static_cast<CSprite*>(m_parentPtr)->m_direction)
+         glTranslatef(m_parentPtr->m_xPos + m_parentPtr->m_width/2.0, m_parentPtr->m_yPos + m_parentPtr->m_height/2.0, 0.0);
+         if(0 != m_parentPtr)
          {
-            glRotatef(180.0, 0., 1., 0);
+            if(static_cast<CSprite*>(m_parentPtr)->m_direction)
+            {
+               glRotatef(180.0, 0., 1., 0);
+            }
          }
-      }
-      
-      glRotatef(m_parentPtr->m_angle, 0., 0., 1.);
-      glTranslatef(-m_parentPtr->m_xPos - m_parentPtr->m_width/2.0, -m_parentPtr->m_yPos - m_parentPtr->m_height/2.0, 0.0);
+
+         glRotatef(m_parentPtr->m_angle, 0., 0., 1.);
+         glTranslatef(-m_parentPtr->m_xPos - m_parentPtr->m_width/2.0, -m_parentPtr->m_yPos - m_parentPtr->m_height/2.0, 0.0);
+      }      
    }      
    //////////////////////////////////////////////////////////////////////////
    // rotate around own axis
@@ -120,21 +123,38 @@ void CSprite::draw()
    float a_yCenter   = 0.0;
    bool  a_direction = 0.0;
    
-   if (0 != m_parentPtr)
+   if (g_showBox || g_showBox)
    {
-      // Object has parent, use parent coordinates
-      a_angle     = m_parentPtr->m_angle + m_angle;      
-      a_xCenter   = m_parentPtr->m_xPos + m_parentPtr->m_width/2.0;
-      a_yCenter   = m_parentPtr->m_yPos + m_parentPtr->m_height/2.0;
-      a_direction = static_cast<CSprite*>(m_parentPtr)->m_direction;
-   }
-   else
-   {
-      // Object has no parent, use own coordinates
-      a_angle     = m_angle;
-      a_xCenter   = m_xPos + m_width/2.0;
-      a_yCenter   = m_yPos + m_height/2.0;
-      a_direction = m_direction;
+      if (0 != m_parentPtr)
+      {
+         // Object has parent, use parent coordinates
+         if (getType() == e_shot)
+         {  
+            if (this->m_parentPtr->getType() != e_player)
+            {
+               a_angle     =  m_parentPtr->m_angle;
+            }         
+            else
+            {
+               a_angle     = m_angle;
+            }
+         }
+         else
+         {
+            a_angle     = m_parentPtr->m_angle + m_angle;      
+         }      
+         a_xCenter   = m_parentPtr->m_xPos + m_parentPtr->m_width/2.0;
+         a_yCenter   = m_parentPtr->m_yPos + m_parentPtr->m_height/2.0;
+         a_direction = static_cast<CSprite*>(m_parentPtr)->m_direction;
+      }
+      else
+      {
+         // Object has no parent, use own coordinates
+         a_angle     = m_angle;
+         a_xCenter   = m_xPos + m_width/2.0;
+         a_yCenter   = m_yPos + m_height/2.0;
+         a_direction = m_direction;
+      }
    }
 
    if (g_showBox)
@@ -158,7 +178,16 @@ void CSprite::draw()
          glRotatef(180.0, 0., 1., 0);
       }
       glRotatef(m_startAngle, 0.0, 0.0, 1.0);
-      glTranslatef(-m_xPos - m_width/2.0, -m_yPos - m_height/2.0, 0.0);      
+      glTranslatef(-m_xPos - m_width/2.0, -m_yPos - m_height/2.0, 0.0); 
+
+      if (getType() == e_shot)
+      {
+         glTranslatef(m_xPos + m_width/2.0, m_yPos + m_height/2.0, 0.0);
+
+         glRotatef(m_angle, 0.0, 0.0, 1.0);   
+
+         glTranslatef(-m_xPos - m_width/2.0, -m_yPos - m_height/2.0, 0.0); 
+      }
 
       glColor4f(1.0,1.0,1.0,0.5);
       glBegin(GL_LINE_LOOP);
@@ -172,7 +201,7 @@ void CSprite::draw()
    }
 
    // DEBUG: Show Hull poly
-   CPolygon* a_polygonPtr = CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]]->m_hullPolygonPtr;
+   CPolygon* a_polygonPtr = CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]->m_textureKey]->m_hullPolygonPtr;
    if (g_showHull && 0 != a_polygonPtr)
    {         
       glColor4f(1.0,1.0,1.0,0.5);
@@ -190,6 +219,12 @@ void CSprite::draw()
 
       // Rotate polygon
       a_polygonPtr->rotate(-a_angle, a_xCenter, a_yCenter);
+
+      // Rotate polygon around center
+      if (getType() == e_shot)
+      {
+          a_polygonPtr->rotate(-m_angle, m_xPos + m_width/2.0, m_yPos + m_height/2.0);
+      }      
 
       // Flip polygon
       if (a_direction)
@@ -216,6 +251,12 @@ void CSprite::draw()
          else
             a_polygonPtr->flip(m_xPos + m_width/2.0);
       }
+      
+      if (getType() == e_shot)
+      {
+         // Undo: Rotate polygon around center
+         a_polygonPtr->rotate(m_angle, m_xPos + m_width/2.0, m_yPos + m_height/2.0);
+      }      
 
       // Undo of: Rotate polygon
       a_polygonPtr->rotate(a_angle, a_xCenter, a_yCenter);

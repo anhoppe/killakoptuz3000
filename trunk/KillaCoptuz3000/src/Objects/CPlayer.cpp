@@ -167,15 +167,15 @@ bool CPlayer::positionAllowed(float t_x, float t_y, CLevel* t_levelPtr)
 
 bool CPlayer::loadPlayer(std::string t_fileName)
 {
-   TiXmlNode*     a_nodePtr      = 0;
-   TiXmlElement*  a_elemPtr      = 0;
-   TiXmlNode*     a_subNodePtr   = 0;
-   TiXmlElement*  a_subElemPtr   = 0;
+   TiXmlNode*     a_nodePtr         = 0;
+   TiXmlElement*  a_elemPtr         = 0;
+   TiXmlNode*     a_subNodePtr      = 0;
+   TiXmlElement*  a_subElemPtr      = 0;
    TiXmlDocument  a_doc;
-   std::string    a_str          = "";
-   std::string    a_dummy        = "";
-   
-   bool           r_ret          = true;
+   std::string    a_str             = "";
+   std::string    a_dummy           = "";
+   CTextureInfo*  a_textureInfoPtr  = 0;   
+   bool           r_ret             = true;
    
 
    if (!a_doc.LoadFile(t_fileName.c_str()))
@@ -184,6 +184,11 @@ bool CPlayer::loadPlayer(std::string t_fileName)
    }
    else
    {
+      //////////////////////////////////////////////////////////////////////////
+      // read player texture list
+      a_nodePtr = a_doc.FirstChild("texturelist");
+      g_level.loadTextureMap(a_nodePtr);
+
       //////////////////////////////////////////////////////////////////////////
       // read player object info
       a_nodePtr = a_doc.FirstChild("object");
@@ -218,6 +223,10 @@ bool CPlayer::loadPlayer(std::string t_fileName)
          {
             r_ret &= getAttributeStr(a_subElemPtr, "key", a_str);
 
+            a_textureInfoPtr = new CTextureInfo;
+
+            a_textureInfoPtr->m_polygonPtr = new CPolygon(CLevel::M_textureMap[a_str]->m_hullPolygonPtr);
+
             // check if explosion sequence exists
             if(getAttributeStr(a_subElemPtr, "explosion", a_dummy))
             {
@@ -226,7 +235,8 @@ bool CPlayer::loadPlayer(std::string t_fileName)
 
             if(r_ret)
             {
-               m_textureKeys.push_back(a_str);
+               a_textureInfoPtr->m_textureKey = a_str;
+               m_textureKeys.push_back(a_textureInfoPtr);
             }
          }
       }
@@ -255,12 +265,6 @@ bool CPlayer::loadPlayer(std::string t_fileName)
 
          CLevel::M_objects.push_back(a_weaponPtr);
       }
-
-
-      //////////////////////////////////////////////////////////////////////////
-      // read player texture list
-      a_nodePtr = a_doc.FirstChild("texturelist");
-      g_level.loadTextureMap(a_nodePtr);
    }
 
    return r_ret;

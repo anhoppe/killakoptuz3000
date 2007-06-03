@@ -87,8 +87,10 @@ bool CLevel::load(const char* t_fileName)
 
       if (getAttributeStr(a_elemPtr, "music", a_str))
       {
-         m_sound = FSOUND_Stream_Open(a_str.c_str(), FSOUND_LOOP_NORMAL, 0, 0);
-      }            
+         std::string a_path = "data\\sound\\";
+         a_path += a_str;
+         m_sound = FSOUND_Stream_Open(a_path.c_str(), FSOUND_LOOP_NORMAL, 0, 0);
+      }
       
       for(a_nodePtr = a_rootNodePtr->FirstChild(); a_nodePtr; a_nodePtr = a_rootNodePtr->IterateChildren(a_nodePtr))
       {
