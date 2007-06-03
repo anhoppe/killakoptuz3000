@@ -54,3 +54,5 @@ Hoppe and Fabian: Some disturbance by Meike or Melanie (says Hoppe), Willy and o
   * Discovered (and were unabe to solve until 3:41) strange collision detection bug. Polygons seem always to collide, when box test is positive. Why????????????
 
 Hoppe: after writing this text we considerd all over about it and decided that this is the optimal time point for refactoring. Stuff became too difficult, we have to sort out things. My first proposal: Make a storage facility for objects in game class. Yeah, a game class proposed by Fabs. By the way, we all are a bit over the edge right now. Sitting with us are Flix & Willi.
+
+*Commanderz market letter (06/2007):* _We hereby predict that at the end of next week the DAX will point downwards with a value < 8000. This is based on the unusual high slope of the DAX which will result in profit taking actions._
