@@ -52,3 +52,5 @@ Hoppe and Fabian: Some disturbance by Meike or Melanie (says Hoppe), Willy and o
   * Started to give each object it's polygon back
   * Lots of prob's... unsolved at 2:39... Puh!
   * Discovered (and were unabe to solve until 3:41) strange collision detection bug. Polygons seem always to collide, when box test is positive. Why????????????
+
+Hoppe: after writing this text we considerd all over about it and decided that this is the optimal time point for refactoring. Stuff became too difficult, we have to sort out things. My first proposal: Make a storage facility for objects in game class. Yeah, a game class proposed by Fabs. By the way, we all are a bit over the edge right now. Sitting with us are Flix & Willi.
