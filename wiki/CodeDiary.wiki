@@ -53,6 +53,13 @@ Hoppe and Fabian: Some disturbance by Meike or Melanie (says Hoppe), Willy and o
   * Lots of prob's... unsolved at 2:39... Puh!
   * Discovered (and were unabe to solve until 3:41) strange collision detection bug. Polygons seem always to collide, when box test is positive. Why????????????
 
-Hoppe: after writing this text we considerd all over about it and decided that this is the optimal time point for refactoring. Stuff became too difficult, we have to sort out things. My first proposal: Make a storage facility for objects in game class. Yeah, a game class proposed by Fabs. By the way, we all are a bit over the edge right now. Sitting with us are Flix & Willi.
+Hoppe: after writing this text we considered all over and decided that this is the optimal time point for refactoring. Stuff became too difficult, we have to sort out things. My first proposal: Make a storage facility for objects in game class. Yeah, a game class proposed by Fabs. By the way, we all are a bit over the edge right now. Sitting with us are Flix & Willi.
 
 *Commanderz market letter (06/2007):* _We hereby predict that at the end of next week the DAX will point downwards with a value < 8000. This is based on the unusual high slope of the DAX which will result in profit taking actions._
+
+== Mon, 4 Jun 2007 ==
+
+Hoppe and Fabian: Hoppe was a bit tired this day and Fabian has to get up early tomorrow, so this day we did not add too much code. Here some details
+  * We thought about the key issues in the code for a redesign
+  * Implemented CGame as the game flow control class. a function here is responible for assigning function pointers to glut methods. So Level etc. can have own update/render functions
+  * Started on the Objcet Storage class that holds all objects, updates them and checks collision. Those taks create game events with are processed, too.
