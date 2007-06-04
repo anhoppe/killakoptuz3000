@@ -279,7 +279,15 @@
 				Name="source"
 				>
 				<File
+					RelativePath=".\src\CGame.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\CLevel.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\CObjectStorage.cpp"
 					>
 				</File>
 				<File
@@ -315,7 +323,15 @@
 				Name="header"
 				>
 				<File
+					RelativePath=".\src\CGame.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\CLevel.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\CObjectStorage.h"
 					>
 				</File>
 				<File
