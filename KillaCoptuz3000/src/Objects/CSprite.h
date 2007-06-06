@@ -20,15 +20,10 @@
 class CSprite : public CObject
 {
 public:
-   CSprite();
-   CSprite(float t_xPos, float t_yPos);
+   CSprite();   
    ~CSprite();
 
    virtual VeObjectType getType() { return e_sprite; };
-
-  
-   /** Draws the object via OpenGL*/
-   virtual void draw();
 
    /** Switches direction*/
    void flip();
@@ -38,12 +33,16 @@ public:
    
    /** direction*/
    bool                    m_direction;
+   
    /** Objects to track*/
    std::vector<CObject*>   m_trackList;
+   
    /** Tracked object index*/
    unsigned int            m_trackIndex;
+
    /** Script of sprite*/
    CScript*                m_scriptPtr;      
+   
    /** Behavior structure*/
    SBehaviorData           m_behaviorData;
    

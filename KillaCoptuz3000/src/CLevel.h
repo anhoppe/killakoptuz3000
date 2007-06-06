@@ -28,6 +28,13 @@ public:
    void releaseKey(int t_key, int t_x, int t_y);
    void processNormalKeys(unsigned char t_key, int t_x, int t_y);
    void timerCallback(int t_value);   
+
+
+   /** Process events */
+   void processEvents();
+
+   /** Update */
+   void update();
 };
 
 #endif

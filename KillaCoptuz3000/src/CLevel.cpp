@@ -7,8 +7,115 @@
 // ***************************************************************
 // 
 // ***************************************************************
+//
+#include "CLevel.h"
+#include "CObjectStorage.h"
+#include "Functions.h"
+
+/** Process the next time step (movement, collisions, event processing)*/
+void CLevel::update()
+{
+   // Iterate over all objects
+   // and update them (events are generated)
+   // Detect collisions with quad tree (events are generated)
+
+   // Process events
+}
+
+/** Load level file */
+bool CLevel::load(std::string t_levelFileName)
+{
+   TiXmlDocument   a_doc;
+   TiXmlNode*      a_nodePtr      = 0;
+   TiXmlNode*      a_subNodePtr   = 0;
+   TiXmlNode*      a_rootNodePtr  = 0;
+   TiXmlElement*   a_elemPtr      = 0;   
+   bool            r_ret          = true;
+   std::string     a_str;
+   CObjectStorage& a_objectStorage= CObjectStorage::getInstance();
+   
+   if (!a_doc.LoadFile(t_levelFileName))
+   {
+      r_ret = false;
+   }
+   else
+   {
+      a_rootNodePtr = a_doc.FirstChild("level");
+      a_elemPtr = a_rootNodePtr->ToElement();
+
+      r_ret = r_ret & getAttributeStr(a_elemPtr, "xmin", a_str);
+      m_minX         = atof(a_str.c_str());
+
+      r_ret = r_ret & getAttributeStr(a_elemPtr, "xmax", a_str);
+      m_maxX         = atof(a_str.c_str());
+
+      r_ret = r_ret & getAttributeStr(a_elemPtr, "ymin", a_str);
+      m_minY         = atof(a_str.c_str());
+
+      r_ret = r_ret & getAttributeStr(a_elemPtr, "ymax", a_str);
+      m_maxY         = atof(a_str.c_str());
+
+      if (getAttributeStr(a_elemPtr, "music", a_str))
+      {
+         std::string a_path = "data\\sound\\";
+         a_path += a_str;
+         m_sound = FSOUND_Stream_Open(a_path.c_str(), FSOUND_LOOP_NORMAL, 0, 0);
+      }
+
+      // Iterate over all elements in texturelist
+      a_nodePtr = a_rootNodePtr->FirstChild("texturelist");
+      for(a_subNodePtr = a_nodePtr->FirstChild("texture"); a_subNodePtr; a_subNodePtr = a_nodePtr->IterateChildren("texture", a_subNodePtr))
+      {
+         a_elemPtr = a_subNodePtr->ToElement();
+
+         if (0 != a_elemPtr)
+         {            
+            // read 
+            if(!getAttributeStr(a_elemPtr, "key", a_key))
+            {
+               r_ret = false;
+            }
+
+            if(r_ret)
+            {
+               if(a_objectStorage.m_textureMap[a_key] == 0)
+               {
+                  a_objectStorage.m_textureMap[a_key] = new CTexture(a_elemPtr);
+               }
+            }
+         }      
+      }
+
+      // Iterate over all elements in objectlist
+      a_nodePtr = a_rootNodePtr->FirstChild("objectlist");
+      for(a_subNodePtr = a_nodePtr->FirstChild("object"); a_subNodePtr; a_subNodePtr = a_nodePtr->IterateChildren("object", a_subNodePtr)))
+      {
+         // Add objects to object storage
+         a_objectStorage.add(a_subNodePtr);
+      }
+   }
+}
+ 
+//          a_elemPtr = a_nodePtr->ToElement();
 // 
-// #include "CLevel.h"
+//          if(0 != a_elemPtr)
+//          {
+//             // load object list
+//             if(!strcmp("objectlist", a_elemPtr->Value()))
+//             {
+//                r_ret &= loadObjectList(a_nodePtr);
+//             }
+// 
+//             // load texture list
+//             if(!strcmp("texturelist", a_elemPtr->Value()))
+//             {
+//                r_ret &= loadTextureMap(a_nodePtr);
+//             }
+//          }
+//       }
+//    }
+//}
+
 // #include "Objects/CSprite.h"
 // #include "Objects/CObject.h"
 // #include "Objects/CEnemy.h"
@@ -152,7 +259,7 @@
 //             else
 //             {
 //                a_objectPtr = new CObject(a_nodePtr);
-//             }               
+//             }            
 //             M_objects.push_back(a_objectPtr);
 //          }
 //       }

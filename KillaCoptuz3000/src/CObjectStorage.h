@@ -22,22 +22,23 @@ public:
    ~CObjectStorage();
 
    /** */
-   static CObjectStorage& getInstance();
-
-   /** Process the next time step (movement, collisions, event processing)*/
-   update();
+   static CObjectStorage& getInstance();  
    
    /** Add object read from xml node */
-   void add(TiXmlNode* t_nodePtr);
+   void add(TiXmlNode* t_nodePtr, unsigned int t_parentId = 0);
 
-   /** Add object from pattern object*/
-   void add(CObject* t_objectPtr);
-
-   /** Process events */
-   void processEvents();
+   /** Add object from pattern object */
+   void add(CObject* t_objectPtr, unsigned int t_parentId = 0, std::list<unsigned int>* m_friendObjectsListPtr = 0);
 
    /** map of all objects */
    std::map<unsigned int, CObject*> m_objectMap;
+   
+   /** map of all game textures (player and level) */
+   static std::map<std::string, CTexture*> m_textureMap;
+
+private:
+   /** Object Id counter */ 
+   unsigned int m_objectIdCount;
 };
 
 #endif
