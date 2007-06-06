@@ -64,3 +64,9 @@ Hoppe and Fabian: Hoppe was a bit tired this day and Fabian has to get up early 
   * Implemented CGame as the game flow control class. a function here is responible for assigning function pointers to glut methods. So Level etc. can have own update/render functions
   * Started on the Objcet Storage class that holds all objects, updates them and checks collision. Those taks create game events with are processed, too.
   * We want to check collision with a quad tree. Fabs showed some web pages about that stuff and we think we will try it out.
+
+== Tue, 5 Jun 2007 ==
+
+Hoppe & Fabian, Proceeded only a little, due to guests at Hoppes house and general lack of evening spare time:
+  * Object Storage class (CObjectStorage) was developed a little further.
+  * Object loading via xml file was polished.
