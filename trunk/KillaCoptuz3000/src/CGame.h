@@ -8,7 +8,8 @@
 // 
 // ***************************************************************
 
-#include "src/CLevel.h"
+#include "CLevel.h"
+#include "CPlayer.h"
 
 enum EGameState {e_intro, e_startMenue, e_level, e_shop, e_highscore};
 
@@ -46,4 +47,7 @@ private:
 
    /** Current level*/
    CLevel m_level;
+
+   /** Current pointer*/
+   CPlayer m_player;
 };

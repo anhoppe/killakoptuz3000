@@ -9,7 +9,9 @@
 // ***************************************************************
 
 CGame::CGame()
-{     
+{
+   // Load player
+   m_player.loadPlayer("Data/player/player.xml");
 }
 
 CGame::~CGame()

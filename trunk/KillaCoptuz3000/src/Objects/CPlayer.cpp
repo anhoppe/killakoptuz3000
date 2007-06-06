@@ -29,7 +29,6 @@
 #define FRICTION_COEFF  0.98
 
 CPlayer::CPlayer()
-: CSprite(0., 0.)
 {
    m_leftPressed  = false;
    m_rightPressed = false;
