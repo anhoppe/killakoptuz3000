@@ -10,6 +10,8 @@
 
 
 #include "Objects/CObject.h"
+#include "CObjectStorage.h"
+
 #include "CTgaLoader.h"
 #include "Functions.h"
 #include "lodepng.h"
@@ -39,24 +41,6 @@ CObject::CObject()
    m_parentPtr             = 0;
 }
 
-CObject::CObject(TiXmlNode* t_nodePtr)
-{
-   m_activeTexture         = 0;
-   m_timeCounter           = 0;   
-   m_angle                 = 0.;   
-   m_dx                    = 0.;
-   m_hitPoints             = 1;
-   m_maxHitPoints          = m_hitPoints;
-   m_invincible            = false;
-   m_damagePoints          = 1;
-   m_isDeleted             = false;
-   m_activeAnimationPhase  = 0;
-   m_explosionIndex        = -1;
-   m_isDying               = false;
-   m_parentPtr             = 0;
-
-   load(t_nodePtr);
-}
 
 CObject::~CObject()
 {   
@@ -69,7 +53,7 @@ void CObject::nextTexture()
    {
       m_activeTexture++;
       
-      if (m_activeTexture >= CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]->m_textureKey]->m_textureIdVector.size())
+      if (m_activeTexture >= CObjectStorage::getInstance().m_textureMap[m_textureKeys[m_activeAnimationPhase]->m_textureKey]->m_textureIdVector.size())
       {
          m_activeTexture = 0;
       }
@@ -81,18 +65,7 @@ void CObject::nextTexture()
 // Return: number of textures in m_textureIdVector
 size_t CObject::getTextureCount()
 {
-   return CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]->m_textureKey]->m_textureIdVector.size();
-}
-
-void CObject::deleteChildren()
-{
-   std::vector<CObject*>::iterator a_it;
-
-   for(a_it = m_children.begin(); a_it != m_children.end(); a_it++)
-   {
-      CLevel::M_deleteList.push_back(*a_it);
-   }
-   m_children.clear();
+   return CObjectStorage::getInstance().m_textureMap[m_textureKeys[m_activeAnimationPhase]->m_textureKey]->m_textureIdVector.size();
 }
 
 bool CObject::load(TiXmlNode* t_nodePtr)
@@ -143,7 +116,7 @@ bool CObject::load(TiXmlNode* t_nodePtr)
          a_textureInfoPtr = new CTextureInfo;
 
          // Create the polygon
-         a_textureInfoPtr->m_polygonPtr = new CPolygon(CLevel::M_textureMap[a_str]->m_hullPolygonPtr);
+         a_textureInfoPtr->m_polygonPtr = new CPolygon(CObjectStorage::getInstance().m_textureMap[a_str]->m_hullPolygonPtr);
 
          // Scale the new polygon
          a_textureInfoPtr->m_polygonPtr->rescale(m_width / a_textureInfoPtr->m_polygonPtr->m_width, m_height / a_textureInfoPtr->m_polygonPtr->m_height);
@@ -191,7 +164,7 @@ bool CObject::load(TiXmlNode* t_nodePtr)
 void CObject::draw() 
 {
    glEnable( GL_TEXTURE_2D );
-   glBindTexture(GL_TEXTURE_2D, CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]->m_textureKey]->m_textureIdVector[m_activeTexture]);
+   glBindTexture(GL_TEXTURE_2D, CObjectStorage::getInstance().m_textureMap[m_textureKeys[m_activeAnimationPhase]->m_textureKey]->m_textureIdVector[m_activeTexture]);
       
    glPushMatrix();
 
@@ -522,59 +495,11 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
    return r_ret;
 }
 
-void CObject::update(CLevel* t_levelPtr, std::vector<CObject*>::iterator& t_it, std::vector<CObject*>::iterator& t_endIt)
+
+
+void CObject::update(CLevel* t_levelPtr)
 { 
-   std::vector<CObject*>::iterator a_it;
-
-   //////////////////////////////////////////////////////////////////////////
-   // collision detection
-   for(a_it = t_it; a_it != t_endIt; a_it++)
-   {
-      // do only update if not:
-      // (1) both are from type object or
-      // (2) enemys and objects or      
-      if(!((this->getType()   == e_object) && ((*a_it)->getType() == e_object) ||
-          ((this->getType()   == e_enemy)  && ((*a_it)->getType() == e_object)) ||
-          ((this->getType()   == e_object) && ((*a_it)->getType() == e_enemy)) ||
-          (isDescendent(*a_it)) 
-          )
-        )
-      {
-         if(isCollided(this, *a_it))
-         {
-            this->collisionImpact((*a_it));
-         }
-      }
-   }
-
-   // Object deletion   
-   if(!m_isDeleted && m_hitPoints < 0 && !m_invincible)
-   {
-      deleteChildren();
-      
-      // Dying sequence:
-      // Activate explosion (if one is given)
-      if(!m_isDying && (m_explosionIndex != -1))
-      {
-         m_activeTexture        = 0;
-         m_activeAnimationPhase = m_explosionIndex;
-         m_isDying              = true;
-
-         // Speed of explosion, depending on object hitpoints         
-         m_cycleInterval = 20*(m_maxHitPoints*1.0 / (m_maxHitPoints + 15));
-      }
-      else
-      {
-         // Delete object:
-         if((m_activeTexture >= (CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]->m_textureKey]->m_textureIdVector.size())-1) ||
-            (m_explosionIndex == -1))
-         {
-            CLevel::M_deleteList.push_back(this);
-            m_isDeleted = true;
-         }
-      }
-   }
-
+   nextTexture();
 }
 
 
@@ -587,46 +512,4 @@ void CObject::collisionImpact(CObject* t_objectPtr, bool t_checkOther)
    {
       t_objectPtr->collisionImpact(this, false);
    }   
-}
-
-
-bool CObject::isAncestor(CObject* t_otherPtr)
-{   
-   CObject* a_objectPtr = this->m_parentPtr;
-
-   bool     r_ret       = false;
-
-   if (getType() == e_shot && t_otherPtr->getType() == e_player)
-   {
-      int blka = 2;
-   }
-
-   while (a_objectPtr != 0)  
-   {
-      if (a_objectPtr == t_otherPtr)
-      {
-         r_ret = true;
-      }
-      a_objectPtr = a_objectPtr->m_parentPtr;
-   }   
-
-   return r_ret;
-}
-
-bool CObject::isDescendent(CObject* t_otherPtr)
-{   
-   CObject* a_objectPtr =t_otherPtr->m_parentPtr;
-
-   bool     r_ret       = false;
-
-   while (a_objectPtr != 0)  
-   {
-      if (a_objectPtr == this)
-      {
-         r_ret = true;
-      }
-      a_objectPtr = a_objectPtr->m_parentPtr;
-   }   
-
-   return r_ret;
 }

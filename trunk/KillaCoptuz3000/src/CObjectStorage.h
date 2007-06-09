@@ -12,8 +12,12 @@
 #define COBJECT_STORAGE_H
 
 #include <map>
+
 #include "tinyxml/tinyxml.h"
-#include "CObject.h"
+
+class CObject;
+class CPlayer;
+class CTexture;
 
 class CObjectStorage
 {
@@ -22,13 +26,18 @@ public:
    ~CObjectStorage();
 
    /** */
-   static CObjectStorage& getInstance();  
+   static CObjectStorage& getInstance();
+
+   CPlayer* getPlayerPtr();
    
    /** Add object read from xml node */
-   void add(TiXmlNode* t_nodePtr, unsigned int t_parentId = 0);
+   void add(TiXmlNode* t_nodePtr, VeObjectType t_type, unsigned int t_parentId = 0);
 
    /** Add object from pattern object */
    void add(CObject* t_objectPtr, unsigned int t_parentId = 0, std::list<unsigned int>* m_friendObjectsListPtr = 0);
+
+   /** Add textures into texture map */
+   bool addTextureMap(TiXmlNode* t_nodePtr);
 
    /** map of all objects */
    std::map<unsigned int, CObject*> m_objectMap;
@@ -39,6 +48,8 @@ public:
 private:
    /** Object Id counter */ 
    unsigned int m_objectIdCount;
+
+   unsigned int m_playerId;
 };
 
 #endif

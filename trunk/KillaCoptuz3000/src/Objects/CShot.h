@@ -18,7 +18,6 @@ class CLevel;
 class CShot : public CSprite
 {
 public:
-   CShot(float t_xPos, float t_yPos);
    // Copy constructor creates shot from default shot
    CShot(CShot* t_shotPtr);
    CShot(TiXmlNode* t_nodePtr);
@@ -31,7 +30,7 @@ public:
    
    virtual bool load(TiXmlNode* t_nodePtr);
 
-   virtual void update(CLevel* t_levelPtr, std::vector<CObject*>::iterator& t_it, std::vector<CObject*>::iterator& t_endIt);   
+   virtual void update(CLevel* t_levelPtr);
 
    // Check if position is allowed by level description
    bool positionAllowed(float t_x, float t_y, CLevel* t_levelPtr);

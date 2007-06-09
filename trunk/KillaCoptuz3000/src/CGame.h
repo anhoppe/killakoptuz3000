@@ -9,7 +9,8 @@
 // ***************************************************************
 
 #include "CLevel.h"
-#include "CPlayer.h"
+
+#include "Objects/CPlayer.h"
 
 enum EGameState {e_intro, e_startMenue, e_level, e_shop, e_highscore};
 

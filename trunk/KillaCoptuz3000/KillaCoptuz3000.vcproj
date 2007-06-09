@@ -186,6 +186,10 @@
 					Name="source"
 					>
 					<File
+						RelativePath=".\src\Objects\CCombatant.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\src\Objects\CEnemy.cpp"
 						>
 					</File>
@@ -213,6 +217,10 @@
 				<Filter
 					Name="header"
 					>
+					<File
+						RelativePath=".\src\Objects\CCombatant.h"
+						>
+					</File>
 					<File
 						RelativePath=".\src\Objects\CEnemy.h"
 						>

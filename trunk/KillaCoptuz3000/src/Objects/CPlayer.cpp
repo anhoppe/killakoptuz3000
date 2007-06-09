@@ -46,10 +46,9 @@ CPlayer::CPlayer()
    m_velocityMax  = .007;
    m_isBackground = false;
 
-   m_activeWeapon = 0;
 }
 
-void CPlayer::updatePlayer(CLevel* t_levelPtr)
+void CPlayer::update(CLevel* t_levelPtr)
 {  
    float a_oldAngle = m_angle;
 
@@ -164,127 +163,9 @@ bool CPlayer::positionAllowed(float t_x, float t_y, CLevel* t_levelPtr)
    return true;
 }
 
-bool CPlayer::loadPlayer(std::string t_fileName)
-{
-   TiXmlNode*     a_nodePtr         = 0;
-   TiXmlElement*  a_elemPtr         = 0;
-   TiXmlNode*     a_subNodePtr      = 0;
-   TiXmlElement*  a_subElemPtr      = 0;
-   TiXmlDocument  a_doc;
-   std::string    a_str             = "";
-   std::string    a_dummy           = "";
-   CTextureInfo*  a_textureInfoPtr  = 0;   
-   bool           r_ret             = true;
-   
-
-   if (!a_doc.LoadFile(t_fileName.c_str()))
-   {
-      r_ret = false;
-   }
-   else
-   {
-      //////////////////////////////////////////////////////////////////////////
-      // read player texture list
-      a_nodePtr = a_doc.FirstChild("texturelist");
-      g_level.loadTextureMap(a_nodePtr);
-
-      //////////////////////////////////////////////////////////////////////////
-      // read player object info
-      a_nodePtr = a_doc.FirstChild("object");
-      a_elemPtr = a_nodePtr->ToElement();
-
-      r_ret = r_ret & getAttributeStr(a_elemPtr, "xpos", a_str);
-      m_xPos         = atof(a_str.c_str());
-
-      r_ret = r_ret & getAttributeStr(a_elemPtr, "ypos", a_str);
-      m_yPos         = atof(a_str.c_str());
-
-      r_ret = r_ret & getAttributeStr(a_elemPtr, "width", a_str);
-      m_width        = atof(a_str.c_str());
-
-      r_ret = r_ret & getAttributeStr(a_elemPtr, "height", a_str);
-      m_height       = atof(a_str.c_str());
-
-      r_ret = r_ret & getAttributeStr(a_elemPtr, "hitpoints", a_str);
-      m_hitPoints = atoi(a_str.c_str());      
-      m_maxHitPoints = m_hitPoints;
-
-      //////////////////////////////////////////////////////////////////////////
-      // load texture list
-      a_subNodePtr = a_nodePtr->FirstChild("texturelist");
-
-      TiXmlNode*  a_subSubNodePtr = 0;
-      for(a_subSubNodePtr = a_subNodePtr->FirstChild("texture"); a_subSubNodePtr; a_subSubNodePtr = a_subNodePtr->IterateChildren("texture", a_subSubNodePtr))
-      {
-         a_subElemPtr = a_subSubNodePtr->ToElement();
-
-         if(!strcmp("texture", a_subElemPtr->Value()))
-         {
-            r_ret &= getAttributeStr(a_subElemPtr, "key", a_str);
-
-            a_textureInfoPtr = new CTextureInfo;
-
-            a_textureInfoPtr->m_polygonPtr = new CPolygon(CLevel::M_textureMap[a_str]->m_hullPolygonPtr);
-
-            // check if explosion sequence exists
-            if(getAttributeStr(a_subElemPtr, "explosion", a_dummy))
-            {
-               m_explosionIndex = m_textureKeys.size();
-            }
-
-            if(r_ret)
-            {
-               a_textureInfoPtr->m_textureKey = a_str;
-               m_textureKeys.push_back(a_textureInfoPtr);
-            }
-         }
-      }
-
-      //////////////////////////////////////////////////////////////////////////
-      // load player weapons
-      CWeapon* a_weaponPtr = 0;
-
-      a_subNodePtr = a_nodePtr->FirstChild("weapon");
-      
-      for(a_subNodePtr = a_nodePtr->FirstChild("weapon"); a_subNodePtr; a_subNodePtr = a_nodePtr->IterateChildren("weapon", a_subNodePtr))
-      {
-         a_elemPtr = a_subNodePtr->ToElement();
-
-         // Create a new weapon
-         a_weaponPtr = new CWeapon(a_subNodePtr);
-
-         // Make initial weapon position relative to host
-         a_weaponPtr->m_xPos += m_xPos;
-         a_weaponPtr->m_yPos += m_yPos;         
-
-         a_weaponPtr->m_parentPtr = this;
-
-         // Add the new weapon to the weapon list
-         m_weaponList.push_back(a_weaponPtr);
-
-         CLevel::M_objects.push_back(a_weaponPtr);
-      }
-   }
-
-   return r_ret;
-}
 
 void CPlayer::collisionImpact(CObject* t_objectPtr)
 {
 
 }
 
-void CPlayer::fireWeapon()
-{   
-   if (m_activeWeapon < m_weaponList.size())
-   {
-       m_weaponList[m_activeWeapon]->fire();
-   }
-}
-
-void CPlayer::nextWeapon()
-{
-   m_activeWeapon++;
-
-   m_activeWeapon = m_activeWeapon % m_weaponList.size();
-}

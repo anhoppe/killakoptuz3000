@@ -21,7 +21,6 @@ class CLevel;
 class CWeapon : public CSprite
 {
 public:
-   CWeapon(float t_xPos, float t_yPos);
    CWeapon(TiXmlNode* t_nodePtr);
    ~CWeapon();
 
@@ -29,7 +28,7 @@ public:
 
    virtual bool      load(TiXmlNode* t_nodePtr);
 
-   virtual void      update(CLevel* t_levelPtr, std::vector<CObject*>::iterator& t_it, std::vector<CObject*>::iterator& t_endIt);
+   virtual void      update(CLevel* t_levelPtr);
 
    /** Fire one standard shot */
    void              fire();

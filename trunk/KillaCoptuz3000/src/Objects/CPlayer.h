@@ -12,12 +12,11 @@
 #define CPLAYER_H
 
 #include <vector>
-#include "Objects/CSprite.h"
-#include "Objects/CWeapon.h"
 
-class CLevel;
+#include "Objects/CCombatant.h"
 
-class CPlayer : public CSprite
+
+class CPlayer : public CCombatant
 {
 public:
    CPlayer();   
@@ -25,18 +24,10 @@ public:
    virtual VeObjectType getType() { return e_player; };
 
    /** Update player position (keys and flying 'physics') */
-   void updatePlayer(CLevel*t_levelPtr);
+   virtual void update(CLevel*t_levelPtr);
 
    /** Check if position of player is inside level */
    bool positionAllowed(float t_x, float t_y, CLevel*t_levelPtr);
-
-   /** Fire the active weapon */
-   void fireWeapon();
-
-   /** Switch to next weapon */
-   void nextWeapon();
-
-   bool loadPlayer(std::string t_fileName);
 
    virtual void collisionImpact(CObject* t_objectPtr);
 
@@ -56,11 +47,6 @@ public:
 
    double m_velocityMax;
 
-   /** List of weapons */
-   std::vector<CWeapon*>  m_weaponList;
-
-   /** Index of active weapon */
-   unsigned int         m_activeWeapon;
 };
 
 #endif

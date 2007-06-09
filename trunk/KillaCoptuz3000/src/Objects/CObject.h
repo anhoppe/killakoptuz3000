@@ -23,12 +23,13 @@ class CLevel;
 
 enum VeObjectType
 {
-   e_object = 1,
-   e_sprite = 2,
-   e_enemy  = 3,
-   e_shot   = 4,
-   e_weapon = 5,
-   e_player = 6
+   e_object    = 1,
+   e_sprite    = 2,
+   e_combatant = 3,
+   e_enemy     = 4,
+   e_shot      = 5,
+   e_weapon    = 6,
+   e_player    = 7
 };
 
 struct CTextureInfo
@@ -53,30 +54,26 @@ class CObject
    //////////////////////////////////////////////////////////////////////////
 public:
    CObject();
-   CObject(TiXmlNode* t_nodePtr);
 
    ~CObject();
 
-   bool isAncestor(CObject* t_otherPtr);
-   bool isDescendent(CObject* t_otherPtr);
-
    /** returns the type of the object */
    virtual VeObjectType getType() { return e_object; };
+
+   /** loads object content from XML file */
+   virtual bool load(TiXmlNode* t_nodePtr);    
 
    /** Draws the object via OpenGL */
    virtual void draw();
 
    /** updates itself (scripted behavior) and all children */
-   virtual void update(CLevel* m_levelPtr, std::vector<CObject*>::iterator& t_it, std::vector<CObject*>::iterator& t_endIt);
+   virtual void update(CLevel* m_levelPtr);
 
    /** Cycles the textures */
    void nextTexture();
 
    /** Return: number of textures in m_textureIdVector */
    size_t getTextureCount();
-
-   /** Puts all children into the CLevel::M_deleteList */
-   void deleteChildren();
 
    /** Collision functions */
    static bool    segmentsIntersect(CLine l1, CLine l2);
@@ -86,7 +83,6 @@ public:
 
 protected:
 
-   virtual bool   load(TiXmlNode* t_nodePtr);    
 
    //////////////////////////////////////////////////////////////////////////
    // Variables
@@ -137,7 +133,13 @@ public:
    int                  m_invincible;
 
    /** Pointer to parent object */
-   CObject*                   m_parentPtr;
+   CObject*             m_parentPtr;
+
+   /** Objects unique ID for storage class map key. 0 is illegal */
+   unsigned int          m_id;
+
+   /** Id of the parent. If it equals 0, object has no parent */
+   unsigned int         m_parentId;
 
 protected:
    // List of textures for the object
