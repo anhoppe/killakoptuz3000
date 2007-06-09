@@ -17,12 +17,6 @@
 #include "Functions.h"
 
 
-CShot::CShot(float t_xPos, float t_yPos)
-: CSprite(t_xPos, t_yPos)
-{
-
-}
-
 CShot::CShot(CShot* t_shotPtr)
 {
    // Copy constructor creates shot from default shot
@@ -90,7 +84,7 @@ bool CShot::load(TiXmlNode* t_nodePtr)
    return true;
 }
 
-void CShot::update(CLevel* t_levelPtr, std::vector<CObject*>::iterator& t_it, std::vector<CObject*>::iterator& t_endIt)
+void CShot::update(CLevel* t_levelPtr)
 {
    float a_dx = -m_v*sin(m_angle*M_PI/180);
    float a_dy = m_v*cos(m_angle*M_PI/180);
@@ -98,17 +92,7 @@ void CShot::update(CLevel* t_levelPtr, std::vector<CObject*>::iterator& t_it, st
    m_xPos += a_dx;
    m_yPos += a_dy;   
 
-   // check if shot is out of range
-   if(!positionAllowed(m_xPos, m_yPos, t_levelPtr))
-   {
-      if(!this->m_isDeleted)
-      {
-         CLevel::M_deleteList.push_back(this);
-         this->m_isDeleted = true;
-      }
-   }
-
-   CSprite::update(t_levelPtr, t_it, t_endIt);
+   CSprite::update(t_levelPtr);
 }
 
 // Check if position is allowed by level description

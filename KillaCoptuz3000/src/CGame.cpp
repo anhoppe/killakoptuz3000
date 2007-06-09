@@ -8,10 +8,30 @@
 // 
 // ***************************************************************
 
+#include "CGame.h"
+
+#include "CObjectStorage.h"
+
+//////////////////////////////////////////////////////////////////////////
+// Implementation
+//////////////////////////////////////////////////////////////////////////
 CGame::CGame()
 {
    // Load player
-   m_player.loadPlayer("Data/player/player.xml");
+   TiXmlDocument  a_doc;
+   TiXmlNode*     a_nodePtr   = 0;
+
+
+   if(a_doc.LoadFile("Data/player/player.xml"))
+   {
+      // load player textures 
+      a_nodePtr = a_doc.FirstChild("texturelist");
+      CObjectStorage::getInstance().addTextureMap(a_nodePtr);
+
+      // load player
+      a_nodePtr = a_doc.FirstChild("object");
+      CObjectStorage::getInstance().add(a_nodePtr, e_player);
+   }
 }
 
 CGame::~CGame()
@@ -28,7 +48,7 @@ void CGame::gameControl()
          loadNextLevel();
 
          // Register callback functions
-         glutTimerFunc (25, m_level.timerCallback, 0);
+         glutTimerFunc (25, (void (*)(int))(m_level.timerCallback), 0);
          glutKeyboardFunc(m_level.processNormalKeys);
          glutSpecialFunc(m_level.pressKey);
          glutSpecialUpFunc(m_level.releaseKey);
@@ -52,7 +72,28 @@ void CGame::setGameState(EGameState t_gameState)
 // 
 void CGame::loadNextLevel()
 {
-   // To do: real level control
+   TiXmlDocument   a_doc;
+   TiXmlNode*      a_nodePtr  = 0;
 
-   m_levelPtr->load("level3.xml");
+
+   if(a_doc.LoadFile("level3.xml"))
+   {
+      //////////////////////////////////////////////////////////////////////////
+      // load levels 
+      a_nodePtr = a_doc.FirstChild("texturlist");
+      assert(a_nodePtr);
+      if(0 != a_nodePtr)
+      {
+         CObjectStorage::getInstance().addTextureMap(a_nodePtr);
+      }
+      //////////////////////////////////////////////////////////////////////////
+      // load level content
+      a_nodePtr = a_doc.FirstChild("level");
+
+      if(0 != a_nodePtr)
+      {
+         // To do: real level control
+         m_level.load(a_nodePtr);
+      }
+   }
 }

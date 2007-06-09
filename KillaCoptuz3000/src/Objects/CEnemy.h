@@ -20,7 +20,6 @@ class CLevel;
 class CEnemy : public CSprite
 {
 public:
-   CEnemy(float t_xPos, float t_yPos);
    CEnemy(TiXmlNode* t_nodePtr);
    ~CEnemy();
 
@@ -28,7 +27,7 @@ public:
 
    virtual bool load(TiXmlNode* t_nodePtr);
    
-   virtual void update(CLevel* t_levelPtr, std::vector<CObject*>::iterator& t_it, std::vector<CObject*>::iterator& t_endIt);
+   virtual void update(CLevel* t_levelPtr);
 };
 
 #endif
