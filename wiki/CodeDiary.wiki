@@ -70,3 +70,10 @@ Hoppe and Fabian: Hoppe was a bit tired this day and Fabian has to get up early 
 Hoppe & Fabian, Proceeded only a little, due to guests at Hoppes house and general lack of evening spare time:
   * Object Storage class (CObjectStorage) was developed a little further.
   * Object loading via xml file was polished.
+
+== Fr/Sa, 8/9 June 2007 ==
+
+Hoppe & Fabian without disturbance (except themself). Both a bit tired again (or as always). Birthday of M., Fabians sister.
+
+  * Cleaned up loader methods in object classes. Everthing looks so clean and easy now.
+  * Started to compile code, Could not finish through a lack of competency with function pointers. Really hard stuff.
