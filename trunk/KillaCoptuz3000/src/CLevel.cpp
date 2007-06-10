@@ -9,16 +9,22 @@
 // ***************************************************************
 //
 #include "CLevel.h"
+
+#include "glut.h"
+
 #include "CObjectStorage.h"
+
 #include "Functions.h"
+#include "globals.h"
+
+#include "Objects/CPlayer.h"
 
 ////////////////////////////////////////////////////////////////////////
-Implementation
+// Implementation
 ////////////////////////////////////////////////////////////////////////
 CLevel::CLevel()
 {
    m_sound = 0;  
-   m_levelOver = false;
 }
 
 CLevel::~CLevel()
@@ -64,7 +70,7 @@ bool CLevel::load(TiXmlNode* t_nodePtr)
    // Iterate over all elements in objectlist
    a_nodePtr = t_nodePtr->FirstChild("objectlist");
 
-   for(a_subNodePtr = a_nodePtr->FirstChild("object"); a_subNodePtr; a_subNodePtr = a_nodePtr->IterateChildren("object", a_subNodePtr)))
+   for(a_subNodePtr = a_nodePtr->FirstChild("object"); a_subNodePtr; a_subNodePtr = a_nodePtr->IterateChildren("object", a_subNodePtr))
    {
       //////////////////////////////////////////////////////////////////////////
       // check out objects type
@@ -79,109 +85,16 @@ bool CLevel::load(TiXmlNode* t_nodePtr)
          }
       }
 
-      CObjectStorage::getInstance()->add(a_subNodePtr, a_type);
+      CObjectStorage::getInstance().add(a_subNodePtr, a_type);
    }
+
+   return r_ret;
 }
  
 //////////////////////////////////////////////////////////////////////////
 // OpenGL callback functions
 //////////////////////////////////////////////////////////////////////////
-void CLevel::timerCallback(int value)
-{
-   std::map<unsigned int, CObject*>;;iterator   a_it;
 
-
-   // Iterate over all objects
-   // and update them (events are generated)
-   for(a_it = CObjectStorage::getInstance()->begin(); a_it != CObjectStorage::getInstance()->end(); a_it++)
-   {
-      a_it->second->update(this);
-   }
-   // Detect collisions with quad tree (events are generated)
-
-   // Process events
-}
-
-void CLevel::processNormalKeys(unsigned char key, int x, int y)
-{
-   switch (key) 
-   {
-   case 32: // Space flips th player direction
-      g_playerPtr->flip();
-      break;
-   case 'c': // player fires primary weapon
-      g_playerPtr->fireWeapon();
-      break;
-   case 'n': // player switches weapon
-      g_playerPtr->nextWeapon();
-      break;
-   }
-}
-
-void CLevel::pressKey(int key, int x, int y) 
-{   
-   switch (key) 
-   {
-
-   case GLUT_KEY_F1:
-      g_windowedMode = !g_windowedMode;
-      setDisplay();		   
-      break;	
-   case GLUT_KEY_F6: 
-      // return to default window         
-      if (glutGameModeGet(GLUT_GAME_MODE_ACTIVE))
-      {
-         glutLeaveGameMode();
-      }
-      if (g_windowId)
-      {
-         glutDestroyWindow(g_windowId);
-         g_windowId = 0;
-      }
-      glutDisplayFunc(0);
-      break;
-   case GLUT_KEY_RIGHT:
-      g_playerPtr->m_rightPressed = true;         
-      break;
-   case GLUT_KEY_LEFT:
-      g_playerPtr->m_leftPressed  = true;
-      break;
-   case GLUT_KEY_UP:
-      g_playerPtr->m_upPressed    = true;
-      break;
-   case GLUT_KEY_DOWN:
-      g_playerPtr->m_downPressed  = true;
-      break;
-   }
-
-   // Check for modifying keys pressed (shift, ctrl, alt)
-   int a_mod = glutGetModifiers();
-
-   // Shift
-   if (a_mod == GLUT_ACTIVE_SHIFT)
-      g_playerPtr->m_shiftPressed = true;
-   else
-      g_playerPtr->m_shiftPressed = false;
-}
-
-void CLevel::releaseKey(int key, int x, int y)
-{
-   switch (key) 
-   {
-   case GLUT_KEY_RIGHT:
-      g_playerPtr->m_rightPressed = false;
-      break;
-   case GLUT_KEY_LEFT:
-      g_playerPtr->m_leftPressed  = false;
-      break;
-   case GLUT_KEY_UP:
-      g_playerPtr->m_upPressed    = false;
-      break;
-   case GLUT_KEY_DOWN:
-      g_playerPtr->m_downPressed  = false;
-      break;
-   }
-}
 
 
 // #include "Objects/CSprite.h"

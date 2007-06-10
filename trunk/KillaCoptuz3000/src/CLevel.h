@@ -13,6 +13,10 @@
 
 #include <string>
 
+#include "tinyxml/tinyxml.h"
+#include "fmod.h"
+
+
 class CLevel
 {
    //////////////////////////////////////////////////////////////////////////
@@ -23,16 +27,7 @@ public:
    ~CLevel();
 
    /** Load level file */
-   bool load(std::string t_levelFileName);
-
-   /** GLut callback functions for the level*/
-   void renderScene();
-   void pressKey(int t_key, int t_x, int t_y);      
-   void releaseKey(int t_key, int t_x, int t_y);
-   void processNormalKeys(unsigned char t_key, int t_x, int t_y);
-   void timerCallback(int t_value);   
-
-
+   bool load(TiXmlNode* t_nodePtr);
 
 private:
 
@@ -47,6 +42,9 @@ public:
    double               m_minY;
    double               m_maxX;
    double               m_maxY;
+
+private:
+   FSOUND_STREAM*      m_sound;
 
 };
 

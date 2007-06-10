@@ -40,8 +40,8 @@ public:
    //////////////////////////////////////////////////////////////////////////
 public:
 protected:
-   /** List of weapons */
-   std::vector<CWeapon*>   m_weaponList;
+   /** List of ID's of weapons */
+   std::vector<unsigned int>   m_weaponList;
 
    /** Index of active weapon */
    unsigned int            m_activeWeapon;

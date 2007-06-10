@@ -19,7 +19,7 @@
 // Implementation
 //////////////////////////////////////////////////////////////////////////
 
-CEnemy::CEnemy(TiXmlNode* t_nodePtr)
+CEnemy::CEnemy()
 {
    m_scriptPtr       = 0;
 
@@ -48,12 +48,14 @@ bool CEnemy::load(TiXmlNode* t_nodePtr)
 
    m_scriptPtr    = 0;
 
-   CObject::load(t_nodePtr);
+   CCombatant::load(t_nodePtr);
 
    // Loop over all weapons
    a_nodePtr = t_nodePtr->FirstChild("script");
    if(0 != a_nodePtr)
    {
+      a_elemPtr = a_nodePtr->ToElement();
+
       // Create a new script                  
       if (getAttributeStr(a_elemPtr, "filename", a_str))
       {            

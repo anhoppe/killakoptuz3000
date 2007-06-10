@@ -319,6 +319,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\glCallbacks.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\globals.cpp"
 					>
 				</File>
@@ -360,6 +364,10 @@
 				</File>
 				<File
 					RelativePath=".\src\Functions.h"
+					>
+				</File>
+				<File
+					RelativePath=".\glCallbacks.h"
 					>
 				</File>
 				<File

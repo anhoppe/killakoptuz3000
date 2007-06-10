@@ -11,16 +11,16 @@
 #define CENEMY_H
 
 #include <list>
-#include "objects/CSprite.h"
+#include "objects/CCombatant.h"
 #include "tinyxml.h"
 
 class CWeapon;
 class CLevel;
 
-class CEnemy : public CSprite
+class CEnemy : public CCombatant
 {
 public:
-   CEnemy(TiXmlNode* t_nodePtr);
+   CEnemy();
    ~CEnemy();
 
    virtual VeObjectType getType() { return e_enemy; };

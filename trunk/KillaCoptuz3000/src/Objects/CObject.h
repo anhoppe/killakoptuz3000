@@ -117,6 +117,12 @@ public:
    // Angle of the sprite
    float                m_angle;
 
+   /** Start angle (only valid for child objects */
+   float                   m_startAngle;
+
+   /** direction*/
+   bool                    m_direction;
+
    /** Remember movement deltas for children updates */
    float                m_dx;
    float                m_dy;
@@ -131,9 +137,6 @@ public:
 
    /** Flag if object is invincible (set if no hit points are defined in xml file) */
    int                  m_invincible;
-
-   /** Pointer to parent object */
-   CObject*             m_parentPtr;
 
    /** Objects unique ID for storage class map key. 0 is illegal */
    unsigned int          m_id;

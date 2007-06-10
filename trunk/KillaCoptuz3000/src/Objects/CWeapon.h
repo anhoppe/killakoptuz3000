@@ -21,7 +21,7 @@ class CLevel;
 class CWeapon : public CSprite
 {
 public:
-   CWeapon(TiXmlNode* t_nodePtr);
+   CWeapon();
    ~CWeapon();
 
    virtual VeObjectType getType() { return e_weapon; };

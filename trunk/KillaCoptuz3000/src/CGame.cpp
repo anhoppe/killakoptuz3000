@@ -11,6 +11,8 @@
 #include "CGame.h"
 
 #include "CObjectStorage.h"
+#include "glCallbacks.h"
+
 
 //////////////////////////////////////////////////////////////////////////
 // Implementation
@@ -32,6 +34,8 @@ CGame::CGame()
       a_nodePtr = a_doc.FirstChild("object");
       CObjectStorage::getInstance().add(a_nodePtr, e_player);
    }
+
+   m_gameState = e_level;
 }
 
 CGame::~CGame()
@@ -48,12 +52,15 @@ void CGame::gameControl()
          loadNextLevel();
 
          // Register callback functions
-         glutTimerFunc (25, (void (*)(int))(m_level.timerCallback), 0);
-         glutKeyboardFunc(m_level.processNormalKeys);
-         glutSpecialFunc(m_level.pressKey);
-         glutSpecialUpFunc(m_level.releaseKey);
-         glutDisplayFunc(m_level.renderScene);
-         glutIdleFunc(m_level.renderScene);
+         setCallbackLevelPtr(&m_level);
+
+         glutKeyboardFunc(CLevel_processNormalKeys);
+         glutSpecialFunc(CLevel_pressKey);
+         glutSpecialUpFunc(CLevel_releaseKey);
+         glutDisplayFunc(CLevel_renderScene);
+         glutIdleFunc(CLevel_renderScene);
+
+         glutTimerFunc (25, CLevel_timerCallback, 1);
          break;
       }
    default:
@@ -76,11 +83,11 @@ void CGame::loadNextLevel()
    TiXmlNode*      a_nodePtr  = 0;
 
 
-   if(a_doc.LoadFile("level3.xml"))
+   if(a_doc.LoadFile("data\\levels\\level3.xml"))
    {
       //////////////////////////////////////////////////////////////////////////
       // load levels 
-      a_nodePtr = a_doc.FirstChild("texturlist");
+      a_nodePtr = a_doc.FirstChild("texturelist");
       assert(a_nodePtr);
       if(0 != a_nodePtr)
       {

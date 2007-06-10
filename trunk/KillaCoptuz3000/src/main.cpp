@@ -9,13 +9,15 @@
 // ***************************************************************
 
 // #include "main.h"
-// #include <stdio.h>
+//#include <stdio.h>
 // #include <math.h>
-// #include "glut.h"
-// #include "fmod.h"
+//#include "glut.h"
+#include "fmod.h"
+
+#include "CGame.h"
 // #include "CLevel.h"
 // #include "objects/CPlayer.h"
-// #include "globals.h"
+ #include "globals.h"
 // 
 // //////////////////////////////////////////////////////////////////////////   
 // //////////////////////////////////////////////////////////////////////////
@@ -32,9 +34,9 @@ void changeSize(int w, int h);
 // void releaseKey(int key, int x, int y);
 // void processNormalKeys(unsigned char key, int x, int y);
 // bool initGame();   
-void setupDisplay();
+void setDisplay();
 void setupSound();
-void initGL();
+void initGL(int t_argc, char* t_argv);
 // void renderBitmapString(float t_x, float t_y, char *t_string, void *font = GLUT_BITMAP_TIMES_ROMAN_24);
 // 
 // //////////////////////////////////////////////////////////////////////////
@@ -105,41 +107,41 @@ void initGL();
 // 
 // Setup window
 // Switches between windowed and full screen mode
-void setupDisplay()
-{   
-   glutInit(&t_argc, t_argv);
-   glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-
-   // Destroy old window
-   if (glutGameModeGet(GLUT_GAME_MODE_ACTIVE))
-   {
-      glutLeaveGameMode();
-   }
-   if (g_windowId)
-   {
-      glutDestroyWindow(g_windowId);
-      g_windowId = 0;
-   }
-
-   if (g_windowedMode)
-   {
-      // Create a windowed display
-      glutInitWindowSize(g_winWidth, g_winHeight);
-      g_windowId = glutCreateWindow("Les commanderZ presetez: KillaKoptuz 3000");    
-   }
-   else
-   {
-      // Fullscreen display
-      glutGameModeString("1280x1024:32");
-      if (glutGameModeGet(GLUT_GAME_MODE_POSSIBLE))
-      {
-         glutEnterGameMode();
-      }
-      else
-         exit(-1);
-
-   }   
-}
+// void setupDisplay()
+// {   
+//     glutInit(&t_argc, t_argv);
+//    glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
+// 
+//    // Destroy old window
+//    if (glutGameModeGet(GLUT_GAME_MODE_ACTIVE))
+//    {
+//       glutLeaveGameMode();
+//    }
+//    if (g_windowId)
+//    {
+//       glutDestroyWindow(g_windowId);
+//       g_windowId = 0;
+//    }
+// 
+//    if (g_windowedMode)
+//    {
+//       // Create a windowed display
+//       glutInitWindowSize(g_winWidth, g_winHeight);
+//       g_windowId = glutCreateWindow("Les commanderZ presetez: KillaKoptuz 3000");    
+//    }
+//    else
+//    {
+//       // Fullscreen display
+//       glutGameModeString("1280x1024:32");
+//       if (glutGameModeGet(GLUT_GAME_MODE_POSSIBLE))
+//       {
+//          glutEnterGameMode();
+//       }
+//       else
+//          exit(-1);
+// 
+//    }   
+// }
 
 void setupSound()
 {
@@ -183,8 +185,48 @@ void changeSize(int w, int h)
 
 }
 
-void initGL()
+void setDisplay()
+{   
+   // Destroy old window
+   if (glutGameModeGet(GLUT_GAME_MODE_ACTIVE))
+   {
+      glutLeaveGameMode();
+   }
+   if (g_windowId)
+   {
+      glutDestroyWindow(g_windowId);
+      g_windowId = 0;
+   }
+
+   if (g_windowedMode)
+   {
+      // Create a windowed display
+      glutInitWindowSize(g_winWidth, g_winHeight);
+      g_windowId = glutCreateWindow("Les commanderZ presetez: KillaKoptuz 3000");    
+   }
+   else
+   {
+      // Fullscreen display
+      glutGameModeString("1280x1024:32");
+      if (glutGameModeGet(GLUT_GAME_MODE_POSSIBLE))
+      {
+         glutEnterGameMode();
+      }
+      else
+         exit(-1);
+
+   }
+
+}
+
+
+void initGL(int t_argc, char** t_argv)
 {
+   glutInit(&t_argc, t_argv);
+   glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
+
+   setDisplay();
+
    glutIgnoreKeyRepeat(1);    
    glutReshapeFunc(changeSize);
    
@@ -299,11 +341,8 @@ void initGL()
 
 int main(int t_argc, char **t_argv) 
 {      
-   // register basic callback functions
-   initGL();
-
-   // Set up screen
-   setupDisplay();
+   // Init OpenGL and setup screen
+   initGL(t_argc, t_argv);
 
    // Set up sound system
    setupSound();

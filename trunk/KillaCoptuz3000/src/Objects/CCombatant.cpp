@@ -10,6 +10,8 @@
 
 #include "Objects/CCombatant.h"
 
+#include "CObjectStorage.h"
+
 CCombatant::CCombatant()
 {
    m_activeWeapon = 0;
@@ -32,21 +34,21 @@ bool CCombatant::load(TiXmlNode* t_nodePtr)
    // Loop over all weapons
    for(a_nodePtr = t_nodePtr->FirstChild("weapon"); a_nodePtr; a_nodePtr = t_nodePtr->IterateChildren("weapon", a_nodePtr))
    {
-      CObjectStorage::getInstance()->add(a_nodePtr, e_weapon, m_id);
+      m_weaponList.push_back(CObjectStorage::getInstance().add(a_nodePtr, e_weapon, m_id));
    }
 
    return true;
 }
 
-void CPlayer::fireWeapon()
+void CCombatant::fireWeapon()
 {   
    if (m_activeWeapon < m_weaponList.size())
    {
-      m_weaponList[m_activeWeapon]->fire();
+      ((CWeapon*)(CObjectStorage::getInstance().m_objectMap[m_weaponList[m_activeWeapon]]))->fire();
    }
 }
 
-void CPlayer::nextWeapon()
+void CCombatant::nextWeapon()
 {
    m_activeWeapon++;
 

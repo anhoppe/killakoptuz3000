@@ -20,11 +20,7 @@ CSprite::CSprite()
 {
    m_trackIndex            = 0;
    m_behaviorData.m_dxPtr  = 0;
-   m_behaviorData.m_dyPtr  = 0;
-   m_angle                 = 0.0;
-   m_direction             = false;
-   m_startAngle            = 0.0;
-
+   m_behaviorData.m_dyPtr  = 0;      
 }
 
 CSprite::~CSprite()
