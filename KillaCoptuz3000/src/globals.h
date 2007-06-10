@@ -32,7 +32,7 @@ extern bool     g_mute;
 extern CLevel   g_level;
 
 // The player object pointer
-extern CPlayer* g_playerPtr;
+// extern CPlayer* g_playerPtr;
 
 // Windowed (==1) or full screen
 extern bool	    g_windowedMode;

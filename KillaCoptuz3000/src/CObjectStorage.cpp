@@ -12,11 +12,14 @@
 
 #include "tinyxml/tinyxml.h"
 
+#include "Functions.h"
+
 #include "CTexture.h"
 
 #include "Objects/CObject.h"
 #include "Objects/CShot.h"
 #include "Objects/CPlayer.h"
+#include "Objects/CEnemy.h"
 
 
 CObjectStorage::CObjectStorage()
@@ -43,21 +46,22 @@ CObjectStorage& CObjectStorage::getInstance()
 
 CPlayer* CObjectStorage::getPlayerPtr()
 {
-   return m_objectMap[m_playerId];
+   return static_cast<CPlayer*>(m_objectMap[m_playerId]);
 }
 
 /** Add object read from xml node */
-void CObjectStorage::add(TiXmlNode* t_nodePtr, VeObjectType t_type, unsigned int t_parentId)
+unsigned int CObjectStorage::add(TiXmlNode* t_nodePtr, VeObjectType t_type, unsigned int t_parentId)
 {
-   TiXmlElement* a_elemPtr          = t_nodePtr->ToElement();
-   CObject*        a_objectPtr      = 0;   
+   TiXmlElement*  a_elemPtr   = t_nodePtr->ToElement();
+   CObject*       a_objectPtr = 0;   
+   int            r_ret       = 0;   
 
 
    if(t_type == e_player)
    {
       a_objectPtr = new CPlayer();
    }
-   if (t_type == e_enemy)
+   else if (t_type == e_enemy)
    {
       a_objectPtr = new CEnemy();                  
    }
@@ -74,7 +78,8 @@ void CObjectStorage::add(TiXmlNode* t_nodePtr, VeObjectType t_type, unsigned int
    a_objectPtr->m_parentId = t_parentId;
 
    // Add own id to object
-   a_objectPtr->m_id       = m_objectIdCount;
+   r_ret = m_objectIdCount++;
+   a_objectPtr->m_id       = r_ret;
 
    // remember player ID
    if(t_type == e_player)
@@ -83,21 +88,25 @@ void CObjectStorage::add(TiXmlNode* t_nodePtr, VeObjectType t_type, unsigned int
    }
 
    // Add the object to the map, increment the id counter
-   m_objectMap[m_objectIdCount++] = a_objectPtr;
+   m_objectMap[r_ret] = a_objectPtr;
 
    // load enemy content
    a_objectPtr->load(t_nodePtr);
+
+   return r_ret;
 }
 
 /** Add object from pattern object*/
-void CObjectStorage::add(CObject* t_objectPtr, unsigned int t_parentId, std::list<unsigned int>* m_friendObjectsListPtr)
+unsigned int CObjectStorage::add(CObject* t_objectPtr, unsigned int t_parentId, std::list<unsigned int>* m_friendObjectsListPtr)
 {
-   CObject*        a_objectPtr      = 0;
+   CObject*       a_objectPtr = 0;
+   unsigned int   r_ret       = 0;
+
 
    switch (t_objectPtr->getType())
    {
       case e_shot:
-         a_objectPtr = new CShot(t_objectPtr);
+         a_objectPtr = new CShot(static_cast<CShot*>(t_objectPtr));
          break;
    }
 
@@ -105,10 +114,13 @@ void CObjectStorage::add(CObject* t_objectPtr, unsigned int t_parentId, std::lis
    a_objectPtr->m_parentId = t_parentId;   
 
    // Add own id to object
-   a_objectPtr->m_id       = m_objectIdCount;
+   r_ret = m_objectIdCount++;
+   a_objectPtr->m_id = r_ret;
 
    // Add the object to the map, increment the id counter
-   m_objectMap[m_objectIdCount++] = a_objectPtr;      
+   m_objectMap[r_ret] = a_objectPtr;
+
+   return r_ret;
 }
 
 bool CObjectStorage::addTextureMap(TiXmlNode* t_nodePtr)
@@ -118,10 +130,10 @@ bool CObjectStorage::addTextureMap(TiXmlNode* t_nodePtr)
 
    std::string    a_key       = "";
 
-   bool           r_ret       = false;
+   bool           r_ret       = true;
 
 
-   for(a_nodePtr = a_nodePtr->FirstChild("texture"); a_nodePtr; a_nodePtr = a_nodePtr->IterateChildren("texture", a_nodePtr))
+   for(a_nodePtr = t_nodePtr->FirstChild("texture"); a_nodePtr; a_nodePtr = t_nodePtr->IterateChildren("texture", a_nodePtr))
    {
       a_elemPtr = a_nodePtr->ToElement();
 

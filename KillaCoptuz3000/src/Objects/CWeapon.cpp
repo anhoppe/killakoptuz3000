@@ -10,19 +10,25 @@
 #ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES
 #endif
+
 #include <math.h>
-#include "Objects/CWeapon.h"
-#include "Objects/CShot.h"
-#include "CLevel.h"
+
 #include "Functions.h"
 #include "globals.h"
+
+#include "CLevel.h"
+
+#include "CObjectStorage.h"
+
+#include "Objects/CWeapon.h"
+#include "Objects/CShot.h"
 
 #define MAX_FIRE_ANGLE_DEVIATION 10
 
 //////////////////////////////////////////////////////////////////////////
 // Implementation
 //////////////////////////////////////////////////////////////////////////
-CWeapon::CWeapon(TiXmlNode* t_nodePtr)
+CWeapon::CWeapon()
 {
    m_angle           = 0.0;
    m_maxAngle        = 0.0;
@@ -31,8 +37,6 @@ CWeapon::CWeapon(TiXmlNode* t_nodePtr)
    m_framesSinceShot = 0;
    m_framesPerShot   = 100;
    m_shotPtr         = 0;
-
-   load(t_nodePtr);
 }
 
 CWeapon::~CWeapon()
@@ -78,8 +82,8 @@ bool CWeapon::load(TiXmlNode* t_nodePtr)
       a_elemPtr = a_nodePtr->ToElement();
       if(!strcmp("shot", a_elemPtr->Value()))
       {
-         m_shotPtr = new CShot(a_nodePtr);   
-         m_shotPtr->m_parentPtr = this;
+         m_shotPtr = new CShot(a_nodePtr);
+         m_shotPtr->m_parentId = m_id;
          break;  
       }
       a_nodePtr = t_nodePtr->IterateChildren(a_nodePtr);      
@@ -162,67 +166,86 @@ void CWeapon::update(CLevel* t_levelPtr)
 
 void CWeapon::fire()
 {
-//    float a_angle  = 0.;
-// 
-//    // Create a new shot
-//    if(0 != m_shotPtr)
-//    {
-//       //////////////////////////////////////////////////////////////////////////
-//       // create a new shot
-//       CShot* a_shotPtr = new CShot(m_shotPtr);
-// 
-// 
-//       
-//       //       a_shotPtr->m_xPos = m_xPos + m_width / 2.0;
-// //       a_shotPtr->m_yPos = m_yPos + m_height / 2.0;
-// 
-// 
-//       //////////////////////////////////////////////////////////////////////////
-//       // set start position of the shot
-//       a_shotPtr->m_xPos += m_xPos + m_width / 2.0;
-//       a_shotPtr->m_yPos += m_yPos + m_height / 2.0;
-// 
-//       CPoint a_pos(a_shotPtr->m_xPos,
-//                    a_shotPtr->m_yPos);
-// 
-//       a_pos.x -=  m_parentPtr->m_xPos + m_parentPtr->m_width/2.0;
-//       a_pos.y -=  m_parentPtr->m_yPos + m_parentPtr->m_height/2.0;
-//       
-//       if(static_cast<CSprite*>(m_parentPtr)->m_direction)
-//       {
-//          a_angle += 180.;
-//          a_angle += m_parentPtr->m_angle;
-//       }
-//       else
-//       {
-//          a_angle -= m_parentPtr->m_angle;
-//       }
-//       a_pos.rotate(a_angle);
-// 
-//       a_pos.x += m_parentPtr->m_xPos + m_parentPtr->m_width/2.;
-//       a_pos.y += m_parentPtr->m_yPos + m_parentPtr->m_height/2.;
-// 
-//       a_shotPtr->m_xPos = a_pos.x;
-//       a_shotPtr->m_yPos = a_pos.y;
-// 
-//       //////////////////////////////////////////////////////////////////////////
-//       // set direction of shot
-//       a_shotPtr->m_angle = m_angle + m_startAngle;
-// 
-//       if(0 != m_parentPtr)
-//       {
-//          if(static_cast<CSprite*>(m_parentPtr)->m_direction)
-//          {
-//              a_shotPtr->m_angle += 180;
-//              a_shotPtr->m_angle -= m_parentPtr->m_angle;
-//          }
-//          else
-//          {
-//             a_shotPtr->m_angle += m_parentPtr->m_angle;
-//          }
-//       }
-// 
-// //       CLevel::M_addList.push_back(a_shotPtr);
-//       m_framesSinceShot = 0;
-//    }   
+   float          a_angle        = 0.;
+   unsigned int   a_newId        = 0;
+   CShot*         a_newShotPtr   = 0;
+   CObject*       a_parentPtr    = 0;
+
+
+   // Create a new shot
+   if(0 != m_shotPtr)
+   {
+      // add new shot
+      a_newId = CObjectStorage::getInstance().add(m_shotPtr, 0);
+
+      // get pointer to new shot
+      a_newShotPtr = (CShot*)(CObjectStorage::getInstance().m_objectMap[a_newId]);
+
+      // get pointer to weapons parent
+      assert(0 != m_parentId);
+      
+      if(0 != m_parentId)
+      {
+         a_parentPtr = CObjectStorage::getInstance().m_objectMap[m_parentId];
+      }
+
+      
+      //       a_shotPtr->m_xPos = m_xPos + m_width / 2.0;
+//       a_shotPtr->m_yPos = m_yPos + m_height / 2.0;
+
+
+      //////////////////////////////////////////////////////////////////////////
+      // set start position of the shot
+      a_newShotPtr->m_xPos += m_xPos + m_width / 2.0;
+      a_newShotPtr->m_yPos += m_yPos + m_height / 2.0;
+
+      if(0 != a_parentPtr)
+      {
+         a_newShotPtr->m_xPos += a_parentPtr->m_xPos;
+         a_newShotPtr->m_yPos += a_parentPtr->m_yPos;
+      }
+
+      CPoint a_pos(a_newShotPtr->m_xPos,
+                   a_newShotPtr->m_yPos);
+
+      a_pos.x -=  a_parentPtr->m_xPos + a_parentPtr->m_width/2.0;
+      a_pos.y -=  a_parentPtr->m_yPos + a_parentPtr->m_height/2.0;
+      
+      if(a_parentPtr->m_direction)
+      {
+         a_angle += 180.;
+         a_angle += a_parentPtr->m_angle;
+      }
+      else
+      {
+         a_angle -= a_parentPtr->m_angle;
+      }
+      a_pos.rotate(a_angle);
+
+      a_pos.x += a_parentPtr->m_xPos + a_parentPtr->m_width/2.;
+      a_pos.y += a_parentPtr->m_yPos + a_parentPtr->m_height/2.;
+
+      a_newShotPtr->m_xPos = a_pos.x;
+      a_newShotPtr->m_yPos = a_pos.y;
+
+      //////////////////////////////////////////////////////////////////////////
+      // set direction of shot
+      a_newShotPtr->m_angle = m_angle + m_startAngle;
+
+      if(0 != a_parentPtr)
+      {
+         if(a_parentPtr->m_direction)
+         {
+            a_newShotPtr->m_angle += 180;
+            a_newShotPtr->m_angle -= a_parentPtr->m_angle;
+         }
+         else
+         {
+            a_newShotPtr->m_angle += a_parentPtr->m_angle;
+         }
+      }
+
+//       CLevel::M_addList.push_back(a_shotPtr);
+      m_framesSinceShot = 0;
+   }   
 }

@@ -31,9 +31,6 @@ public:
    /** Get tracking angle to tracked object*/
    float trackAngle(float t_trgX, float t_trgY);
    
-   /** direction*/
-   bool                    m_direction;
-   
    /** Objects to track*/
    std::vector<CObject*>   m_trackList;
    
@@ -45,9 +42,6 @@ public:
    
    /** Behavior structure*/
    SBehaviorData           m_behaviorData;
-   
-   /** Start angle (only valid for child objects */
-   float                   m_startAngle;
 
 };
 
