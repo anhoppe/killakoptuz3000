@@ -77,3 +77,12 @@ Hoppe & Fabian without disturbance (except themself). Both a bit tired again (or
 
   * Cleaned up loader methods in object classes. Everthing looks so clean and easy now.
   * Started to compile code, Could not finish through a lack of competency with function pointers. Really hard stuff.
+
+== Sun, 10. June 2007 ==
+
+Hoppe & Fabian, without interruption (only Flo complained about too annoying guests one time). Fabian came around 0:00, so this session counts as sunday, not saturday. I had a very lazy day (at least I cleand up my room), Fabian was on a birthday party and could play PS3 on a very big high def plasma TV. Great times!
+
+  * KK3000 runs again (yeeaahh). Fixed remaining loading problems
+  * restored players ability to shoot (enemy can't, no collision yet!)
+
+We discovered that std::map::operator[] adds an element to the hash table, not std::map::operator=. Or at least both. Kind of disturbing...
