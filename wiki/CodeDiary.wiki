@@ -86,3 +86,12 @@ Hoppe & Fabian, without interruption (only Flo complained about too annoying gue
   * restored players ability to shoot (enemy can't, no collision yet!)
 
 We discovered that std::map::operator[] adds an element to the hash table, not std::map::operator=. Or at least both. Kind of disturbing...
+
+== Mon, 11. June 2007 ===
+
+H & F. Fabs typed. Hoppe was lazy (cooking and so on):
+
+  * Tracking for weapons works now (again..., but much better)
+  * CEvent class for events
+  * Shots generate a delete event when out of boundary.
+  * Events are processed
