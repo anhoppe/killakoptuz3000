@@ -90,6 +90,22 @@ bool CLevel::load(TiXmlNode* t_nodePtr)
 
    return r_ret;
 }
+
+/** Check if position is inside level boundary*/
+bool CLevel::positionAllowed(const float& t_xPos, const float& t_yPos)
+{
+      
+   if (t_xPos > m_maxX)
+      return false;
+   if (t_xPos < m_minX)
+      return false;
+   if (t_yPos > m_maxY)
+      return false;
+   if (t_yPos < m_minY)   
+      return false;   
+
+   return true;
+}
  
 //////////////////////////////////////////////////////////////////////////
 // OpenGL callback functions

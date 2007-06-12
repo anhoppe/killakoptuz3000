@@ -36,6 +36,9 @@ public:
    // Controls m_angle for being in the allowed interval
    void              controlAngle();
 
+   /** Get tracking angle to tracked object*/
+   float trackAngle(float t_trgX, float t_trgY);
+
    float             m_minAngle;
    float             m_maxAngle;
 
@@ -45,6 +48,9 @@ public:
    float             m_shotRadius;
 
    CShot*            m_shotPtr;
+
+   /** Auto tracking of weapon on / off*/
+   bool              m_isTracking;
 };
 
 #endif

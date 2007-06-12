@@ -42,9 +42,7 @@ void CLevel_timerCallback(int value)
    assert(g_levelPtr);
 
    // Iterate over all objects
-   // and update them (events are generated)
-   int om_size = CObjectStorage::getInstance().m_objectMap.size();
-
+   // and update them (events are generated)   
    for(a_it = CObjectStorage::getInstance().m_objectMap.begin(); a_it != CObjectStorage::getInstance().m_objectMap.end(); a_it++)
    {            
       if (a_it->second)
@@ -58,9 +56,15 @@ void CLevel_timerCallback(int value)
       }
    }
    // Detect collisions with quad tree (events are generated)
-   om_size = CObjectStorage::getInstance().m_objectMap.size();
-   // Process events
 
+   // ... (Quad tree here...)
+
+   // Process events
+   CObjectStorage::getInstance().processEvents();
+
+   // Delete dead objects
+   CObjectStorage::getInstance().processDeleteMap();
+   
    glutTimerFunc (25, CLevel_timerCallback, value);
 }
 

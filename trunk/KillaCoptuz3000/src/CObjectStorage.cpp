@@ -8,6 +8,7 @@
 // 
 // ***************************************************************
 
+#include <list>
 #include "CObjectStorage.h"
 
 #include "tinyxml/tinyxml.h"
@@ -47,6 +48,65 @@ CObjectStorage& CObjectStorage::getInstance()
 CPlayer* CObjectStorage::getPlayerPtr()
 {
    return static_cast<CPlayer*>(m_objectMap[m_playerId]);
+}
+
+/** Process events which were generated during last cycle */
+void CObjectStorage::processEvents()
+{
+   CEvent* a_event;
+
+   // Iterate over events which were generated during the last cycle
+   while (m_eventList.size())
+   {
+      // Get last event
+      a_event = m_eventList.back();
+
+      // Process events
+      switch (a_event->m_event)
+      {
+      case e_delete:
+         {            
+            m_deleteMap[a_event->m_objectList.back()] = m_objectMap[a_event->m_objectList.back()];
+
+            break;
+         }
+      case e_dying:
+         {
+            break;
+         }
+      case e_collided:
+         {
+            break;
+         }
+      }
+
+      // Delete it from list
+      m_eventList.pop_back();
+
+      // Delete event object
+      delete a_event;
+
+   }
+}
+
+/** Process delete objectMap */
+void CObjectStorage::processDeleteMap()
+{
+   CObject* a_objectPtr;
+   std::map<unsigned int, CObject*>::iterator a_it;
+
+   for (a_it = m_deleteMap.begin(); a_it != m_deleteMap.end(); a_it++)
+   {
+      // Remove object
+      m_objectMap.erase(a_it->first);
+
+      // Delete the object
+      a_objectPtr = a_it->second;
+      delete a_objectPtr;
+   }
+
+   // Delete the deleteMap
+   m_deleteMap.clear();
 }
 
 /** Add object read from xml node */

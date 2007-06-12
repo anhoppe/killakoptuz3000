@@ -128,7 +128,7 @@ void CPlayer::update(CLevel* t_levelPtr)
    m_dx = 0.;
    m_dy = 0.;
 
-   if (positionAllowed(m_xPos, m_yPos + m_velocityY, t_levelPtr))
+   if (t_levelPtr->positionAllowed(m_xPos + m_width/2.0, m_yPos + m_height/2.0 + m_velocityY))
    {
       m_dy = m_velocityY;
       m_yPos += m_velocityY;         
@@ -137,7 +137,7 @@ void CPlayer::update(CLevel* t_levelPtr)
       m_velocityY = 0.0;      
 
    // Movement in x
-   if (positionAllowed(m_xPos + m_velocityX, m_yPos, t_levelPtr))
+   if (t_levelPtr->positionAllowed(m_xPos + m_width/2.0 + m_velocityX, m_yPos + m_height/2.0))
    {
       m_dx = m_velocityX;
       m_xPos += m_velocityX;         
@@ -146,21 +146,6 @@ void CPlayer::update(CLevel* t_levelPtr)
    {
       m_velocityX = 0.0;
    }
-}
-
-// Check if position of player is allowed by level description
-bool CPlayer::positionAllowed(float t_x, float t_y, CLevel* t_levelPtr)
-{   
-   if (t_x > t_levelPtr->m_maxX)
-      return false;
-   if (t_x < t_levelPtr->m_minX)
-      return false;
-   if (t_y > t_levelPtr->m_maxY)
-      return false;
-   if (t_y < t_levelPtr->m_minY)   
-      return false;   
-
-   return true;
 }
 
 

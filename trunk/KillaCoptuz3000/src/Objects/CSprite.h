@@ -28,15 +28,6 @@ public:
    /** Switches direction*/
    void flip();
 
-   /** Get tracking angle to tracked object*/
-   float trackAngle(float t_trgX, float t_trgY);
-   
-   /** Objects to track*/
-   std::vector<CObject*>   m_trackList;
-   
-   /** Tracked object index*/
-   unsigned int            m_trackIndex;
-
    /** Script of sprite*/
    CScript*                m_scriptPtr;      
    

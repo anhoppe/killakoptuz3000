@@ -13,6 +13,8 @@
 #endif
 #include <math.h>
 #include "Objects/CShot.h"
+#include "CObjectStorage.h"
+#include "CEvent.h"
 #include "CLevel.h"
 #include "Functions.h"
 
@@ -89,23 +91,20 @@ void CShot::update(CLevel* t_levelPtr)
    float a_dx = -m_v*sin(m_angle*M_PI/180);
    float a_dy = m_v*cos(m_angle*M_PI/180);
 
-   m_xPos += a_dx;
-   m_yPos += a_dy;   
+   if (t_levelPtr->positionAllowed(m_xPos + m_width/2.0 + a_dx, m_yPos + m_height/2.0 + a_dy))
+   {
+      m_xPos += a_dx;
+      m_yPos += a_dy;
+   }
+   else
+   {
+      // Create a delete event
+      CEvent* a_event         = new CEvent;
+      a_event->m_event        = e_delete;
+      a_event->m_objectList.push_back(m_id);
+
+      CObjectStorage::getInstance().m_eventList.push_back(a_event);
+   }
 
    CSprite::update(t_levelPtr);
-}
-
-// Check if position is allowed by level description
-bool CShot::positionAllowed(float t_x, float t_y, CLevel* t_levelPtr)
-{
-   if (t_x > 1.2*t_levelPtr->m_maxX)
-      return false;
-   if (t_x < 1.2*t_levelPtr->m_minX)
-      return false;
-   if (t_y > 1.2*t_levelPtr->m_maxY)
-      return false;
-   if (t_y < 1.2*t_levelPtr->m_minY)   
-      return false;   
-
-   return true;
 }

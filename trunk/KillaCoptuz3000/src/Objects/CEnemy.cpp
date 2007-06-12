@@ -11,6 +11,7 @@
 #include "CLevel.h"
 #include "Objects/CEnemy.h"
 #include "Objects/CWeapon.h"
+#include "CObjectStorage.h"
 #include "Functions.h"
 #include "globals.h"
 #include "main.h"
@@ -62,6 +63,9 @@ bool CEnemy::load(TiXmlNode* t_nodePtr)
          m_scriptPtr = new CScript(a_str.c_str());  
       }
    }
+
+   // The player is the default tracked object
+   m_trackList.push_back(CObjectStorage::getInstance().m_playerId);
 
    return true;
 }
