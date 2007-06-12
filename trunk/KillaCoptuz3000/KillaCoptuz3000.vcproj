@@ -295,6 +295,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\CHashMap.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\CLevel.cpp"
 					>
 				</File>
@@ -344,6 +348,10 @@
 				</File>
 				<File
 					RelativePath=".\src\CGame.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CHashMap.h"
 					>
 				</File>
 				<File

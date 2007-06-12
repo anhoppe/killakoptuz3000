@@ -44,10 +44,10 @@ public:
    *  Add object from pattern object
    *  @param t_objectPtr Pointer to the source object. A copy of this object will be inserted
    *  @param t_parentId ID of the parent, 0 if it has no parent
-   *  @param m_friendObjectList list of 'friend-objects'. Friend objects are not considered in collision detection
+   *  @param t_friendObjectList list of 'friend-objects'. Friend objects are not considered in collision detection
    *  @return ID of newly generated object
    */
-   unsigned int add(CObject* t_objectPtr, unsigned int t_parentId = 0, std::list<unsigned int>* m_friendObjectsListPtr = 0);
+   unsigned int add(CObject* t_objectPtr, unsigned int t_parentId = 0, std::list<unsigned int>* t_friendObjectsListPtr = 0);
 
    /** Add textures into texture map */
    bool addTextureMap(TiXmlNode* t_nodePtr);
