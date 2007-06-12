@@ -95,3 +95,11 @@ H & F. Fabs typed. Hoppe was lazy (cooking and so on):
   * CEvent class for events
   * Shots generate a delete event when out of boundary.
   * Events are processed
+
+== Tue / Wed, 12./13. June 2007 ===
+
+Fabian: due to lack of sleeping ablility, worked on a real hashtable (std::map is some red  bla tree and NOT a hashtable as we thaught). Hoppe supported me via Skype (Template mess)
+
+  * CHashTable created. Stand alone at the moment. Is supposed to replace std::map in our project.
+
+Method for iteration needs still to be done... Tmrw... Now: 1:08am. Have to get up at 6:30.
