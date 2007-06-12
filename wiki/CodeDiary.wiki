@@ -98,7 +98,7 @@ H & F. Fabs typed. Hoppe was lazy (cooking and so on):
 
 == Tue / Wed, 12./13. June 2007 ===
 
-Fabian: due to lack of sleeping ablility, worked on a real hashtable (std::map is some red  bla tree and NOT a hashtable as we thaught). Hoppe supported me via Skype (Template mess)
+Fabian: due to lack of sleeping ablility, worked on a real hashtable (std::map is some red  bla tree and NOT a hashtable as we thought). Hoppe supported me via Skype (Cleaned up my template mess).
 
   * CHashTable created. Stand alone at the moment. Is supposed to replace std::map in our project.
 
