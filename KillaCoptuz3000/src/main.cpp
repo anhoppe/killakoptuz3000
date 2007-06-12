@@ -13,7 +13,7 @@
 // #include <math.h>
 //#include "glut.h"
 #include "fmod.h"
-
+#include "CHashMap.h"
 #include "CGame.h"
 // #include "CLevel.h"
 // #include "objects/CPlayer.h"
@@ -342,17 +342,21 @@ void initGL(int t_argc, char** t_argv)
 int main(int t_argc, char **t_argv) 
 {      
    // Init OpenGL and setup screen
-   initGL(t_argc, t_argv);
+//    initGL(t_argc, t_argv);
+// 
+//    // Set up sound system
+//    setupSound();
+// 
+//    // Create CGame object and start game
+//    CGame a_game;
+//    a_game.gameControl();
+// 
+//    // Start glut main loop
+//    glutMainLoop();
+   CHashMap<int> a_map;
 
-   // Set up sound system
-   setupSound();
-
-   // Create CGame object and start game
-   CGame a_game;
-   a_game.gameControl();
-
-   // Start glut main loop
-   glutMainLoop();
+   a_map.add(7, 3);
+   int x =  a_map[3];
 
    return 69;
 }

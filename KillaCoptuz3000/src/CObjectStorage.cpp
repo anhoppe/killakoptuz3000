@@ -157,7 +157,7 @@ unsigned int CObjectStorage::add(TiXmlNode* t_nodePtr, VeObjectType t_type, unsi
 }
 
 /** Add object from pattern object*/
-unsigned int CObjectStorage::add(CObject* t_objectPtr, unsigned int t_parentId, std::list<unsigned int>* m_friendObjectsListPtr)
+unsigned int CObjectStorage::add(CObject* t_objectPtr, unsigned int t_parentId, std::list<unsigned int>* t_friendObjectsListPtr)
 {
    CObject*       a_objectPtr = 0;
    unsigned int   r_ret       = 0;
