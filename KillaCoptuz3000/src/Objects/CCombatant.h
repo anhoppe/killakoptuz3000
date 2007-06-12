@@ -39,13 +39,17 @@ public:
    // Variables
    //////////////////////////////////////////////////////////////////////////
 public:
+   /** Objects to track*/
+   std::vector<unsigned int>   m_trackList;
+
+   /** Tracked object index*/
+   unsigned int            m_trackIndex;
 protected:
    /** List of ID's of weapons */
    std::vector<unsigned int>   m_weaponList;
 
    /** Index of active weapon */
    unsigned int            m_activeWeapon;
-
 
 };
 

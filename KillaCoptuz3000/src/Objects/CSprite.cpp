@@ -17,8 +17,7 @@
 
 
 CSprite::CSprite()
-{
-   m_trackIndex            = 0;
+{   
    m_behaviorData.m_dxPtr  = 0;
    m_behaviorData.m_dyPtr  = 0;      
 }
@@ -261,20 +260,3 @@ void CSprite::flip()
 //       // DEBUG END
 //    }
 // }
-
-float CSprite::trackAngle(float t_xTrg, float t_yTrg)
-{
-   CPoint   a_diffVec;
-   float    r_ret       = 0.;
-
-
-   if(m_trackIndex < m_trackList.size())
-   {
-      a_diffVec.x = m_xPos - t_xTrg;
-      a_diffVec.y = m_yPos - t_yTrg;
-
-      r_ret = a_diffVec.getAngle();
-   }
-
-   return r_ret;
-}

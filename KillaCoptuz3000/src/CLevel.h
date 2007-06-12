@@ -29,6 +29,9 @@ public:
    /** Load level file */
    bool load(TiXmlNode* t_nodePtr);
 
+   /** Check if position is inside level boundary*/
+   bool positionAllowed(const float& t_xPos, const float& t_yPos);
+
 private:
 
    /** Process events */

@@ -22,6 +22,7 @@
 
 #include "Objects/CWeapon.h"
 #include "Objects/CShot.h"
+#include "Objects/CCombatant.h"
 
 #define MAX_FIRE_ANGLE_DEVIATION 10
 
@@ -37,6 +38,7 @@ CWeapon::CWeapon()
    m_framesSinceShot = 0;
    m_framesPerShot   = 100;
    m_shotPtr         = 0;
+   m_isTracking      = true;
 }
 
 CWeapon::~CWeapon()
@@ -110,58 +112,77 @@ void CWeapon::controlAngle()
 }
 
 void CWeapon::update(CLevel* t_levelPtr)
-{
-//    float a_playerDist = 0.;
-//    float a_trackAngle = 0.;
-//    float a_oldAngle = m_angle;
-// 
-//    if(m_trackIndex < m_trackList.size())
-//    {
-//       a_playerDist = sqrt((m_trackList[m_trackIndex]->m_xPos - m_xPos)*(m_trackList[m_trackIndex]->m_xPos - m_xPos) + (m_trackList[m_trackIndex]->m_yPos - m_yPos)*(m_trackList[m_trackIndex]->m_yPos - m_yPos));
-//    }
-//    //////////////////////////////////////////////////////////////////////////
-//    // since weapons are mounted to a potential movable object, weapons add
-//    // the parent movement
-//    if(0 != m_parentPtr)
-//    {
-//       m_xPos += m_parentPtr->m_dx;
-//       m_yPos += m_parentPtr->m_dy;      
-//    }
-// 
-//    //////////////////////////////////////////////////////////////////////////
-//    // track the enemy
-//    if(m_trackIndex < m_trackList.size())
-//    {
-//       a_trackAngle = trackAngle(m_trackList[m_trackIndex]->m_xPos, m_trackList[m_trackIndex]->m_yPos);
-//       m_angle = a_trackAngle;
-//    }
-//    // Controls m_angle for being in the allowed interval
-//    if (m_parentPtr != g_playerPtr)
-//    {
-//       controlAngle();
-//    }
-// //    else
-// //    {
-// //       m_angle = m_parentPtr->m_angle + m_startAngle;    
-// //    }
-// 
-//    //////////////////////////////////////////////////////////////////////////
-//    // Shooting
-//    // 1.) New shots
-//    if (/*m_maxShots > m_shotList.size() && */
-//       m_framesSinceShot >= m_framesPerShot &&
-//       a_playerDist <= m_shotRadius &&
-//       fabs(m_angle - a_trackAngle) <= MAX_FIRE_ANGLE_DEVIATION)
-//    {
-//       if(m_parentPtr != g_playerPtr)
-//       {
-//          fire();
-//       }
-//    }
-// 
-//    m_framesSinceShot++;
+{   
+   float a_dist = 0.;
+   float a_trackAngle = 0.;
+   float a_oldAngle = m_angle;
+   float a_xPos, a_yPos;
+   CCombatant* a_parentPtr = (CCombatant*) CObjectStorage::getInstance().m_objectMap[m_parentId];   
+   CObject*    a_trackObject = 0;
+
+   if (0 != a_parentPtr->m_trackList.size() && a_parentPtr->m_trackIndex < a_parentPtr->m_trackList.size())
+   {
+      a_trackObject = CObjectStorage::getInstance().m_objectMap[a_parentPtr->m_trackList[a_parentPtr->m_trackIndex]];
+   }
+   else
+   {
+      return;
+   }
+
+   // Proceed only if weapon is tracking 
+   if (!m_isTracking || a_trackObject == 0)
+   {
+      return;
+   }
+
+   // Calculate distance of weapon and current target
+   a_xPos = m_xPos + a_parentPtr->m_xPos;
+   a_yPos = m_yPos + a_parentPtr->m_yPos;
+   a_dist = sqrt((a_trackObject->m_xPos - a_xPos)*(a_trackObject->m_xPos - a_xPos) + (a_trackObject->m_yPos - a_yPos)*(a_trackObject->m_yPos - a_yPos));   
+
+   //////////////////////////////////////////////////////////////////////////
+   // track the enemy
+   a_trackAngle = trackAngle(a_trackObject->m_xPos, a_trackObject->m_yPos);
+   m_angle = a_trackAngle;   
+   
+   // Controls m_angle for being in the allowed interval         
+   controlAngle();
+
+   //////////////////////////////////////////////////////////////////////////
+   // Shooting
+   // 1.) New shots
+   if (/*m_maxShots > m_shotList.size() && */
+      m_framesSinceShot >= m_framesPerShot &&
+      a_dist <= m_shotRadius &&
+      fabs(m_angle - a_trackAngle) <= MAX_FIRE_ANGLE_DEVIATION)
+   {
+      if(a_parentPtr->getType() != e_player)
+      {
+         fire();
+      }
+   }
+
+   m_framesSinceShot++;
 
    CSprite::update(t_levelPtr);
+}
+
+float CWeapon::trackAngle(float t_xTrg, float t_yTrg)
+{
+   CPoint         a_diffVec;
+   float          r_ret       = 0.;
+   CCombatant*    a_parentPtr = (CCombatant*) CObjectStorage::getInstance().m_objectMap[m_parentId];
+
+
+   if(a_parentPtr->m_trackIndex < a_parentPtr->m_trackList.size())
+   {
+      a_diffVec.x = a_parentPtr->m_xPos - t_xTrg;
+      a_diffVec.y = a_parentPtr->m_yPos - t_yTrg;
+
+      r_ret = a_diffVec.getAngle();
+   }
+
+   return r_ret;
 }
 
 void CWeapon::fire()

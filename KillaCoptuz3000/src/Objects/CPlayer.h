@@ -26,9 +26,6 @@ public:
    /** Update player position (keys and flying 'physics') */
    virtual void update(CLevel*t_levelPtr);
 
-   /** Check if position of player is inside level */
-   bool positionAllowed(float t_x, float t_y, CLevel*t_levelPtr);
-
    virtual void collisionImpact(CObject* t_objectPtr);
 
    bool m_leftPressed;

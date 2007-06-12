@@ -287,6 +287,10 @@
 				Name="source"
 				>
 				<File
+					RelativePath=".\src\CEvent.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\CGame.cpp"
 					>
 				</File>
@@ -335,6 +339,10 @@
 				Name="header"
 				>
 				<File
+					RelativePath=".\src\CEvent.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\CGame.h"
 					>
 				</File>
@@ -367,7 +375,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\glCallbacks.h"
+					RelativePath=".\src\glCallbacks.h"
 					>
 				</File>
 				<File

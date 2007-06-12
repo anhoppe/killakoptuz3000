@@ -12,10 +12,10 @@
 #define COBJECT_STORAGE_H
 
 #include <map>
-
+#include <list>
 #include "tinyxml/tinyxml.h"
-
 #include "Objects/CObject.h"
+#include "CEvent.h"
 
 class CPlayer;
 class CTexture;
@@ -52,17 +52,29 @@ public:
    /** Add textures into texture map */
    bool addTextureMap(TiXmlNode* t_nodePtr);
 
+   /** Process events which were generated during last cycle */
+   void processEvents();
+
+   /** Process delete objectMap */
+   void processDeleteMap();
+
    /** map of all objects */
    std::map<unsigned int, CObject*> m_objectMap;
+
+   /** map of objects to delete */
+   std::map<unsigned int, CObject*> m_deleteMap;
    
    /** map of all game textures (player and level) */
    std::map<std::string, CTexture*> m_textureMap;
 
+   unsigned int m_playerId;
+
+   /** List of events */
+   std::list<CEvent*> m_eventList;
+
 private:
    /** Object Id counter */ 
    unsigned int m_objectIdCount;
-
-   unsigned int m_playerId;
 };
 
 #endif

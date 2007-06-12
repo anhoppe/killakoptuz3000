@@ -15,6 +15,7 @@
 CCombatant::CCombatant()
 {
    m_activeWeapon = 0;
+   m_trackIndex   = 0;
 }
 
 bool CCombatant::load(TiXmlNode* t_nodePtr)
@@ -24,6 +25,7 @@ bool CCombatant::load(TiXmlNode* t_nodePtr)
    CWeapon*       a_weaponPtr = 0;
 
    std::string    a_str;
+   unsigned int   a_weaponId  = 0;
 
    m_scriptPtr    = 0;
 
@@ -34,7 +36,14 @@ bool CCombatant::load(TiXmlNode* t_nodePtr)
    // Loop over all weapons
    for(a_nodePtr = t_nodePtr->FirstChild("weapon"); a_nodePtr; a_nodePtr = t_nodePtr->IterateChildren("weapon", a_nodePtr))
    {
-      m_weaponList.push_back(CObjectStorage::getInstance().add(a_nodePtr, e_weapon, m_id));
+      a_weaponId  = CObjectStorage::getInstance().add(a_nodePtr, e_weapon, m_id);
+      m_weaponList.push_back(a_weaponId );
+
+      // Player weapons don't autotrack
+      if (getType() == e_player)
+      {         
+         ((CWeapon*)(CObjectStorage::getInstance().m_objectMap[a_weaponId]))->m_isTracking = false;
+      }
    }
 
    return true;
