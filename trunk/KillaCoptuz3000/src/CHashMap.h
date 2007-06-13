@@ -103,18 +103,22 @@ T_value CHashMap<T_value>::operator [](unsigned int t_key)
 template <class T_value>
 void CHashMap<T_value>::add(unsigned int t_key, T_value t_value)
 {   
-   KeyValuePair<T_value>*           a_keyValue = 0;
+   KeyValuePair<T_value>* a_keyValuePair = 0;
 
-   a_keyValue = getKeyValuePair(t_key);
-   if (0 == a_keyValue)
-   {
-      a_keyValue = new KeyValuePair<T_value>;
-   }   
+   // Check if there is an element with that key
+   if (0 != getKeyValuePair(t_key))
+   {      
+      // Remove it
+      remove(t_key);
+   }
 
-   a_keyValue->m_key       = t_key;
-   a_keyValue->m_value     = t_value;
+   // Create new entry
+   a_keyValuePair = new KeyValuePair<T_value>;
+   a_keyValuePair->m_key       = t_key;
+   a_keyValuePair->m_value     = t_value;
    
-   m_map[getIndex(t_key)].push_back(a_keyValue);
+   // Insert it in list at vector position
+   m_map[getIndex(t_key)].push_back(a_keyValuePair);
 }
 
 template <class T_value>

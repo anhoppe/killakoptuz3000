@@ -355,16 +355,14 @@ int main(int t_argc, char **t_argv)
 //    glutMainLoop();
    CHashMap<int> a_map;
 
-   a_map.add(7, 3);
-   int x =  a_map[7];
-   a_map.add(7, 4);  
-   a_map.add(127, 4);  
+   int x;
+   
    a_map.add(4, 4);  
-   x = a_map[7];   
-   a_map.remove(7);
-   x = a_map[7];
+   a_map.add(4, 7);
+   
+   x = a_map[4];
    a_map.remove(4);
-   x = a_map[7];
+   x = a_map[4];
    
 
    return 69;
