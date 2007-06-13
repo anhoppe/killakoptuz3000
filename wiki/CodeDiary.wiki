@@ -100,6 +100,6 @@ H & F. Fabs typed. Hoppe was lazy (cooking and so on):
 
 Fabian: due to lack of sleeping ablility, worked on a real hashtable (std::map is some red black tree and NOT a hashtable as we thought). Hoppe supported me via Skype (Cleaned up my template mess).
 
-  * CHashTable created. Is not used by the CObjectStorage class yet. Is supposed to replace std::map there.
+  * CHashMap created. Is not used by the CObjectStorage class yet. Is supposed to replace std::map there.
 
 Method for iteration needs still to be done... Tmrw... Now: 1:08am. Have to get up at 6:30.
