@@ -375,9 +375,7 @@ int main(int t_argc, char **t_argv)
          printf ("%d\n", a_value);      
       }
       while(a_map.iterate());
-   }
-
-   int xb=0;
+   }   
 
    return 69;
 }
