@@ -29,22 +29,39 @@ public:
 
    /** 
    *  retrieve value with overloaded operator []
-   *  @param t_key key
+   *  @param t_key key, the hash key
+   *  @return T_value value, the value, 0 if not found
    */
    T_value operator[](unsigned int t_key);
 
+   /** 
+   *  Get KeyValuePair* 
+   *  @param t_key, the hash key
+   *  @return KeyValuePair pointer 
+   */
+   KeyValuePair<T_value>* getKeyValuePair(unsigned int t_key);
+
    /**
    *  add element
-   *  @param t_key key
-   *  @param t_value value
+   *  @param t_key key, the hash key
+   *  @param t_value value, the value to store
    */
    void add(unsigned int t_key, T_value t_value);
 
    /**
    *  remove element
-   *  @param t_key key   
+   *  @param t_key key, the hash key
    */
    void remove(unsigned int t_key);
+
+   /**
+   *  Iterate on the hash map one step
+   *  @return false if end is reached
+   */
+   bool iterate(bool t_reset = false);
+
+   /** Current KeyValuePair at iterator position */
+   KeyValuePair<T_value> m_current;
 
 private:
    /** Hash array */
@@ -54,13 +71,7 @@ private:
    unsigned int m_size;
 
    /** Hash function */
-   unsigned int getIndex(unsigned int t_key);
-
-   /** 
-   *  Get KeyValuePair* 
-   *  @param t_key
-   */
-   KeyValuePair<T_value>* getKeyValuePair(unsigned int t_key);
+   unsigned int getIndex(unsigned int t_key);  
 };
 
 template <class T_value>
@@ -68,7 +79,7 @@ CHashMap<T_value>::CHashMap()
 {
    // Size of primary vector
    // Should be a prime number
-   m_size = 101;
+   m_size = 7;
 
    // Initialize vector
    m_map.resize(m_size);
@@ -160,6 +171,77 @@ void CHashMap<T_value>::remove(unsigned int t_key)
       m_map[a_index].remove(a_keyValuePair);
       delete a_keyValuePair;
    }
+}
+
+template <class T_value>
+bool CHashMap<T_value>::iterate(bool t_reset)
+{
+   static unsigned int a_currentIndex = 0;   
+   static std::list<KeyValuePair<T_value>*>::iterator a_it;
+   
+   //////////////////////////////////////////////////////////////////////////
+   // Restart iterator
+   //////////////////////////////////////////////////////////////////////////
+   if (t_reset)
+   {
+      a_currentIndex = 0;
+      a_it = m_map[0].begin();
+
+      // If the first entry exists we have to leave here, otherwise we would jump over
+      if (0 != m_map[0].size())
+      {
+         m_current.m_key     = (*a_it)->m_key;
+         m_current.m_value   = (*a_it)->m_value;
+         return true;
+      }
+   }
+
+   //////////////////////////////////////////////////////////////////////////
+   // Iterate, and store current variables
+   //////////////////////////////////////////////////////////////////////////
+   
+   // Do until an entry is found: (or the end is reached)
+   // 1. Iterate over list
+   // 2. If not possible, iterate over vector
+
+   // We are at the old position (start or last one)   
+   bool a_found   = false;
+   bool a_end     = false;
+
+   // Try to find the next
+   while (!a_found && !a_end)
+   {
+      // is there a not empty list at our position?
+      if (0 != m_map[a_currentIndex].size())
+      {         
+         if (a_it != m_map[a_currentIndex].end())
+         {
+            a_it++;        
+            if (a_it != m_map[a_currentIndex].end())
+               a_found = true;
+         }
+      }
+      if (false == a_found)
+      {
+         a_currentIndex++;
+         if (a_currentIndex == m_size)
+         {
+            a_end = true;
+         }
+         else if (0 != m_map[a_currentIndex].size())
+         {
+            a_it = m_map[a_currentIndex].begin();
+            a_found = true;
+         }
+      }
+   }
+
+   if (a_found)
+   {
+      m_current.m_key   = (*a_it)->m_key;
+      m_current.m_value = (*a_it)->m_value;
+   }
+   return a_found && (!a_end);
 }
 
 #endif

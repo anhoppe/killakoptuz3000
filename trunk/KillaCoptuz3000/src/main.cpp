@@ -357,13 +357,27 @@ int main(int t_argc, char **t_argv)
 
    int x;
    
-   a_map.add(4, 4);  
-   a_map.add(4, 7);
    
-   x = a_map[4];
-   a_map.remove(4);
-   x = a_map[4];
+   a_map.add(4, 12);   
+   a_map.add(2, 2);   
+   a_map.add(6, 14);   
+   a_map.add(89, 23);   
+   a_map.add(5, 3);
+     
+
+   int a_value;
    
+   if (a_map.iterate(true))
+   {
+      do 
+      {      
+         a_value = a_map.m_current.m_value;
+         printf ("%d\n", a_value);      
+      }
+      while(a_map.iterate());
+   }
+
+   int xb=0;
 
    return 69;
 }
