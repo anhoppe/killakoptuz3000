@@ -113,3 +113,7 @@ Fabian (June, 13th. afternoon):
 Fabian, early at home due to hangover from yesterday. Afternoon proggin':
 
   * CObjectStorage::m_objectMap is now using CHashMap. Works! Woha!!
+
+Hoppe, Fabian, later this evening
+ 
+  * Implemented CObjectStorage::m_drawList and introduced draw layers to the objects and the XML description. We hope to solve the draw order problem once and for all.
