@@ -104,6 +104,12 @@ Fabian: due to lack of sleeping ablility, worked on a real hashtable (std::map i
 
 Method for iteration needs still to be done... Tmrw... Now: 1:08am. Have to get up at 6:30.
 
-Fabian (13. afternoon):
+Fabian (June, 13th. afternoon):
 
   * CHashMap has now a method to iterate the items. Seems to work, but has to be tested more precisely before KK3000 use... Have to go now.
+
+== Thu, 14. June 2007  ===
+
+Fabian, early at home due to hangover from yesterday. Afternoon proggin':
+
+  * CObjectStorage::m_objectMap is now using CHashMap. Works! Woha!!
