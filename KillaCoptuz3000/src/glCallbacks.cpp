@@ -43,18 +43,16 @@ void CLevel_timerCallback(int value)
 
    // Iterate over all objects
    // and update them (events are generated)   
-   for(a_it = CObjectStorage::getInstance().m_objectMap.begin(); a_it != CObjectStorage::getInstance().m_objectMap.end(); a_it++)
-   {            
-      if (a_it->second)
+  
+   if (CObjectStorage::getInstance().m_objectMap.iterate(true))
+   {
+      do 
       {
-         if(a_it->second->getType() == e_weapon)
-         {
-            unsigned int parent = a_it->second->m_parentId;
-            int tol = 0;
-         }
-         (a_it->second)->update(g_levelPtr);      
-      }
+         CObjectStorage::getInstance().m_objectMap.m_current.m_value->update(g_levelPtr);
+      } 
+      while(CObjectStorage::getInstance().m_objectMap.iterate());
    }
+   
    // Detect collisions with quad tree (events are generated)
 
    // ... (Quad tree here...)
@@ -83,24 +81,36 @@ void CLevel_renderScene(void)
    //////////////////////////////////////////////////////////////////////////
    // draw the level
    std::map<unsigned int, CObject*>::iterator   a_it;
-   
+
    // first draw all objects
-   for(a_it = CObjectStorage::getInstance().m_objectMap.begin(); a_it != CObjectStorage::getInstance().m_objectMap.end(); a_it++)
+   if (CObjectStorage::getInstance().m_objectMap.iterate(true))
    {
-      if(a_it->second->getType() == e_object)
+      do 
       {
-         a_it->second->draw();
-      }
+         if (e_object == CObjectStorage::getInstance().m_objectMap.m_current.m_value->getType())
+         {            
+            CObjectStorage::getInstance().m_objectMap.m_current.m_value->draw();
+         }
+      } 
+      while(CObjectStorage::getInstance().m_objectMap.iterate());
    }
 
    // second draw all non objects
-   for(a_it = CObjectStorage::getInstance().m_objectMap.begin(); a_it != CObjectStorage::getInstance().m_objectMap.end(); a_it++)
+   if (CObjectStorage::getInstance().m_objectMap.iterate(true))
    {
-      if(a_it->second->getType() != e_object)
+      do 
       {
-         a_it->second->draw();
-      }
+         if (e_object != CObjectStorage::getInstance().m_objectMap.m_current.m_value->getType())
+         {            
+            CObjectStorage::getInstance().m_objectMap.m_current.m_value->draw();
+         }
+      } 
+      while(CObjectStorage::getInstance().m_objectMap.iterate());
    }
+
+   CObjectStorage* a_obj = &CObjectStorage::getInstance();
+
+   a_obj->m_objectMap;
 
    //////////////////////////////////////////////////////////////////////////
    // Can be deleted (hit point output)

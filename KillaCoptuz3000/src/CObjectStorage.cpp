@@ -66,6 +66,7 @@ void CObjectStorage::processEvents()
       {
       case e_delete:
          {            
+            // Add object to delete list
             m_deleteMap[a_event->m_objectList.back()] = m_objectMap[a_event->m_objectList.back()];
 
             break;
@@ -148,12 +149,12 @@ unsigned int CObjectStorage::add(TiXmlNode* t_nodePtr, VeObjectType t_type, unsi
    }
 
    // Add the object to the map, increment the id counter
-   m_objectMap[r_ret] = a_objectPtr;
+   m_objectMap.add(r_ret, a_objectPtr);
 
    // load enemy content
    a_objectPtr->load(t_nodePtr);
 
-   return r_ret;
+   return r_ret;   
 }
 
 /** Add object from pattern object*/
@@ -178,7 +179,7 @@ unsigned int CObjectStorage::add(CObject* t_objectPtr, unsigned int t_parentId, 
    a_objectPtr->m_id = r_ret;
 
    // Add the object to the map, increment the id counter
-   m_objectMap[r_ret] = a_objectPtr;
+   m_objectMap.add(r_ret, a_objectPtr);
 
    return r_ret;
 }
