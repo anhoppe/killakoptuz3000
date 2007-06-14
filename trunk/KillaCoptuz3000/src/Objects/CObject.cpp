@@ -41,6 +41,7 @@ CObject::CObject()
    m_direction             = false;
    m_cycleInterval         = 10;   
    m_startAngle            = 0.0;
+   m_drawLayer             = 0;
 }
 
 
@@ -99,6 +100,11 @@ bool CObject::load(TiXmlNode* t_nodePtr)
 
    r_ret = r_ret & getAttributeStr(a_elemPtr, "height", a_str);
    m_height       = atof(a_str.c_str());
+
+   if(getAttributeStr(a_elemPtr, "drawLayer", a_str))
+   {
+      m_drawLayer = atoi(a_str.c_str());
+   }
 
    if(getAttributeStr(a_elemPtr, "cycleInterval", a_str))
    {

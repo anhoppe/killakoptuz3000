@@ -50,6 +50,12 @@ public:
    */
    unsigned int add(CObject* t_objectPtr, unsigned int t_parentId = 0, std::list<unsigned int>* t_friendObjectsListPtr = 0);
 
+   /**
+   *  Inserts an object into the draw list
+   *  Called by 'add' methods
+   */
+   void addToDrawList(CObject* t_objectPtr);
+
    /** Add textures into texture map */
    bool addTextureMap(TiXmlNode* t_nodePtr);
 
@@ -60,7 +66,10 @@ public:
    void processDeleteMap();
 
    /** map of all objects */
-   CHashMap<CObject*> m_objectMap;
+   CHashMap<CObject*>               m_objectMap;
+
+   /** Draw list */
+   std::list<unsigned int>          m_drawList;
 
    /** map of objects to delete */
    std::map<unsigned int, CObject*> m_deleteMap;
@@ -68,14 +77,14 @@ public:
    /** map of all game textures (player and level) */
    std::map<std::string, CTexture*> m_textureMap;
 
-   unsigned int m_playerId;
+   unsigned int                     m_playerId;
 
    /** List of events */
-   std::list<CEvent*> m_eventList;
+   std::list<CEvent*>               m_eventList;
 
 private:
    /** Object Id counter */ 
-   unsigned int m_objectIdCount;
+   unsigned int                     m_objectIdCount;
 };
 
 #endif

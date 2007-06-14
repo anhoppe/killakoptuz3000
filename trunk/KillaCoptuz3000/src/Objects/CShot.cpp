@@ -57,6 +57,8 @@ CShot::CShot(CShot* t_shotPtr)
    m_maxHitPoints    = t_shotPtr->m_maxHitPoints;   
 
    m_parentId        = t_shotPtr->m_parentId;
+
+   m_drawLayer       = t_shotPtr->m_drawLayer;
 }
 
 CShot::CShot(TiXmlNode* t_nodePtr)
