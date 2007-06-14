@@ -98,11 +98,15 @@ void CObjectStorage::processDeleteMap()
 
    for (a_it = m_deleteMap.begin(); a_it != m_deleteMap.end(); a_it++)
    {
-      // Remove object
+      // Remove object from hast table
       m_objectMap.erase(a_it->first);
+
+      // Remove object from draw list
+      m_drawList.remove(a_it->first);
 
       // Delete the object
       a_objectPtr = a_it->second;
+
       delete a_objectPtr;
    }
 
@@ -154,6 +158,9 @@ unsigned int CObjectStorage::add(TiXmlNode* t_nodePtr, VeObjectType t_type, unsi
    // load enemy content
    a_objectPtr->load(t_nodePtr);
 
+   // add the object to the draw list
+   addToDrawList(a_objectPtr);
+
    return r_ret;   
 }
 
@@ -181,7 +188,40 @@ unsigned int CObjectStorage::add(CObject* t_objectPtr, unsigned int t_parentId, 
    // Add the object to the map, increment the id counter
    m_objectMap.add(r_ret, a_objectPtr);
 
+   // add the object to the draw list
+   addToDrawList(a_objectPtr);
+
    return r_ret;
+}
+
+void CObjectStorage::addToDrawList(CObject* t_objectPtr)
+{
+   std::list<unsigned int>::iterator   a_it;
+   bool                                a_isInserted   = false;
+   CObject*                            a_objectPtr    = 0;
+
+
+   for(a_it = m_drawList.begin(); a_it != m_drawList.end(); ++a_it)
+   {
+      a_objectPtr = m_objectMap[*a_it];
+      assert(a_objectPtr);
+
+      if(0 != a_objectPtr)
+      {
+         if(a_objectPtr->m_drawLayer >= t_objectPtr->m_drawLayer)
+         {
+            m_drawList.insert(a_it, t_objectPtr->m_id);
+            a_isInserted= true;
+            break;
+         }
+      }
+   }
+
+   if(!a_isInserted)
+   {
+      m_drawList.push_back(t_objectPtr->m_id);
+   }
+
 }
 
 bool CObjectStorage::addTextureMap(TiXmlNode* t_nodePtr)

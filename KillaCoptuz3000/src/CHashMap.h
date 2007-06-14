@@ -49,6 +49,12 @@ public:
    void add(unsigned int t_key, T_value t_value);
 
    /**
+   *  Retrieves size (number of elements)
+   *  @return number of elements
+   */
+   unsigned int size();
+
+   /**
    *  remove element
    *  @param t_key key, the hash key
    */
@@ -70,6 +76,9 @@ private:
    /** Size of primary vector */
    unsigned int m_size;
 
+   /** number of elements (retrieved by size() method) */
+   unsigned int m_nofElements;
+
    /** Hash function */
    unsigned int getIndex(unsigned int t_key);  
 };
@@ -86,6 +95,9 @@ CHashMap<T_value>::CHashMap()
 
    // Initialize vector
    m_map.resize(m_size);
+
+   // initialize number of elements
+   m_nofElements = 0;
 }
 
 template <class T_value>
@@ -133,6 +145,13 @@ void CHashMap<T_value>::add(unsigned int t_key, T_value t_value)
    
    // Insert it in list at vector position
    m_map[getIndex(t_key)].push_back(a_keyValuePair);
+   m_nofElements++;
+}
+
+template <class T_value>
+unsigned int CHashMap<T_value>::size()
+{
+   return m_nofElements;
 }
 
 template <class T_value>
@@ -173,6 +192,7 @@ void CHashMap<T_value>::erase(unsigned int t_key)
    {
       m_map[a_index].remove(a_keyValuePair);
       delete a_keyValuePair;
+      m_nofElements--;
    }
 }
 

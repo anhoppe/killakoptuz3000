@@ -139,10 +139,13 @@ public:
    int                  m_invincible;
 
    /** Objects unique ID for storage class map key. 0 is illegal */
-   unsigned int          m_id;
+   unsigned int         m_id;
 
    /** Id of the parent. If it equals 0, object has no parent */
    unsigned int         m_parentId;
+
+   /** layer position determines draw order */
+   unsigned int         m_drawLayer;
 
 protected:
    // List of textures for the object

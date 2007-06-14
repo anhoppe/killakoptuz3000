@@ -80,37 +80,12 @@ void CLevel_renderScene(void)
 
    //////////////////////////////////////////////////////////////////////////
    // draw the level
-   std::map<unsigned int, CObject*>::iterator   a_it;
+   std::list<unsigned int>::iterator a_it;
 
-   // first draw all objects
-   if (CObjectStorage::getInstance().m_objectMap.iterate(true))
+   for(a_it = CObjectStorage::getInstance().m_drawList.begin(); a_it != CObjectStorage::getInstance().m_drawList.end(); a_it++)
    {
-      do 
-      {
-         if (e_object == CObjectStorage::getInstance().m_objectMap.m_current.m_value->getType())
-         {            
-            CObjectStorage::getInstance().m_objectMap.m_current.m_value->draw();
-         }
-      } 
-      while(CObjectStorage::getInstance().m_objectMap.iterate());
+      CObjectStorage::getInstance().m_objectMap[(*a_it)]->draw();
    }
-
-   // second draw all non objects
-   if (CObjectStorage::getInstance().m_objectMap.iterate(true))
-   {
-      do 
-      {
-         if (e_object != CObjectStorage::getInstance().m_objectMap.m_current.m_value->getType())
-         {            
-            CObjectStorage::getInstance().m_objectMap.m_current.m_value->draw();
-         }
-      } 
-      while(CObjectStorage::getInstance().m_objectMap.iterate());
-   }
-
-   CObjectStorage* a_obj = &CObjectStorage::getInstance();
-
-   a_obj->m_objectMap;
 
    //////////////////////////////////////////////////////////////////////////
    // Can be deleted (hit point output)
