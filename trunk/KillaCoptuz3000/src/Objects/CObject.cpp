@@ -50,11 +50,12 @@ CObject::~CObject()
 
 void CObject::nextTexture()
 {
-    m_timeCounter++;
+   m_timeCounter++;
+   
    if (m_timeCounter >= m_cycleInterval)
    {
       m_activeTexture++;
-      
+     
       if (m_activeTexture >= CObjectStorage::getInstance().m_textureMap[m_textureKeys[m_activeAnimationPhase]->m_textureKey]->m_textureIdVector.size())
       {
          m_activeTexture = 0;

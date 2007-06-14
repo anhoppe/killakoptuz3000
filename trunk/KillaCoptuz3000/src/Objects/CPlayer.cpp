@@ -110,7 +110,7 @@ void CPlayer::update(CLevel* t_levelPtr)
    //////////////////////////////////////////////////////////////////////////
    if(!m_isDying)
    {
-      m_cycleInterval = (int)fabs(m_maxAccel - m_accel)/m_maxAccel;   
+      m_cycleInterval = 1 + 8*(1.0 - m_accel/(m_accel + m_maxAccel/20.0));            
    }
 
    //////////////////////////////////////////////////////////////////////////
@@ -146,6 +146,8 @@ void CPlayer::update(CLevel* t_levelPtr)
    {
       m_velocityX = 0.0;
    }
+
+   CObject::update(t_levelPtr);
 }
 
 

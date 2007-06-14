@@ -8,15 +8,12 @@
 // 
 // ***************************************************************
 
-// #include "main.h"
-//#include <stdio.h>
-// #include <math.h>
-//#include "glut.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <iostream>
 #include "fmod.h"
 #include "CHashMap.h"
 #include "CGame.h"
-// #include "CLevel.h"
-// #include "objects/CPlayer.h"
  #include "globals.h"
 // 
 // //////////////////////////////////////////////////////////////////////////   
@@ -341,41 +338,18 @@ void initGL(int t_argc, char** t_argv)
 
 int main(int t_argc, char **t_argv) 
 {      
-   // Init OpenGL and setup screen
-//    initGL(t_argc, t_argv);
-// 
-//    // Set up sound system
-//    setupSound();
-// 
-//    // Create CGame object and start game
-//    CGame a_game;
-//    a_game.gameControl();
-// 
-//    // Start glut main loop
-//    glutMainLoop();
-   CHashMap<int> a_map;
+   //Init OpenGL and setup screen
+   initGL(t_argc, t_argv);
 
-   int x;
-   
-   
-   a_map.add(4, 12);   
-   a_map.add(2, 2);   
-   a_map.add(6, 14);   
-   a_map.add(89, 23);   
-   a_map.add(5, 3);
-     
+   // Set up sound system
+   setupSound();
 
-   int a_value;
-   
-   if (a_map.iterate(true))
-   {
-      do 
-      {      
-         a_value = a_map.m_current.m_value;
-         printf ("%d\n", a_value);      
-      }
-      while(a_map.iterate());
-   }   
+   // Create CGame object and start game
+   CGame a_game;
+   a_game.gameControl();
+
+   // Start glut main loop
+   glutMainLoop();
 
    return 69;
 }

@@ -12,6 +12,7 @@
 #define COBJECT_STORAGE_H
 
 #include <map>
+#include "CHashMap.h"
 #include <list>
 #include "tinyxml/tinyxml.h"
 #include "Objects/CObject.h"
@@ -59,7 +60,7 @@ public:
    void processDeleteMap();
 
    /** map of all objects */
-   std::map<unsigned int, CObject*> m_objectMap;
+   CHashMap<CObject*> m_objectMap;
 
    /** map of objects to delete */
    std::map<unsigned int, CObject*> m_deleteMap;

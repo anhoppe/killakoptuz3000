@@ -52,7 +52,7 @@ public:
    *  remove element
    *  @param t_key key, the hash key
    */
-   void remove(unsigned int t_key);
+   void erase(unsigned int t_key);
 
    /**
    *  Iterate on the hash map one step
@@ -79,7 +79,10 @@ CHashMap<T_value>::CHashMap()
 {
    // Size of primary vector
    // Should be a prime number
-   m_size = 7;
+
+   // Large numbers: fast access, more memory usage
+   // Small numbers: a little slower, lower memory usage
+   m_size = 269;
 
    // Initialize vector
    m_map.resize(m_size);
@@ -120,7 +123,7 @@ void CHashMap<T_value>::add(unsigned int t_key, T_value t_value)
    if (0 != getKeyValuePair(t_key))
    {      
       // Remove it
-      remove(t_key);
+      erase(t_key);
    }
 
    // Create new entry
@@ -159,7 +162,7 @@ KeyValuePair<T_value>* CHashMap<T_value>::getKeyValuePair(unsigned int t_key)
 }
 
 template <class T_value>
-void CHashMap<T_value>::remove(unsigned int t_key)
+void CHashMap<T_value>::erase(unsigned int t_key)
 {   
    KeyValuePair<T_value>* a_keyValuePair = 0;
    unsigned int a_index = getIndex(t_key);
