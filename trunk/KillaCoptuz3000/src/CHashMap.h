@@ -69,12 +69,17 @@ public:
    /** Current KeyValuePair at iterator position */
    KeyValuePair<T_value> m_current;
 
+   /**
+   *  Clears the delete map   
+   */
+   void clear();
+
 private:
    /** Hash array */
    std::vector<std::list<KeyValuePair<T_value>*>> m_map;
 
    /** Size of primary vector */
-   unsigned int m_size;
+   unsigned int m_vectorSize;
 
    /** number of elements (retrieved by size() method) */
    unsigned int m_nofElements;
@@ -91,10 +96,10 @@ CHashMap<T_value>::CHashMap()
 
    // Large numbers: fast access, more memory usage
    // Small numbers: a little slower, lower memory usage
-   m_size = 269;
+   m_vectorSize = 269;
 
    // Initialize vector
-   m_map.resize(m_size);
+   m_map.resize(m_vectorSize);
 
    // initialize number of elements
    m_nofElements = 0;
@@ -157,7 +162,7 @@ unsigned int CHashMap<T_value>::size()
 template <class T_value>
 unsigned int CHashMap<T_value>::getIndex(unsigned int t_key)
 {
-   return t_key % m_size;
+   return t_key % m_vectorSize;
 }
 
 template <class T_value>
@@ -193,6 +198,28 @@ void CHashMap<T_value>::erase(unsigned int t_key)
       m_map[a_index].remove(a_keyValuePair);
       delete a_keyValuePair;
       m_nofElements--;
+   }
+}
+
+template <class T_value>
+void CHashMap<T_value>::clear()
+{
+   unsigned int a_currentIndex = 0;
+   std::list<KeyValuePair<T_value>*>::iterator a_it;
+
+   for (a_currentIndex = 0; a_currentIndex < m_vectorSize; a_currentIndex++)
+   {
+      if (0 != m_map[a_currentIndex].size())
+      {
+         // Delete all KeyValuePairs
+         for (a_it = m_map[a_currentIndex].begin(); a_it != m_map[a_currentIndex].end(); a_it++)
+         {
+            delete *a_it;
+         }
+
+         // Clear the list
+         m_map[a_currentIndex].clear();
+      }
    }
 }
 
@@ -247,7 +274,7 @@ bool CHashMap<T_value>::iterate(bool t_reset)
       if (false == a_found)
       {
          a_currentIndex++;
-         if (a_currentIndex == m_size)
+         if (a_currentIndex == m_vectorSize)
          {
             a_end = true;
          }

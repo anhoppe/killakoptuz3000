@@ -67,7 +67,7 @@ void CObjectStorage::processEvents()
       case e_delete:
          {            
             // Add object to delete list
-            m_deleteMap[a_event->m_objectList.back()] = m_objectMap[a_event->m_objectList.back()];
+            m_deleteMap.add(a_event->m_objectList.back(), m_objectMap[a_event->m_objectList.back()]);            
 
             break;
          }
@@ -93,25 +93,46 @@ void CObjectStorage::processEvents()
 /** Process delete objectMap */
 void CObjectStorage::processDeleteMap()
 {
-   CObject* a_objectPtr;
-   std::map<unsigned int, CObject*>::iterator a_it;
-
-   for (a_it = m_deleteMap.begin(); a_it != m_deleteMap.end(); a_it++)
+   // Iterate over delete map  
+   if (m_deleteMap.iterate(true))
    {
-      // Remove object from hast table
-      m_objectMap.erase(a_it->first);
+      do
+      {         
+         // Remove object from object map
+         m_objectMap.erase(m_deleteMap.m_current.m_key);
 
-      // Remove object from draw list
-      m_drawList.remove(a_it->first);
+         // Remove object from draw list
+         m_drawList.remove(m_deleteMap.m_current.m_key);
 
-      // Delete the object
-      a_objectPtr = a_it->second;
-
-      delete a_objectPtr;
+         // Delete the object
+         delete m_deleteMap.m_current.m_value;
+      }
+      while(m_deleteMap.iterate());
    }
 
    // Delete the deleteMap
    m_deleteMap.clear();
+
+
+//    CObject* a_objectPtr;
+//    std::map<unsigned int, CObject*>::iterator a_it;
+// 
+//    for (a_it = m_deleteMap.begin(); a_it != m_deleteMap.end(); a_it++)
+//    {
+//       // Remove object from hast table
+//       m_objectMap.erase(a_it->first);
+// 
+//       // Remove object from draw list
+//       m_drawList.remove(a_it->first);
+// 
+//       // Delete the object
+//       a_objectPtr = a_it->second;
+// 
+//       delete a_objectPtr;
+//    }
+// 
+//    // Delete the deleteMap
+//    m_deleteMap.clear();
 }
 
 /** Add object read from xml node */

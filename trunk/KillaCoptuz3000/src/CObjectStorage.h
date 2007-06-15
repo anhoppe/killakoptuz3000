@@ -72,7 +72,7 @@ public:
    std::list<unsigned int>          m_drawList;
 
    /** map of objects to delete */
-   std::map<unsigned int, CObject*> m_deleteMap;
+   CHashMap<CObject*>               m_deleteMap;
    
    /** map of all game textures (player and level) */
    std::map<std::string, CTexture*> m_textureMap;
