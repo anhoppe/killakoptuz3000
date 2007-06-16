@@ -19,6 +19,8 @@
 #include "globals.h"
 #include "CTexture.h"
 
+#include "Objects/CShot.h"
+
 #include <stdio.h>
 #include <string>
 
@@ -535,8 +537,28 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
    CLine          a_ol1, a_ol2, a_ol3, a_ol4;   
    CPoint         a_middlePoint1, a_middlePoint2;
 
+
+   if(t_firstPtr->getType() == e_shot)
+   {
+      if(static_cast<CShot*>(t_firstPtr)->isFriend(t_secondPtr->m_id))
+      {
+         return false;
+      }
+   }
+   if(t_secondPtr->getType() == e_shot)
+   {
+      if(static_cast<CShot*>(t_secondPtr)->isFriend(t_firstPtr->m_id))
+      {
+         return false;
+      }
+   }
+
    // We can only collide with non - background objects
    if(t_firstPtr->m_isBackground || t_secondPtr->m_isBackground)
+   {
+      r_ret = false;
+   }
+   else if(t_firstPtr->getType() == e_shot && t_secondPtr->getType() == e_shot)
    {
       r_ret = false;
    }
@@ -765,4 +787,41 @@ void CObject::collisionImpact(CObject* t_objectPtr, bool t_checkOther)
    {
       t_objectPtr->collisionImpact(this, false);
    }   
+}
+
+bool CObject::hasPointInRect(CObject* t_objectPtr, float t_top, float t_left, float t_right, float t_bottom)
+{
+   bool r_ret = false;
+
+
+   if(t_objectPtr->m_xPos > t_left && 
+      t_objectPtr->m_xPos < t_right && 
+      t_objectPtr->m_yPos < t_top && 
+      t_objectPtr->m_yPos > t_bottom )
+   {
+      r_ret = true;
+   }
+   else if(t_objectPtr->m_xPos+t_objectPtr->m_width > t_left && 
+           t_objectPtr->m_xPos+t_objectPtr->m_width < t_right && 
+           t_objectPtr->m_yPos < t_top && 
+           t_objectPtr->m_yPos > t_bottom )
+   {
+      r_ret = true;
+   }
+   else if(t_objectPtr->m_xPos > t_left && 
+      t_objectPtr->m_xPos < t_right && 
+      t_objectPtr->m_yPos+t_objectPtr->m_height < t_top && 
+      t_objectPtr->m_yPos+t_objectPtr->m_height > t_bottom )
+   {
+      r_ret = true;
+   }
+   else if(t_objectPtr->m_xPos+t_objectPtr->m_width > t_left && 
+      t_objectPtr->m_xPos+t_objectPtr->m_width < t_right && 
+      t_objectPtr->m_yPos+t_objectPtr->m_height < t_top && 
+      t_objectPtr->m_yPos+t_objectPtr->m_height > t_bottom )
+   {
+      r_ret = true;
+   }
+
+   return r_ret;
 }

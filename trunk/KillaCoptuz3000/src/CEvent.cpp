@@ -15,6 +15,11 @@ CEvent::CEvent()
 
 }
 
+CEvent::CEvent(EEventType t_type)
+{
+   m_event = t_type;
+}
+
 CEvent::~CEvent()
 {
 

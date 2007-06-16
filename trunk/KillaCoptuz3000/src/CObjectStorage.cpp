@@ -26,11 +26,15 @@
 CObjectStorage::CObjectStorage()
 {
    m_objectIdCount = 1;
+   m_quadTreeRootPtr = 0;
 }
 
 CObjectStorage::~CObjectStorage()
 {
-
+   if(0 != m_quadTreeRootPtr)
+   {
+      delete m_quadTreeRootPtr;
+   }
 }
 
 CObjectStorage& CObjectStorage::getInstance()
@@ -43,6 +47,26 @@ CObjectStorage& CObjectStorage::getInstance()
    }
 
    return *r_inst;
+}
+
+void CObjectStorage::initializeQuadTree(float t_top, float t_left, float t_right, float t_bottom)
+{
+   if(0 != m_quadTreeRootPtr)
+   {
+      delete m_quadTreeRootPtr;
+   }
+
+   m_quadTreeRootPtr = new CQuadTreeNode(0, t_top, t_left, t_right, t_bottom);
+
+   // Iterate over all objects and insert them to quad tree
+   if (m_objectMap.iterate(true))
+   {
+      do
+      {
+         m_quadTreeRootPtr->add(m_objectMap.m_current.m_value);
+      }
+      while (m_objectMap.iterate());
+   }
 }
 
 CPlayer* CObjectStorage::getPlayerPtr()
@@ -77,6 +101,7 @@ void CObjectStorage::processEvents()
          }
       case e_collided:
          {
+            int we_rule_especialey_me = 1;
             break;
          }
       }
@@ -104,6 +129,9 @@ void CObjectStorage::processDeleteMap()
          // Remove object from draw list
          m_drawList.remove(m_deleteMap.m_current.m_key);
 
+         // Remove object from quad tree
+         m_quadTreeRootPtr->remove(m_deleteMap.m_current.m_value);
+
          // Delete the object
          delete m_deleteMap.m_current.m_value;
       }
@@ -112,30 +140,10 @@ void CObjectStorage::processDeleteMap()
 
    // Delete the deleteMap
    m_deleteMap.clear();
-
-
-//    CObject* a_objectPtr;
-//    std::map<unsigned int, CObject*>::iterator a_it;
-// 
-//    for (a_it = m_deleteMap.begin(); a_it != m_deleteMap.end(); a_it++)
-//    {
-//       // Remove object from hast table
-//       m_objectMap.erase(a_it->first);
-// 
-//       // Remove object from draw list
-//       m_drawList.remove(a_it->first);
-// 
-//       // Delete the object
-//       a_objectPtr = a_it->second;
-// 
-//       delete a_objectPtr;
-//    }
-// 
-//    // Delete the deleteMap
-//    m_deleteMap.clear();
 }
 
-/** Add object read from xml node */
+
+/** Add object read from XML node */
 unsigned int CObjectStorage::add(TiXmlNode* t_nodePtr, VeObjectType t_type, unsigned int t_parentId)
 {
    TiXmlElement*  a_elemPtr   = t_nodePtr->ToElement();
@@ -195,7 +203,7 @@ unsigned int CObjectStorage::add(CObject* t_objectPtr, unsigned int t_parentId, 
    switch (t_objectPtr->getType())
    {
       case e_shot:
-         a_objectPtr = new CShot(static_cast<CShot*>(t_objectPtr));
+         a_objectPtr = new CShot(static_cast<CShot*>(t_objectPtr), t_friendObjectsListPtr);
          break;
    }
 
@@ -211,6 +219,9 @@ unsigned int CObjectStorage::add(CObject* t_objectPtr, unsigned int t_parentId, 
 
    // add the object to the draw list
    addToDrawList(a_objectPtr);
+
+   // add the object to the quad tree
+   m_quadTreeRootPtr->add(a_objectPtr);
 
    return r_ret;
 }

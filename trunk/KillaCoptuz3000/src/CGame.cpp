@@ -101,6 +101,9 @@ void CGame::loadNextLevel()
       {
          // To do: real level control
          m_level.load(a_nodePtr);
-      }
+
+         // Initialize Quad - tree
+         CObjectStorage::getInstance().initializeQuadTree(m_level.m_maxY, m_level.m_minX, m_level.m_maxX, m_level.m_minY);
+      }      
    }
 }

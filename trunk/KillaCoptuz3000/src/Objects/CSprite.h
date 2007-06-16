@@ -24,6 +24,7 @@ public:
    ~CSprite();
 
    virtual VeObjectType getType() { return e_sprite; };
+   virtual void update(CLevel* m_levelPtr);
 
    /** Switches direction*/
    void flip();
