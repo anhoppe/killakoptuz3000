@@ -63,7 +63,10 @@ void CObjectStorage::initializeQuadTree(float t_top, float t_left, float t_right
    {
       do
       {
-         m_quadTreeRootPtr->add(m_objectMap.m_current.m_value);
+         if (!m_objectMap.m_current.m_value->m_isBackground)
+         {
+            m_quadTreeRootPtr->add(m_objectMap.m_current.m_value);
+         }         
       }
       while (m_objectMap.iterate());
    }

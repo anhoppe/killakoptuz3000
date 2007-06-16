@@ -15,7 +15,7 @@
 //////////////////////////////////////////////////////////////////////////
 // Initialize static members
 //////////////////////////////////////////////////////////////////////////
-unsigned int CQuadTreeNode::M_maxDepth = 6;
+unsigned int CQuadTreeNode::M_maxDepth = 5;
 
 //////////////////////////////////////////////////////////////////////////
 // Implementation
@@ -51,23 +51,11 @@ void CQuadTreeNode::add(CObject* t_objectPtr)
 
    float          a_xMiddle   = 0.;
    float          a_yMiddle   = 0.;
-
-   //////////////////////////////////////////////////////////////////////////
-   // check top left square
+   
    if(m_depth < M_maxDepth)
    {
       a_xMiddle = m_left   + (m_right-m_left)/2;
       a_yMiddle = m_bottom + (m_top-m_bottom)/2;
-
-      if(m_left > m_right ||
-         m_bottom > m_top ||
-         a_xMiddle < m_left ||
-         a_xMiddle > m_right ||
-         a_yMiddle < m_bottom ||
-         a_yMiddle > m_top)
-      {
-         int error = 1;
-      }
 
       // top left
       if(t_objectPtr->hasPointInRect(t_objectPtr, m_top, m_left, a_xMiddle, a_yMiddle))
@@ -92,21 +80,21 @@ void CQuadTreeNode::add(CObject* t_objectPtr)
       // bottom left
       if(t_objectPtr->hasPointInRect(t_objectPtr, a_yMiddle, m_left, a_xMiddle, m_bottom))
       {
-         if(0 == m_children[0])
+         if(0 == m_children[2])
          {
-            m_children[0] = new CQuadTreeNode(m_depth+1, a_yMiddle, m_left, a_xMiddle, m_bottom);
+            m_children[2] = new CQuadTreeNode(m_depth+1, a_yMiddle, m_left, a_xMiddle, m_bottom);
          }
-         m_children[0]->add(t_objectPtr);
+         m_children[2]->add(t_objectPtr);
       }
 
       // bottom right
       if(t_objectPtr->hasPointInRect(t_objectPtr, a_yMiddle, a_xMiddle, m_right, m_bottom))
       {
-         if(0 == m_children[0])
+         if(0 == m_children[3])
          {
-            m_children[0] = new CQuadTreeNode(m_depth+1, a_yMiddle, a_xMiddle, m_right, m_bottom);
+            m_children[3] = new CQuadTreeNode(m_depth+1, a_yMiddle, a_xMiddle, m_right, m_bottom);
          }
-         m_children[0]->add(t_objectPtr);
+         m_children[3]->add(t_objectPtr);
       }
    }
    else
@@ -119,7 +107,6 @@ void CQuadTreeNode::add(CObject* t_objectPtr)
 bool CQuadTreeNode::remove(CObject* t_nodePtr)
 {
    bool r_ret = false;
-
 
    // remove object from own list
    m_objectList.remove(t_nodePtr);
