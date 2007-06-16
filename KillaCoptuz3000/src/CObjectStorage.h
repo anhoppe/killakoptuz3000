@@ -17,6 +17,7 @@
 #include "tinyxml/tinyxml.h"
 #include "Objects/CObject.h"
 #include "CEvent.h"
+#include "CQuadTreeNode.h"
 
 class CPlayer;
 class CTexture;
@@ -65,6 +66,9 @@ public:
    /** Process delete objectMap */
    void processDeleteMap();
 
+   /** Creates the quad tree*/
+   void initializeQuadTree(float t_top, float t_left, float t_right, float t_bottom);
+
    /** map of all objects */
    CHashMap<CObject*>               m_objectMap;
 
@@ -81,6 +85,10 @@ public:
 
    /** List of events */
    std::list<CEvent*>               m_eventList;
+
+   /** Quad tree for collision */
+   CQuadTreeNode*                   m_quadTreeRootPtr;
+
 
 private:
    /** Object Id counter */ 

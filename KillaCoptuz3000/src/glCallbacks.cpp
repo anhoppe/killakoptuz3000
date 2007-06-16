@@ -56,6 +56,7 @@ void CLevel_timerCallback(int value)
    // Detect collisions with quad tree (events are generated)
 
    // ... (Quad tree here...)
+   CObjectStorage::getInstance().m_quadTreeRootPtr->getCollisionEvents();
 
    // Process events
    CObjectStorage::getInstance().processEvents();
@@ -93,7 +94,12 @@ void CLevel_renderScene(void)
    _itoa_s(a_playerPtr->m_hitPoints, a_str, 10);
    //renderBitmapString(g_playerPtr->m_xPos + 2.3, 1.5, a_str, GLUT_BITMAP_8_BY_13);
 
-   glPopMatrix();   
+   //////////////////////////////////////////////////////////////////////////
+   // Test. Draw the quad tree
+   CObjectStorage::getInstance().m_quadTreeRootPtr->draw();
+
+   glPopMatrix();
+
 
    // swapping the buffers causes the rendering above to be  
    // shown

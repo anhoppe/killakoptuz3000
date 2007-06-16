@@ -19,6 +19,8 @@ class CEvent
 {
 public:
    CEvent();
+   CEvent(EEventType t_type);
+
    ~CEvent();
 
   /** List of participating object id's*/

@@ -187,17 +187,19 @@ float CWeapon::trackAngle(float t_xTrg, float t_yTrg)
 
 void CWeapon::fire()
 {
-   float          a_angle        = 0.;
-   unsigned int   a_newId        = 0;
-   CShot*         a_newShotPtr   = 0;
-   CObject*       a_parentPtr    = 0;
-
+   float                   a_angle        = 0.;
+   unsigned int            a_newId        = 0;
+   CShot*                  a_newShotPtr   = 0;
+   CObject*                a_parentPtr    = 0;
+   std::list<unsigned int> a_friendlyObjects;
 
    // Create a new shot
    if(0 != m_shotPtr)
    {
       // add new shot
-      a_newId = CObjectStorage::getInstance().add(m_shotPtr, 0);
+      a_friendlyObjects.push_back(m_parentId);
+      a_friendlyObjects.push_back(m_id);
+      a_newId = CObjectStorage::getInstance().add(m_shotPtr, 0, &a_friendlyObjects);
 
       // get pointer to new shot
       a_newShotPtr = (CShot*)(CObjectStorage::getInstance().m_objectMap[a_newId]);

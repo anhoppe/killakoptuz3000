@@ -19,7 +19,7 @@ class CShot : public CSprite
 {
 public:
    // Copy constructor creates shot from default shot
-   CShot(CShot* t_shotPtr);
+   CShot(CShot* t_shotPtr, std::list<unsigned int>* t_friendObjectsListPtr);
    CShot(TiXmlNode* t_nodePtr);
    ~CShot();
 
@@ -31,6 +31,12 @@ public:
    virtual bool load(TiXmlNode* t_nodePtr);
 
    virtual void update(CLevel* t_levelPtr);
+
+   bool         isFriend(unsigned int t_objectPtr);
+
+
+private:
+   std::list<unsigned int> m_friendObjects;
 };
 
 #endif

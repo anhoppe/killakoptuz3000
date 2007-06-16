@@ -19,7 +19,7 @@
 #include "Functions.h"
 
 
-CShot::CShot(CShot* t_shotPtr)
+CShot::CShot(CShot* t_shotPtr, std::list<unsigned int>* t_friendObjectsListPtr)
 {
    // Copy constructor creates shot from default shot
    m_xPos            = t_shotPtr->m_xPos;
@@ -30,7 +30,7 @@ CShot::CShot(CShot* t_shotPtr)
 
    m_angle           = t_shotPtr->m_angle;
 
-   m_cycleInterval   = t_shotPtr->m_cycleInterval;   
+   m_cycleInterval   = t_shotPtr->m_cycleInterval;
 
    m_isBackground    = t_shotPtr->m_isBackground;
 
@@ -59,6 +59,17 @@ CShot::CShot(CShot* t_shotPtr)
    m_parentId        = t_shotPtr->m_parentId;
 
    m_drawLayer       = t_shotPtr->m_drawLayer;
+
+   // copy friend objects. bit sorry that they are not in the t_srcPtr
+   if(0 != t_friendObjectsListPtr)
+   {
+      std::list<unsigned int>::iterator a_it;
+
+      for(a_it = t_friendObjectsListPtr->begin(); a_it != t_friendObjectsListPtr->end(); a_it++)
+      {
+         m_friendObjects.push_back(*a_it);
+      }
+   }
 }
 
 CShot::CShot(TiXmlNode* t_nodePtr)
@@ -109,4 +120,21 @@ void CShot::update(CLevel* t_levelPtr)
    }
 
    CSprite::update(t_levelPtr);
+}
+
+bool CShot::isFriend(unsigned int t_objectId)
+{
+   bool r_ret = false;
+   std::list<unsigned int>::iterator a_it;
+
+   for(a_it = m_friendObjects.begin(); a_it != m_friendObjects.end(); a_it++)
+   {
+      if(*a_it == t_objectId)
+      {
+         r_ret = true;
+         break;
+      }
+   }
+
+   return r_ret;
 }

@@ -311,6 +311,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\CQuadTreeNode.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\CTexture.cpp"
 					>
 				</File>
@@ -364,6 +368,10 @@
 				</File>
 				<File
 					RelativePath=".\src\CPolygon.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\CQuadTreeNode.h"
 					>
 				</File>
 				<File

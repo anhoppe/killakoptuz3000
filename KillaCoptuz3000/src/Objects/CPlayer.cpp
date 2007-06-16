@@ -147,7 +147,7 @@ void CPlayer::update(CLevel* t_levelPtr)
       m_velocityX = 0.0;
    }
 
-   CObject::update(t_levelPtr);
+   CSprite::update(t_levelPtr);
 }
 
 
