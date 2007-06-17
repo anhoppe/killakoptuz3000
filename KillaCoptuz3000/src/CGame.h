@@ -16,12 +16,8 @@
 
 enum EGameState 
 {  
-   e_intro     = 0, 
-   e_gameOver  = 1,
-   e_startMenu = 2, 
-   e_level     = 3, 
-   e_shop      = 4, 
-   e_highscore = 5
+   e_menu      = 0, 
+   e_level     = 1 
 };
 
 class CGame
@@ -57,7 +53,9 @@ public:
    CMenu      m_menu;
 
    /** State of the game */
-   EGameState m_gameState;
+   EGameState  m_gameState;
+
+   std::string m_menuName;
 
 private:
 

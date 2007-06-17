@@ -16,8 +16,9 @@
 
 enum EMenuAction
 {
-   e_startGame = 0,
-   e_quitGame  = 1
+   e_startGame       = 0,
+   e_quitGame        = 1,
+   e_succeedingMenu  = 2
 };
 
 class CMenuItem
@@ -37,8 +38,14 @@ public:
    // Variables
    //////////////////////////////////////////////////////////////////////////
 public:
+
+   /** This text is displayed for the menu */
    std::string m_text;
 
+   /** This is the succeeding menu when this is selected. Only set if menu action is 'menu' */
+   std::string m_succeedingMenu;
+
+   /** Type of action (start game / end program / menu) */
    EMenuAction m_action;
 };
 

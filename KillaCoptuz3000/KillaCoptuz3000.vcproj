@@ -543,6 +543,10 @@
 				Name="menu"
 				>
 				<File
+					RelativePath=".\data\menu\gameover.xml"
+					>
+				</File>
+				<File
 					RelativePath=".\data\menu\main.xml"
 					>
 				</File>
