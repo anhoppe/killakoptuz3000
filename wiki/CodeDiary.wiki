@@ -131,6 +131,7 @@ Very informative (for our guest star who gained massive C++ knowledge)
 Otherwise as usual...
 We reached the same state we had before the re-implementation phase.
 
+  * Fixed the QuadTree
   * Children are deleted as soon as parent start dying
   * Worked on game control, added menu class
   * Game starts with menu now! After you've been killed, you get back to the main menu
