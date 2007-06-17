@@ -11,6 +11,7 @@
    <texture basefilename="rocketlauncher" key="rocketlauncher" gfxType="tga"/>
    <texture basefilename="rocketA" key="rocketA" gfxType="tga"/>
    <texture basefilename="explosion" key="explosion" gfxType="tga"/>
+   <texture basefilename="puff" key="puff" gfxType="tga"/>
 </texturelist>
 
 <level xmin="-10." ymin="-1.5" xmax="10." ymax="1.5" music="Copter.mp3">
@@ -39,6 +40,11 @@
       <object cycleInterval="20" xpos="3.0" ypos="-2.0" width="3.0" height="0.3" drawLayer="2">
          <texturelist>
             <texture key="water"/>
+         </texturelist>
+      </object>
+      <object cycleInterval="20" xpos="2.4" ypos="-2.0" width="1.0" height="1.4" drawLayer="3">
+         <texturelist>
+            <texture key="puff"/>
          </texturelist>
       </object>
       <object cycleInterval="20" xpos="3.4" ypos="-2.0" width="4.0" height="0.6" drawLayer="3">

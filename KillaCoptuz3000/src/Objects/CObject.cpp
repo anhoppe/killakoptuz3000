@@ -538,6 +538,8 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
    CPoint         a_middlePoint1, a_middlePoint2;
 
 
+   //////////////////////////////////////////////////////////////////////////
+   // shots don't kill their friends
    if(t_firstPtr->getType() == e_shot)
    {
       if(static_cast<CShot*>(t_firstPtr)->isFriend(t_secondPtr->m_id))
@@ -553,6 +555,7 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
       }
    }
 
+   //////////////////////////////////////////////////////////////////////////
    // We can only collide with non - background objects
    if(t_firstPtr->m_isBackground || t_secondPtr->m_isBackground)
    {
@@ -564,6 +567,7 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
    }
    else
    {     
+      return true;
       // Object 1 square coordinates
       a_o1.x = t_firstPtr->m_xPos;
       a_o1.y = t_firstPtr->m_yPos;

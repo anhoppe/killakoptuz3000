@@ -79,5 +79,5 @@ void CEnemy::update(CLevel* t_levelPtr)
       m_scriptPtr->update(m_behaviorData);      
    }
 
-   CObject::update(t_levelPtr);
+   CSprite::update(t_levelPtr);
 }

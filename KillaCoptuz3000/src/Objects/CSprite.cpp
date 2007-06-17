@@ -38,18 +38,8 @@ void CSprite::flip()
 
 void CSprite::update(CLevel* t_levelPtr)
 {
-   int a_xOld = m_xPos;
-   int a_yOld = m_yPos;
-
    CObject::update(t_levelPtr);
 
-   if((a_xOld != m_xPos) ||
-      (a_yOld != m_yPos)   )
-   {
-      // delete from tree
-      CObjectStorage::getInstance().m_quadTreeRootPtr->remove(this);
-      CObjectStorage::getInstance().m_quadTreeRootPtr->add(this);
-   }
 }
 // void CSprite::draw()
 // {  

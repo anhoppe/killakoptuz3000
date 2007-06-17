@@ -37,25 +37,15 @@ void setCallbackLevelPtr(CLevel* t_levelPtr)
 
 void CLevel_timerCallback(int value)
 {
-   std::map<unsigned int, CObject*>::iterator   a_it;
-
    assert(g_levelPtr);
 
    // Iterate over all objects
    // and update them (events are generated)   
-  
-   if (CObjectStorage::getInstance().m_objectMap.iterate(true))
-   {
-      do 
-      {
-         CObjectStorage::getInstance().m_objectMap.m_current.m_value->update(g_levelPtr);
-      } 
-      while(CObjectStorage::getInstance().m_objectMap.iterate());
-   }
+   CObjectStorage::getInstance().updateObjects(g_levelPtr);
    
    // Detect collisions with quad tree (events are generated)
 
-   // ... (Quad tree here...)
+   // ... (Quad tree here...) Collision check
    CObjectStorage::getInstance().m_quadTreeRootPtr->getCollisionEvents();
 
    // Process events
