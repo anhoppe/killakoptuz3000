@@ -198,8 +198,6 @@ GLuint CTexture::loadTexture(CTexture* t_texturePtr, const char* t_filename, con
     {
        t_texturePtr->m_hullPolygonPtr = new CPolygon();
        t_texturePtr->m_hullPolygonPtr->createHull(a_image, a_width, a_height, t_nPolyPoints);       
-//     m_hullPolygonPtr->rescale(m_width / a_width, m_height / a_height);
-//     m_hullPolygonPtr->translate(m_xPos, m_yPos);
     }
 
    return r_texture;

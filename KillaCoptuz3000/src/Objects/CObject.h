@@ -72,8 +72,11 @@ public:
    /** Cycles the textures */
    void nextTexture();
 
+   /** Initiate dying sequence for the object */
+   virtual void startDying();
+
    /** Return: number of textures in m_textureIdVector */
-   size_t getTextureCount();
+   size_t getTextureCount();   
 
    /** Collision functions */
    static bool    segmentsIntersect(CLine l1, CLine l2);
@@ -89,9 +92,6 @@ protected:
    // Variables
    //////////////////////////////////////////////////////////////////////////
 public:
-   /** Flag shows that object is already in the delete list (to avoid double deletion) */
-   bool                 m_isDeleted;
-
    bool                 m_isDying;
 
    /** Absolute position */
@@ -106,6 +106,9 @@ public:
 
    std::string          m_gfxType;
 
+   /** Flag, indicates that object is dying (death animation, no more damage) /*
+   bool                 m_isDying;
+
    /** Index of the explosion (death) sequence */
    int                  m_explosionIndex;
 
@@ -119,10 +122,10 @@ public:
    float                m_angle;
 
    /** Start angle (only valid for child objects */
-   float                   m_startAngle;
+   float                m_startAngle;
 
    /** direction*/
-   bool                    m_direction;
+   bool                 m_direction;
 
    /** Remember movement deltas for children updates */
    float                m_dx;
