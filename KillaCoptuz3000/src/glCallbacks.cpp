@@ -12,6 +12,7 @@
 
 #include <map>
 
+#include "CGame.h"
 #include "CLevel.h"
 
 #include "CObjectStorage.h"
@@ -35,6 +36,13 @@ void setCallbackLevelPtr(CLevel* t_levelPtr)
    g_levelPtr = t_levelPtr;
 }
 
+
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+// Callbacks for level
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
 void CLevel_timerCallback(int value)
 {
    assert(g_levelPtr);
@@ -53,8 +61,16 @@ void CLevel_timerCallback(int value)
 
    // Delete dead objects
    CObjectStorage::getInstance().processDeleteMap();
-   
-   glutTimerFunc (25, CLevel_timerCallback, value);
+
+   if(CObjectStorage::getInstance().isGameOver())
+   {
+      CGame::getInstance().m_gameState = e_startMenu;
+      CGame::getInstance().gameControl();
+   }
+   else   
+   {
+      glutTimerFunc (25, CLevel_timerCallback, value);
+   }
 }
 
 void CLevel_renderScene(void)
@@ -214,6 +230,51 @@ void CLevel_releaseKey(int key, int x, int y)
       break;
    case GLUT_KEY_DOWN:
       a_playerPtr->m_downPressed  = false;
+      break;
+   }
+}
+
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+// Callbacks for menu
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+void CMenu_timerCallback(int t_value)
+{
+   glutTimerFunc (25, CMenu_timerCallback, t_value);
+}
+
+void CMenu_renderScene()
+{
+   CGame::getInstance().m_menu.draw();
+}
+
+void CMenu_pressKey(int t_key, int t_x, int t_y)
+{
+   switch (t_key) 
+   {
+
+   case GLUT_KEY_UP:
+      CGame::getInstance().m_menu.next();
+      break;
+   case GLUT_KEY_DOWN:
+      CGame::getInstance().m_menu.previous();
+      break;
+   }
+}
+
+void CMenu_releaseKey(int t_key, int t_x, int t_y)
+{
+
+}
+
+void CMenu_processNormalKeys(unsigned char t_key, int t_x, int t_y)
+{
+   switch (t_key) 
+   {
+   case 13: // Access with return
+      //CGame::getInstance().actat);
+      CGame::getInstance().m_menu.performAction();
       break;
    }
 }

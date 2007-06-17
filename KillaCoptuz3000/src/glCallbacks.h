@@ -23,4 +23,10 @@ void CLevel_pressKey(int t_key, int t_x, int t_y);
 void CLevel_releaseKey(int t_key, int t_x, int t_y);
 void CLevel_processNormalKeys(unsigned char t_key, int t_x, int t_y);
 
+void CMenu_timerCallback(int t_value);
+void CMenu_renderScene();
+void CMenu_pressKey(int t_key, int t_x, int t_y);      
+void CMenu_releaseKey(int t_key, int t_x, int t_y);
+void CMenu_processNormalKeys(unsigned char t_key, int t_x, int t_y);
+
 #endif

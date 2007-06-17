@@ -60,6 +60,8 @@ CShot::CShot(CShot* t_shotPtr, std::list<unsigned int>* t_friendObjectsListPtr)
 
    m_drawLayer       = t_shotPtr->m_drawLayer;
 
+   m_damagePoints    = t_shotPtr->m_damagePoints;
+
    // copy friend objects. bit sorry that they are not in the t_srcPtr
    if(0 != t_friendObjectsListPtr)
    {

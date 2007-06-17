@@ -23,7 +23,7 @@ CGame::CGame()
    TiXmlDocument  a_doc;
    TiXmlNode*     a_nodePtr   = 0;
 
-
+   // load player
    if(a_doc.LoadFile("Data/player/player.xml"))
    {
       // load player textures 
@@ -35,11 +35,23 @@ CGame::CGame()
       CObjectStorage::getInstance().add(a_nodePtr, e_player);
    }
 
-   m_gameState = e_level;
+   m_gameState = e_startMenu;
 }
 
 CGame::~CGame()
-{   
+{
+}
+
+CGame& CGame::getInstance()
+{
+   static CGame* r_gamePtr = 0;
+
+   if(0 == r_gamePtr)
+   {
+      r_gamePtr = new CGame();
+   }
+
+   return *r_gamePtr;
 }
 
 // Game control
@@ -63,6 +75,27 @@ void CGame::gameControl()
          glutTimerFunc (25, CLevel_timerCallback, 1);
          break;
       }
+   case e_startMenu:
+      {
+         // load start menu
+         TiXmlDocument  a_doc;
+
+         if(a_doc.LoadFile("Data/menu/main.xml"))
+         {
+            m_menu.load(a_doc.FirstChild("menu"));
+
+            glutKeyboardFunc(CMenu_processNormalKeys);
+            glutSpecialFunc(CMenu_pressKey);
+            glutSpecialUpFunc(CMenu_releaseKey);
+            glutDisplayFunc(CMenu_renderScene);
+            glutIdleFunc(CMenu_renderScene);
+
+            glutTimerFunc (25, CMenu_timerCallback, 1);
+         }
+
+         
+      }
+
    default:
       {
          break;

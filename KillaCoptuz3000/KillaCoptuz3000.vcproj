@@ -399,6 +399,34 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Menu"
+				>
+				<Filter
+					Name="header"
+					>
+					<File
+						RelativePath=".\src\Menu\CMenu.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\Menu\CMenuItem.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="source"
+					>
+					<File
+						RelativePath=".\src\Menu\CMenu.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\Menu\CMenuItem.cpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="lodepng"
@@ -508,6 +536,14 @@
 				</File>
 				<File
 					RelativePath=".\data\scripts\tankmove2.xml"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="menu"
+				>
+				<File
+					RelativePath=".\data\menu\main.xml"
 					>
 				</File>
 			</Filter>
