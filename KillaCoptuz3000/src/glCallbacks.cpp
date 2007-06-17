@@ -59,15 +59,19 @@ void CLevel_timerCallback(int value)
 
 void CLevel_renderScene(void)
 {
-   CPlayer* a_playerPtr = CObjectStorage::getInstance().getPlayerPtr();
-
-   assert(a_playerPtr);
+   CPlayer*       a_playerPtr = CObjectStorage::getInstance().getPlayerPtr();
+   static float   s_xCenter = 0.0;
+   
+   if (a_playerPtr)
+   {
+      s_xCenter = a_playerPtr->m_xPos;
+   }
 
    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
    glPushMatrix();     
 
-   glTranslatef(-a_playerPtr->m_xPos, 0.0, 0.0);
+   glTranslatef(-a_xCenter, 0.0, 0.0);
 
    //////////////////////////////////////////////////////////////////////////
    // draw the level
@@ -80,8 +84,8 @@ void CLevel_renderScene(void)
 
    //////////////////////////////////////////////////////////////////////////
    // Can be deleted (hit point output)
-   char a_str[100];
-   _itoa_s(a_playerPtr->m_hitPoints, a_str, 10);
+   // char a_str[100];
+   // _itoa_s(a_playerPtr->m_hitPoints, a_str, 10);
    //renderBitmapString(g_playerPtr->m_xPos + 2.3, 1.5, a_str, GLUT_BITMAP_8_BY_13);
 
    //////////////////////////////////////////////////////////////////////////
