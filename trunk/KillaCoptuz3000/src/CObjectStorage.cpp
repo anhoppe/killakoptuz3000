@@ -117,9 +117,6 @@ void CObjectStorage::processEvents()
                if(a_object1Ptr->m_hitPoints <= 0)
                {                  
                   a_object1Ptr->startDying();
-
-                  // Fix me: trigger dying sequence
-                  // addToDeleteMap(a_object1Ptr->m_id);
                }
             }
 
@@ -137,9 +134,6 @@ void CObjectStorage::processEvents()
                if(a_object2Ptr->m_hitPoints <= 0)
                {
                   a_object2Ptr->startDying();
-
-                  // Fix me: trigger dying sequence
-                  // addToDeleteMap(a_object2Ptr->m_id);
                }
             }
 

@@ -19,8 +19,11 @@ bool     g_showBox      = true;
 // Show hull polygons for collision detection
 bool     g_showHull     = false;
 
+// Show quad tree
+bool     g_showQuadTree = true;
+
 // Mute (==1) or not
-bool     g_mute         = true;
+bool     g_mute         = false;
 
 // The level object
 CLevel   g_level;
