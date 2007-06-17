@@ -326,7 +326,7 @@ void CObject::draw()
          glTranslatef(-a_xPos - m_width/2.0, -a_yPos - m_height/2.0, 0.0); 
       }
 
-      glColor4f(1.0,1.0,1.0,0.5);
+      glColor4f(1.0,0.0,0.0,0.9);
       glBegin(GL_LINE_LOOP);
       glVertex2d(a_xPos, a_yPos);
       glVertex2d(m_width+a_xPos,a_yPos);
@@ -798,31 +798,43 @@ bool CObject::hasPointInRect(CObject* t_objectPtr, float t_top, float t_left, fl
    bool r_ret = false;
 
 
-   if(t_objectPtr->m_xPos > t_left && 
-      t_objectPtr->m_xPos < t_right && 
-      t_objectPtr->m_yPos < t_top && 
-      t_objectPtr->m_yPos > t_bottom )
+   // Object covers whole quadTreeNode?
+   if (t_objectPtr->m_xPos                          <= t_left    &&
+      t_objectPtr->m_xPos + t_objectPtr->m_width    >= t_right   &&
+      t_objectPtr->m_yPos                           >= t_top     &&
+      t_objectPtr->m_yPos + t_objectPtr->m_height   <= t_bottom)
    {
       r_ret = true;
    }
-   else if(t_objectPtr->m_xPos+t_objectPtr->m_width > t_left && 
-           t_objectPtr->m_xPos+t_objectPtr->m_width < t_right && 
-           t_objectPtr->m_yPos < t_top && 
-           t_objectPtr->m_yPos > t_bottom )
+   // Top left of object in rect?
+   else if(t_objectPtr->m_xPos >= t_left && 
+      t_objectPtr->m_xPos <= t_right && 
+      t_objectPtr->m_yPos <= t_top && 
+      t_objectPtr->m_yPos >= t_bottom )
    {
       r_ret = true;
    }
-   else if(t_objectPtr->m_xPos > t_left && 
-      t_objectPtr->m_xPos < t_right && 
-      t_objectPtr->m_yPos+t_objectPtr->m_height < t_top && 
-      t_objectPtr->m_yPos+t_objectPtr->m_height > t_bottom )
+   // Top right of object in rect?
+   else if(t_objectPtr->m_xPos+t_objectPtr->m_width >= t_left && 
+           t_objectPtr->m_xPos+t_objectPtr->m_width <= t_right && 
+           t_objectPtr->m_yPos <= t_top && 
+           t_objectPtr->m_yPos >= t_bottom )
    {
       r_ret = true;
    }
-   else if(t_objectPtr->m_xPos+t_objectPtr->m_width > t_left && 
-      t_objectPtr->m_xPos+t_objectPtr->m_width < t_right && 
-      t_objectPtr->m_yPos+t_objectPtr->m_height < t_top && 
-      t_objectPtr->m_yPos+t_objectPtr->m_height > t_bottom )
+   // Bottom left of object in rect?
+   else if(t_objectPtr->m_xPos >= t_left && 
+      t_objectPtr->m_xPos <= t_right && 
+      t_objectPtr->m_yPos+t_objectPtr->m_height <= t_top && 
+      t_objectPtr->m_yPos+t_objectPtr->m_height >= t_bottom )
+   {
+      r_ret = true;
+   }
+   // Bottom right of object in rect?
+   else if(t_objectPtr->m_xPos+t_objectPtr->m_width >= t_left && 
+      t_objectPtr->m_xPos+t_objectPtr->m_width <= t_right && 
+      t_objectPtr->m_yPos+t_objectPtr->m_height <= t_top && 
+      t_objectPtr->m_yPos+t_objectPtr->m_height >= t_bottom )
    {
       r_ret = true;
    }

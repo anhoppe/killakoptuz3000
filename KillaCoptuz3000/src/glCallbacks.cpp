@@ -90,7 +90,6 @@ void CLevel_renderScene(void)
 
    glPopMatrix();
 
-
    // swapping the buffers causes the rendering above to be  
    // shown
    glutSwapBuffers();
