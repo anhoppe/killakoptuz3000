@@ -15,7 +15,7 @@
 //////////////////////////////////////////////////////////////////////////
 // Initialize static members
 //////////////////////////////////////////////////////////////////////////
-unsigned int CQuadTreeNode::M_maxDepth = 7;
+unsigned int CQuadTreeNode::M_maxDepth = 4;
 
 //////////////////////////////////////////////////////////////////////////
 // Implementation
@@ -60,7 +60,7 @@ void CQuadTreeNode::add(CObject* t_objectPtr)
       a_yMiddle = m_bottom + (m_top-m_bottom)/2;
 
       // top left
-      if(t_objectPtr->hasPointInRect(t_objectPtr, m_top, m_left, a_xMiddle, a_yMiddle))
+      if(t_objectPtr->intersects(t_objectPtr, m_top, m_left, a_xMiddle, a_yMiddle))
       {
          if(0 == m_children[0])
          {
@@ -70,7 +70,7 @@ void CQuadTreeNode::add(CObject* t_objectPtr)
       }
 
       // top right
-      if(t_objectPtr->hasPointInRect(t_objectPtr, m_top, a_xMiddle, m_right, a_yMiddle))
+      if(t_objectPtr->intersects(t_objectPtr, m_top, a_xMiddle, m_right, a_yMiddle))
       {
          if(0 == m_children[1])
          {
@@ -80,7 +80,7 @@ void CQuadTreeNode::add(CObject* t_objectPtr)
       }
 
       // bottom left
-      if(t_objectPtr->hasPointInRect(t_objectPtr, a_yMiddle, m_left, a_xMiddle, m_bottom))
+      if(t_objectPtr->intersects(t_objectPtr, a_yMiddle, m_left, a_xMiddle, m_bottom))
       {
          if(0 == m_children[2])
          {
@@ -90,7 +90,7 @@ void CQuadTreeNode::add(CObject* t_objectPtr)
       }
 
       // bottom right
-      if(t_objectPtr->hasPointInRect(t_objectPtr, a_yMiddle, a_xMiddle, m_right, m_bottom))
+      if(t_objectPtr->intersects(t_objectPtr, a_yMiddle, a_xMiddle, m_right, m_bottom))
       {
          if(0 == m_children[3])
          {
@@ -190,14 +190,23 @@ void CQuadTreeNode::draw()
 
    glColor4f(1.0,1.0,0.0,0.9);
 
+   // Box
    glVertex2f(m_left, m_top);
    glVertex2f(m_right, m_top);
    glVertex2f(m_right, m_bottom);
    glVertex2f(m_left, m_bottom);
+   glEnd();
+
+//    // Crossing
+//    glBegin(GL_LINES);
+//    glColor4f(1.0,1.0,0.0,0.2);
+//    glVertex2f(m_left, m_top);
+//    glVertex2f(m_right, m_bottom);
+//    glVertex2f(m_left, m_bottom);
+//    glVertex2f(m_right, m_top);
+//    glEnd();
 
    glColor4f(1.0,1.0,1.0,1.0);
-
-   glEnd();
 
    glPopMatrix();
 
