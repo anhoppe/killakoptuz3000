@@ -13,7 +13,7 @@
 
 #include <vector>
 
-enum EEventType {e_dying, e_delete, e_collided};
+enum EEventType {e_delete, e_collided};
 
 class CEvent
 {

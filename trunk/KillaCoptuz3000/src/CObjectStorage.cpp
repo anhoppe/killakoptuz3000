@@ -80,7 +80,7 @@ CPlayer* CObjectStorage::getPlayerPtr()
 /** Process events which were generated during last cycle */
 void CObjectStorage::processEvents()
 {
-   CEvent* a_event;
+   CEvent*              a_event;   
 
    // Iterate over events which were generated during the last cycle
    while (m_eventList.size())
@@ -96,11 +96,7 @@ void CObjectStorage::processEvents()
             // Add object to delete list
             addToDeleteMap(a_event->m_objectList[0]);
             break;
-         }
-      case e_dying:
-         {
-            break;
-         }
+         }      
       case e_collided:
          {
             CObject* a_object1Ptr = m_objectMap[a_event->m_objectList[0]];
@@ -119,8 +115,11 @@ void CObjectStorage::processEvents()
                }
 
                if(a_object1Ptr->m_hitPoints <= 0)
-               {
-                  addToDeleteMap(a_object1Ptr->m_id);
+               {                  
+                  a_object1Ptr->startDying();
+
+                  // Fix me: trigger dying sequence
+                  // addToDeleteMap(a_object1Ptr->m_id);
                }
             }
 
@@ -137,7 +136,10 @@ void CObjectStorage::processEvents()
 
                if(a_object2Ptr->m_hitPoints <= 0)
                {
-                  addToDeleteMap(a_object2Ptr->m_id);
+                  a_object2Ptr->startDying();
+
+                  // Fix me: trigger dying sequence
+                  // addToDeleteMap(a_object2Ptr->m_id);
                }
             }
 

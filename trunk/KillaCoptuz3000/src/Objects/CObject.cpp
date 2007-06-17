@@ -35,8 +35,7 @@ CObject::CObject()
    m_hitPoints             = 1;
    m_maxHitPoints          = m_hitPoints;
    m_invincible            = false;
-   m_damagePoints          = 1;
-   m_isDeleted             = false;
+   m_damagePoints          = 1;   
    m_activeAnimationPhase  = 0;
    m_explosionIndex        = -1;
    m_isDying               = false;
@@ -62,6 +61,30 @@ void CObject::nextTexture()
       if (m_activeTexture >= CObjectStorage::getInstance().m_textureMap[m_textureKeys[m_activeAnimationPhase]->m_textureKey]->m_textureIdVector.size())
       {
          m_activeTexture = 0;
+
+         // Check, if we were in death sequence
+         if (m_isDying)
+         {
+            // We are finished with dying now
+
+            // Generate delete event
+            CEvent* a_event;
+
+            a_event = new CEvent(e_delete);
+
+            // Attach this object
+            a_event->m_objectList.push_back(m_id);
+
+            /*
+            // Attach child objects
+            for (unsigned int i = 0; i < m_children.size(); i++)
+            {
+               a_event->m_objectList.push_back(m_children[i]->m_id);
+            }
+            */
+
+            CObjectStorage::getInstance().m_eventList.push_back(a_event);
+         }
       }
 
       m_timeCounter = 0;
@@ -128,8 +151,7 @@ bool CObject::load(TiXmlNode* t_nodePtr)
 
          a_textureInfoPtr = new CTextureInfo;
 
-         // Create the polygon
-         CTexture* test = CObjectStorage::getInstance().m_textureMap[a_str];
+         // Create the polygon         
          a_textureInfoPtr->m_polygonPtr = new CPolygon(CObjectStorage::getInstance().m_textureMap[a_str]->m_hullPolygonPtr);
 
          // Scale the new polygon
@@ -138,7 +160,7 @@ bool CObject::load(TiXmlNode* t_nodePtr)
          // check if explosion sequence exists
          if(getAttributeStr(a_subElemPtr, "explosion", a_dummy))
          {
-            m_explosionIndex = m_textureKeys.size();
+            m_explosionIndex = (unsigned int)m_textureKeys.size();
          }
 
          if(r_ret)
@@ -566,8 +588,7 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
       r_ret = false;
    }
    else
-   {     
-      return true;
+   {           
       // Object 1 square coordinates
       a_o1.x = t_firstPtr->m_xPos;
       a_o1.y = t_firstPtr->m_yPos;
@@ -792,69 +813,64 @@ bool CObject::intersects(CObject* t_objectPtr, float t_top, float t_left, float 
 {
    bool r_ret = false;
 
-
    // Object and Node intersect
-   if ((t_objectPtr->m_xPos                          <= t_left    &&
-        t_objectPtr->m_xPos + t_objectPtr->m_width    >= t_right   &&
+   if ((t_objectPtr->m_xPos                           < t_left    &&
+        t_objectPtr->m_xPos + t_objectPtr->m_width    > t_right   &&
          (
-            (t_objectPtr->m_yPos <= t_top && t_objectPtr->m_yPos >= t_bottom) ||
-            (t_objectPtr->m_yPos + t_objectPtr->m_height <= t_top && t_objectPtr->m_yPos + t_objectPtr->m_height >= t_bottom)
+            (t_objectPtr->m_yPos < t_top && t_objectPtr->m_yPos > t_bottom) ||
+            (t_objectPtr->m_yPos + t_objectPtr->m_height < t_top && t_objectPtr->m_yPos + t_objectPtr->m_height > t_bottom)
          )
        ) 
        ||
        (
-        t_objectPtr->m_yPos   <= t_top &&
-        t_objectPtr->m_yPos + t_objectPtr->m_height >= t_bottom &&        
+        t_objectPtr->m_yPos                           < t_top     &&
+        t_objectPtr->m_yPos + t_objectPtr->m_height   > t_bottom  &&        
          (
-            (t_objectPtr->m_xPos >= t_left && t_objectPtr->m_xPos <= t_right) ||
-            (t_objectPtr->m_xPos+t_objectPtr->m_width >= t_left && t_objectPtr->m_xPos + t_objectPtr->m_width <= t_right)
+            (t_objectPtr->m_xPos > t_left && t_objectPtr->m_xPos < t_right) ||
+            (t_objectPtr->m_xPos+t_objectPtr->m_width > t_left && t_objectPtr->m_xPos + t_objectPtr->m_width < t_right)
             
          )
-       )
-       )
+       ))
    {
       r_ret = true;
    }
    // Object bigger than quad tree node?
-   else if ( t_objectPtr->m_xPos                           <= t_left    &&
-             t_objectPtr->m_xPos + t_objectPtr->m_width    >= t_right   &&
-             t_objectPtr->m_yPos                           <= t_top     &&
-             t_objectPtr->m_yPos + t_objectPtr->m_height   >= t_bottom )
-   {
-      r_ret = true;
-   }
-   // Top left of object in rect?
-   else if(t_objectPtr->m_xPos >= t_left && 
-      t_objectPtr->m_xPos <= t_right && 
-      t_objectPtr->m_yPos <= t_top && 
-      t_objectPtr->m_yPos >= t_bottom )
-   {
-      r_ret = true;
-   }
-   // Top right of object in rect?
-   else if(t_objectPtr->m_xPos+t_objectPtr->m_width >= t_left && 
-           t_objectPtr->m_xPos+t_objectPtr->m_width <= t_right && 
-           t_objectPtr->m_yPos <= t_top && 
-           t_objectPtr->m_yPos >= t_bottom )
-   {
-      r_ret = true;
-   }
-   // Bottom left of object in rect?
-   else if(t_objectPtr->m_xPos >= t_left && 
-      t_objectPtr->m_xPos <= t_right && 
-      t_objectPtr->m_yPos+t_objectPtr->m_height <= t_top && 
-      t_objectPtr->m_yPos+t_objectPtr->m_height >= t_bottom )
-   {
-      r_ret = true;
-   }
-   // Bottom right of object in rect?
-   else if(t_objectPtr->m_xPos+t_objectPtr->m_width >= t_left && 
-      t_objectPtr->m_xPos+t_objectPtr->m_width <= t_right && 
-      t_objectPtr->m_yPos+t_objectPtr->m_height <= t_top && 
-      t_objectPtr->m_yPos+t_objectPtr->m_height >= t_bottom )
+   else if ( t_objectPtr->m_xPos                           < t_left    &&
+             t_objectPtr->m_xPos + t_objectPtr->m_width    > t_right   &&
+             t_objectPtr->m_yPos                           < t_top     &&
+             t_objectPtr->m_yPos + t_objectPtr->m_height   > t_bottom )
    {
       r_ret = true;
    }
 
    return r_ret;
+}
+
+void CObject::startDying()
+{   
+   std::vector<CObject*>::iterator  a_it;
+
+   // Initiate explosion
+   if (m_explosionIndex != -1 && !m_isDying)
+   {
+      // Set explosion as active texture
+      m_activeAnimationPhase = m_explosionIndex;
+
+      // Set animation to start
+      m_timeCounter           = 0;
+      m_activeTexture         = 0;
+
+      // Set explosion speed
+      m_cycleInterval         = 20*m_hitPoints/(m_hitPoints + 5);
+   }
+   else
+   {
+      // This object has no explosion texture
+
+      // Set cycle interval to 0, so it will be finished with his animation very soon
+      m_cycleInterval = 0;
+   }
+
+   // Set dying flag
+   m_isDying               = true;
 }
