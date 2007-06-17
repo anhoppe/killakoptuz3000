@@ -151,16 +151,16 @@ public:
    /** layer position determines draw order */
    unsigned int         m_drawLayer;
 
+   // list of children
+   std::list<unsigned int>      m_children;
+
 protected:
    // List of textures for the object
 //    std::vector <GLuint> m_textureIdVector;
    std::vector<CTextureInfo*>   m_textureKeys;
 
-   // list of children
-   std::vector<CObject*>      m_children;
-
    // Time counter for animation
-   int                        m_timeCounter;
+   int                          m_timeCounter;
 };
 
 #endif

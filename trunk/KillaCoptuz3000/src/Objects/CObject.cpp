@@ -35,7 +35,7 @@ CObject::CObject()
    m_hitPoints             = 1;
    m_maxHitPoints          = m_hitPoints;
    m_invincible            = false;
-   m_damagePoints          = 1;   
+   m_damagePoints          = 0;   
    m_activeAnimationPhase  = 0;
    m_explosionIndex        = -1;
    m_isDying               = false;
@@ -90,6 +90,7 @@ void CObject::nextTexture()
       m_timeCounter = 0;
    }
 }
+
 
 // Return: number of textures in m_textureIdVector
 size_t CObject::getTextureCount()
@@ -577,6 +578,11 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
       }
    }
 
+   if (t_firstPtr->m_isDying || t_secondPtr->m_isDying)
+   {
+      return false;
+   }
+
    //////////////////////////////////////////////////////////////////////////
    // We can only collide with non - background objects
    if(t_firstPtr->m_isBackground || t_secondPtr->m_isBackground)
@@ -908,4 +914,7 @@ void CObject::startDying()
 
    // Set dying flag
    m_isDying               = true;
+
+   // Delete all children
+   CObjectStorage::getInstance().deleteChildren(m_id);
 }

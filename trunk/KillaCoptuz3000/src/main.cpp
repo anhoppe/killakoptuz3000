@@ -345,8 +345,7 @@ int main(int t_argc, char **t_argv)
    setupSound();
 
    // Create CGame object and start game
-   CGame a_game;
-   a_game.gameControl();
+   CGame::getInstance().gameControl();
 
    // Start glut main loop
    glutMainLoop();

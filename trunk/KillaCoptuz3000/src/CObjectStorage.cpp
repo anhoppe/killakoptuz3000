@@ -72,6 +72,29 @@ void CObjectStorage::initializeQuadTree(float t_top, float t_left, float t_right
    }
 }
 
+
+bool CObjectStorage::isGameOver()
+{
+   CPlayer* a_playerPtr = 0;
+   bool     r_ret       = true;
+   
+
+   a_playerPtr = getPlayerPtr();
+   if(0 != a_playerPtr)
+   {
+      if(a_playerPtr->m_hitPoints > 0)
+      {
+         r_ret = false;
+      }
+      else if(a_playerPtr->m_activeTexture < a_playerPtr->getTextureCount())
+      {
+         r_ret = false;
+      }
+   }
+
+   return r_ret;
+}
+
 CPlayer* CObjectStorage::getPlayerPtr()
 {
    return static_cast<CPlayer*>(m_objectMap[m_playerId]);
@@ -105,31 +128,17 @@ void CObjectStorage::processEvents()
             // first for testing:
             if(!a_object1Ptr->m_invincible)
             {
-               if(!a_object2Ptr->m_invincible)
-               {
-                  a_object1Ptr->m_hitPoints -= a_object2Ptr->m_damagePoints;
-               }
-               else
-               {
-                  a_object1Ptr->m_hitPoints = 0;
-               }
+               a_object1Ptr->m_hitPoints -= a_object2Ptr->m_damagePoints;
 
                if(a_object1Ptr->m_hitPoints <= 0)
                {                  
-                  a_object1Ptr->startDying();
+                  a_object1Ptr->startDying();                  
                }
             }
 
             if(!a_object2Ptr->m_invincible)
             {
-               if(!a_object1Ptr->m_invincible)
-               {
-                  a_object2Ptr->m_hitPoints -= a_object1Ptr->m_damagePoints;
-               }
-               else
-               {
-                  a_object2Ptr->m_hitPoints = 0;
-               }
+               a_object2Ptr->m_hitPoints -= a_object1Ptr->m_damagePoints;
 
                if(a_object2Ptr->m_hitPoints <= 0)
                {
@@ -264,19 +273,28 @@ unsigned int CObjectStorage::add(CObject* t_objectPtr, unsigned int t_parentId, 
 void CObjectStorage::addToDeleteMap(unsigned int t_objectId)
 {
    // delete object
-   m_deleteMap.add(t_objectId, m_objectMap[t_objectId]);
+   m_deleteMap.add(t_objectId, m_objectMap[t_objectId]);   
+}
 
-   // delete children
-   if (m_objectMap.iterate(true))
+void CObjectStorage::deleteChildren(unsigned int t_objectId)
+{
+
+   CObject* a_objectPtr = m_objectMap[t_objectId]; 
+   
+   if (0!= a_objectPtr)
    {
-      do 
+      // delete children
+      std::list<unsigned int>::iterator a_it;
+
+      for (a_it = a_objectPtr->m_children.begin(); a_it != a_objectPtr->m_children.end(); a_it++)
       {
-         if(m_objectMap.m_current.m_value->m_parentId == t_objectId)
+         m_deleteMap.add(*a_it, m_objectMap[*a_it]);
+
+         if (m_objectMap[*a_it]->m_children.size() > 0)
          {
-            m_deleteMap.add(m_objectMap.m_current.m_value->m_id, m_objectMap.m_current.m_value);
+            deleteChildren(*a_it);
          }
-      } 
-      while(m_objectMap.iterate());
+      }
    }
 }
 

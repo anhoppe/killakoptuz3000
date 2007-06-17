@@ -37,7 +37,8 @@ bool CCombatant::load(TiXmlNode* t_nodePtr)
    for(a_nodePtr = t_nodePtr->FirstChild("weapon"); a_nodePtr; a_nodePtr = t_nodePtr->IterateChildren("weapon", a_nodePtr))
    {
       a_weaponId  = CObjectStorage::getInstance().add(a_nodePtr, e_weapon, m_id);
-      m_weaponList.push_back(a_weaponId );
+      m_weaponList.push_back(a_weaponId);
+      m_children .push_back(a_weaponId);
 
       // Player weapons don't autotrack
       if (getType() == e_player)

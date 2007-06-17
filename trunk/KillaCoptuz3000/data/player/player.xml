@@ -7,7 +7,7 @@
    <texture key="rocketA" basefilename="rocketA" gfxType="tga"/>
 </texturelist>
 
-<object xpos="0.0" ypos="1.0" width="1.0" height="0.5" hitpoints="1000" drawLayer="10">
+<object xpos="0.0" ypos="1.0" width="1.0" height="0.5" hitpoints="1000" drawLayer="10" damagepoints="100">
    <texturelist>
       <texture key="playerheli" />
       <texture key="explosion" explosion="1" />
@@ -17,7 +17,7 @@
       <texturelist>
          <texture key="playergun"/>
       </texturelist>
-      <shot cycleInterval="2" xpos="0.0" ypos="0.0" width="0.12" height="0.25" v="0.05" hitpoints="10" drawLayer="10">
+      <shot cycleInterval="2" xpos="0.0" ypos="0.0" width="0.12" height="0.25" v="0.05" hitpoints="10" drawLayer="10" damagepoints="2">
          <texturelist>
             <texture key="rocketA"/>
             <texture key="explosion" explosion="1" />

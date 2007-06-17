@@ -58,6 +58,12 @@ public:
    void addToDeleteMap(unsigned int t_objectId);
 
    /**
+   *  Delete all child objects of a given object
+   *  @param t_objectId object with this ID and all its children will be added to the delete list
+   */
+   void deleteChildren(unsigned int t_objectId);
+
+   /**
    *  Inserts an object into the draw list
    *  Called by 'add' methods
    */
@@ -75,6 +81,9 @@ public:
 
    /** Process delete objectMap */
    void processDeleteMap();
+
+   /** Checks if level is over (player won or is dead) */
+   bool isGameOver();
 
    /** Creates the quad tree*/
    void initializeQuadTree(float t_top, float t_left, float t_right, float t_bottom);

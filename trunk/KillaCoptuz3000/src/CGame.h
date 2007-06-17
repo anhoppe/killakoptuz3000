@@ -12,7 +12,17 @@
 
 #include "Objects/CPlayer.h"
 
-enum EGameState {e_intro, e_startMenue, e_level, e_shop, e_highscore};
+#include "Menu/CMenu.h"
+
+enum EGameState 
+{  
+   e_intro     = 0, 
+   e_gameOver  = 1,
+   e_startMenu = 2, 
+   e_level     = 3, 
+   e_shop      = 4, 
+   e_highscore = 5
+};
 
 class CGame
 {
@@ -23,6 +33,7 @@ public:
    /** Standard destructor */
    ~CGame();
 
+   static CGame& getInstance();
    //////////////////////////////////////////////////////////////////////////
    // Methods
    //////////////////////////////////////////////////////////////////////////
@@ -42,9 +53,13 @@ private:
    //////////////////////////////////////////////////////////////////////////
    // Members
    //////////////////////////////////////////////////////////////////////////
+public:
+   CMenu      m_menu;
 
    /** State of the game */
    EGameState m_gameState;
+
+private:
 
    /** Current level*/
    CLevel m_level;
