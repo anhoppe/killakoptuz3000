@@ -118,8 +118,20 @@ Hoppe, Fabian, later this evening
  
   * Implemented CObjectStorage::m_drawList and introduced draw layers to the objects and the XML description. We hope to solve the draw order problem once and for all.
 
-== Fri, 15. June 2007 (Night) ===
+=== Fri, 15. June 2007 (Night) ===
 
 H & F. Implemented the quad tree. Problems could not be vaporized... Some objects were inserted the wrong way. Hoppe implemented everyting and later on visualized the 50% working Quadtree - looks fancy. No remarkable slowdown of the execution speed at all. Fabian was brilliant in falling asleep. Watched a movie (Group of hot bikini girls in brazil were used by some very evil Dr. as organ donors).
 
   * CQuadTree implemented. Not fully working yet.
+
+=== Sun, 17. June 2007 ===
+
+H & F, Michi L. as guest star
+Very informative (for our guest star who gained massive C++ knowledge)
+Otherwise as usual...
+We reached the same state we had before the re-implementation phase.
+
+  * Children are deleted as soon as parent start dying
+  * Worked on game control, added menu class
+  * Game starts with menu now! After you've been killed, you get back to the main menu
+  * Added menu class CMenu and CMenuItem
