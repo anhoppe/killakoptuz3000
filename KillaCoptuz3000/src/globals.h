@@ -25,6 +25,9 @@ extern bool     g_showBox;
 // Show hull polygons for collision detection
 extern bool     g_showHull;
 
+// SHow quad tree
+extern bool     g_showQuadTree;
+
 // Mute (==1) or not
 extern bool     g_mute;
 

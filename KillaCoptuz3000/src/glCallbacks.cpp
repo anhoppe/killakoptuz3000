@@ -71,7 +71,7 @@ void CLevel_renderScene(void)
 
    glPushMatrix();     
 
-   glTranslatef(-a_xCenter, 0.0, 0.0);
+   glTranslatef(-s_xCenter, 0.0, 0.0);
 
    //////////////////////////////////////////////////////////////////////////
    // draw the level
@@ -90,7 +90,10 @@ void CLevel_renderScene(void)
 
    //////////////////////////////////////////////////////////////////////////
    // Test. Draw the quad tree
-   CObjectStorage::getInstance().m_quadTreeRootPtr->draw();
+   if(g_showQuadTree)
+   {
+      CObjectStorage::getInstance().m_quadTreeRootPtr->draw();
+   }
 
    glPopMatrix();
 
@@ -146,7 +149,7 @@ void CLevel_pressKey(int key, int x, int y)
       }
       else
       {
-         // Fullscreen display
+         // Full screen display
          glutGameModeString("1280x1024:32");
          if (glutGameModeGet(GLUT_GAME_MODE_POSSIBLE))
          {

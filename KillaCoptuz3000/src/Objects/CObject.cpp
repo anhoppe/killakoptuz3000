@@ -812,33 +812,68 @@ void CObject::collisionImpact(CObject* t_objectPtr, bool t_checkOther)
 bool CObject::intersects(CObject* t_objectPtr, float t_top, float t_left, float t_right, float t_bottom)
 {
    bool r_ret = false;
+   
+   float          a_pseudoWidth  = 0.0;
+   float          a_pseudoHeight = 0.0;
+
+   float          a_objLeft    = 0.0;
+   float          a_objTop     = 0.0;
+   float          a_objRight   = 0.0;
+   float          a_objBottom  = 0.0;
+
+   if (t_objectPtr->getType() != e_object)
+   {
+      if (t_objectPtr->m_width > t_objectPtr->m_height)
+      {
+         a_pseudoWidth  = t_objectPtr->m_width;
+         a_pseudoHeight = t_objectPtr->m_width;
+      }
+      else 
+      {
+         a_pseudoWidth  = t_objectPtr->m_height;
+         a_pseudoHeight = t_objectPtr->m_height;
+      }      
+   }
+   else
+   {
+      a_pseudoWidth  = t_objectPtr->m_width;
+      a_pseudoHeight = t_objectPtr->m_height;
+   }
+
+   a_objLeft   = t_objectPtr->m_xPos + t_objectPtr->m_width/2.0 - a_pseudoWidth/2.0;
+   a_objRight  = t_objectPtr->m_xPos + t_objectPtr->m_width/2.0 + a_pseudoWidth/2.0;
+
+   a_objTop    = t_objectPtr->m_yPos + t_objectPtr->m_height/2.0 + a_pseudoHeight/2.0;
+   a_objBottom = t_objectPtr->m_yPos + t_objectPtr->m_height/2.0 - a_pseudoHeight/2.0;  
+  
 
    // Object and Node intersect
-   if ((t_objectPtr->m_xPos                           < t_left    &&
-        t_objectPtr->m_xPos + t_objectPtr->m_width    > t_right   &&
+   if ((a_objLeft            <= t_left    &&
+        a_objRight           > t_right   &&
          (
-            (t_objectPtr->m_yPos < t_top && t_objectPtr->m_yPos > t_bottom) ||
-            (t_objectPtr->m_yPos + t_objectPtr->m_height < t_top && t_objectPtr->m_yPos + t_objectPtr->m_height > t_bottom)
+            (a_objBottom <= t_top && a_objBottom > t_bottom) ||
+            (a_objTop <= t_top    && a_objTop > t_bottom)
          )
        ) 
        ||
        (
-        t_objectPtr->m_yPos                           < t_top     &&
-        t_objectPtr->m_yPos + t_objectPtr->m_height   > t_bottom  &&        
+        a_objBottom           <= t_top     &&
+        a_objTop              > t_bottom  &&        
          (
-            (t_objectPtr->m_xPos > t_left && t_objectPtr->m_xPos < t_right) ||
-            (t_objectPtr->m_xPos+t_objectPtr->m_width > t_left && t_objectPtr->m_xPos + t_objectPtr->m_width < t_right)
+            (a_objLeft >=  t_left && a_objLeft  < t_right) ||
+            (a_objRight>=  t_left && a_objRight < t_right)
             
          )
        ))
    {
       r_ret = true;
    }
+
    // Object bigger than quad tree node?
-   else if ( t_objectPtr->m_xPos                           < t_left    &&
-             t_objectPtr->m_xPos + t_objectPtr->m_width    > t_right   &&
-             t_objectPtr->m_yPos                           < t_top     &&
-             t_objectPtr->m_yPos + t_objectPtr->m_height   > t_bottom )
+   else if ( a_objLeft            <= t_left    &&
+             a_objRight           > t_right   &&
+             a_objTop             >= t_top     &&
+             a_objBottom          < t_bottom )
    {
       r_ret = true;
    }
