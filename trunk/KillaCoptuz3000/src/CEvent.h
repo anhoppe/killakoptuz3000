@@ -11,7 +11,7 @@
 #ifndef CEVENT_H
 #define CEVENT_H
 
-#include <list>
+#include <vector>
 
 enum EEventType {e_dying, e_delete, e_collided};
 
@@ -24,7 +24,7 @@ public:
    ~CEvent();
 
   /** List of participating object id's*/
-  std::list<unsigned int> m_objectList;
+  std::vector<unsigned int> m_objectList;
 
   /** Event type*/
   EEventType m_event;  

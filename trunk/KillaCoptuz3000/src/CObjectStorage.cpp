@@ -94,8 +94,7 @@ void CObjectStorage::processEvents()
       case e_delete:
          {            
             // Add object to delete list
-            m_deleteMap.add(a_event->m_objectList.back(), m_objectMap[a_event->m_objectList.back()]);            
-
+            addToDeleteMap(a_event->m_objectList[0]);
             break;
          }
       case e_dying:
@@ -104,7 +103,44 @@ void CObjectStorage::processEvents()
          }
       case e_collided:
          {
-            int we_rule_especialey_me = 1;
+            CObject* a_object1Ptr = m_objectMap[a_event->m_objectList[0]];
+            CObject* a_object2Ptr = m_objectMap[a_event->m_objectList[1]];
+
+            // first for testing:
+            if(!a_object1Ptr->m_invincible)
+            {
+               if(!a_object2Ptr->m_invincible)
+               {
+                  a_object1Ptr->m_hitPoints -= a_object2Ptr->m_damagePoints;
+               }
+               else
+               {
+                  a_object1Ptr->m_hitPoints = 0;
+               }
+
+               if(a_object1Ptr->m_hitPoints <= 0)
+               {
+                  addToDeleteMap(a_object1Ptr->m_id);
+               }
+            }
+
+            if(!a_object2Ptr->m_invincible)
+            {
+               if(!a_object1Ptr->m_invincible)
+               {
+                  a_object2Ptr->m_hitPoints -= a_object1Ptr->m_damagePoints;
+               }
+               else
+               {
+                  a_object2Ptr->m_hitPoints = 0;
+               }
+
+               if(a_object2Ptr->m_hitPoints <= 0)
+               {
+                  addToDeleteMap(a_object2Ptr->m_id);
+               }
+            }
+
             break;
          }
       }
@@ -229,6 +265,26 @@ unsigned int CObjectStorage::add(CObject* t_objectPtr, unsigned int t_parentId, 
    return r_ret;
 }
 
+void CObjectStorage::addToDeleteMap(unsigned int t_objectId)
+{
+   // delete object
+   m_deleteMap.add(t_objectId, m_objectMap[t_objectId]);
+
+   // delete children
+   if (m_objectMap.iterate(true))
+   {
+      do 
+      {
+         if(m_objectMap.m_current.m_value->m_parentId == t_objectId)
+         {
+            m_deleteMap.add(m_objectMap.m_current.m_value->m_id, m_objectMap.m_current.m_value);
+         }
+      } 
+      while(m_objectMap.iterate());
+   }
+}
+
+
 void CObjectStorage::addToDrawList(CObject* t_objectPtr)
 {
    std::list<unsigned int>::iterator   a_it;
@@ -293,4 +349,37 @@ bool CObjectStorage::addTextureMap(TiXmlNode* t_nodePtr)
    }
 
    return r_ret;
+}
+
+void CObjectStorage::updateObjects(CLevel* t_levelPtr)
+{
+   float                                        a_xOld      = 0;
+   float                                        a_yOld      = 0;
+   CObject*                                     a_objectPtr = 0;
+
+   std::map<unsigned int, CObject*>::iterator   a_it;
+
+
+   if (m_objectMap.iterate(true))
+   {
+      do 
+      {
+         a_objectPtr = m_objectMap.m_current.m_value;
+
+         a_xOld = a_objectPtr->m_xPos;
+         a_yOld = a_objectPtr->m_yPos;
+
+         a_objectPtr->update(t_levelPtr);
+
+         if((a_xOld != a_objectPtr->m_xPos) ||
+            (a_yOld != a_objectPtr->m_yPos)   )
+         {
+            // delete from tree
+            m_quadTreeRootPtr->remove(a_objectPtr);
+            m_quadTreeRootPtr->add(a_objectPtr);
+         }
+
+      } 
+      while(m_objectMap.iterate());
+   }
 }

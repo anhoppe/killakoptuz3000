@@ -51,7 +51,9 @@ void CQuadTreeNode::add(CObject* t_objectPtr)
 
    float          a_xMiddle   = 0.;
    float          a_yMiddle   = 0.;
-   
+
+   //////////////////////////////////////////////////////////////////////////
+   // check top left square
    if(m_depth < M_maxDepth)
    {
       a_xMiddle = m_left   + (m_right-m_left)/2;
@@ -109,7 +111,10 @@ bool CQuadTreeNode::remove(CObject* t_nodePtr)
    bool r_ret = false;
 
    // remove object from own list
-   m_objectList.remove(t_nodePtr);
+   if(m_objectList.size() > 0)
+   {
+      m_objectList.remove(t_nodePtr);
+   }
 
    // remove object from children
    for (unsigned int i = 0; i<4; i++)
@@ -117,10 +122,15 @@ bool CQuadTreeNode::remove(CObject* t_nodePtr)
       if (0 != m_children[i])
       {
          r_ret = true;
+
+         // remove child if it has no more children and an empty object list
          if(!m_children[i]->remove(t_nodePtr))
          {
-            delete m_children[i];
-            m_children[i] = 0;
+            if(m_children[i]->m_objectList.size() == 0)
+            {
+               delete m_children[i];
+               m_children[i] = 0;
+            }
          }
       }      
    }
@@ -143,6 +153,10 @@ void CQuadTreeNode::getCollisionEvents()
          a_firstInnerIt = a_it;
          a_firstInnerIt++;
 
+         if((*a_it)->getType() == e_player)
+         {
+            int tol = 0;
+         }
          for(a_innerIt = a_firstInnerIt; a_innerIt != m_objectList.end(); ++a_innerIt)
          {
             if(CObject::isCollided((*a_it), (*a_innerIt)))

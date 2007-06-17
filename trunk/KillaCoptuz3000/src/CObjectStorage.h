@@ -52,6 +52,12 @@ public:
    unsigned int add(CObject* t_objectPtr, unsigned int t_parentId = 0, std::list<unsigned int>* t_friendObjectsListPtr = 0);
 
    /**
+   *  Adds an object to the delete map. Do not add it directly, because all children have to be added, too
+   *  @param t_objectId object with this ID and all its children will be added to the delete list
+   */
+   void addToDeleteMap(unsigned int t_objectId);
+
+   /**
    *  Inserts an object into the draw list
    *  Called by 'add' methods
    */
@@ -59,6 +65,10 @@ public:
 
    /** Add textures into texture map */
    bool addTextureMap(TiXmlNode* t_nodePtr);
+
+   /** Updates all objects */
+   void updateObjects(CLevel* t_levelPtr);
+
 
    /** Process events which were generated during last cycle */
    void processEvents();

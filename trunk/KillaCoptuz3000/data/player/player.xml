@@ -17,7 +17,7 @@
       <texturelist>
          <texture key="playergun"/>
       </texturelist>
-      <shot cycleInterval="2" xpos="0.0" ypos="0.0" width="0.12" height="0.25" v="0.05" hitpoints="1" drawLayer="10">
+      <shot cycleInterval="2" xpos="0.0" ypos="0.0" width="0.12" height="0.25" v="0.05" hitpoints="10" drawLayer="10">
          <texturelist>
             <texture key="rocketA"/>
             <texture key="explosion" explosion="1" />
