@@ -716,11 +716,6 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
             (0 != a_polygonBPtr)    )
          {
 
-            if (t_firstPtr->getType() == e_shot || t_secondPtr->getType() == e_shot)
-            {
-               int willy = 10000; 
-            }
-
 //             Scale polygon A to correct width and height
 //             a_polygonAPtr->rescale(t_firstPtr->m_width / a_polygonAPtr->m_width, t_firstPtr->m_height / a_polygonAPtr->m_height);     
 
@@ -793,16 +788,38 @@ void CObject::collisionImpact(CObject* t_objectPtr, bool t_checkOther)
    }   
 }
 
-bool CObject::hasPointInRect(CObject* t_objectPtr, float t_top, float t_left, float t_right, float t_bottom)
+bool CObject::intersects(CObject* t_objectPtr, float t_top, float t_left, float t_right, float t_bottom)
 {
    bool r_ret = false;
 
 
-   // Object covers whole quadTreeNode?
-   if (t_objectPtr->m_xPos                          <= t_left    &&
-      t_objectPtr->m_xPos + t_objectPtr->m_width    >= t_right   &&
-      t_objectPtr->m_yPos                           >= t_top     &&
-      t_objectPtr->m_yPos + t_objectPtr->m_height   <= t_bottom)
+   // Object and Node intersect
+   if ((t_objectPtr->m_xPos                          <= t_left    &&
+        t_objectPtr->m_xPos + t_objectPtr->m_width    >= t_right   &&
+         (
+            (t_objectPtr->m_yPos <= t_top && t_objectPtr->m_yPos >= t_bottom) ||
+            (t_objectPtr->m_yPos + t_objectPtr->m_height <= t_top && t_objectPtr->m_yPos + t_objectPtr->m_height >= t_bottom)
+         )
+       ) 
+       ||
+       (
+        t_objectPtr->m_yPos   <= t_top &&
+        t_objectPtr->m_yPos + t_objectPtr->m_height >= t_bottom &&        
+         (
+            (t_objectPtr->m_xPos >= t_left && t_objectPtr->m_xPos <= t_right) ||
+            (t_objectPtr->m_xPos+t_objectPtr->m_width >= t_left && t_objectPtr->m_xPos + t_objectPtr->m_width <= t_right)
+            
+         )
+       )
+       )
+   {
+      r_ret = true;
+   }
+   // Object bigger than quad tree node?
+   else if ( t_objectPtr->m_xPos                           <= t_left    &&
+             t_objectPtr->m_xPos + t_objectPtr->m_width    >= t_right   &&
+             t_objectPtr->m_yPos                           <= t_top     &&
+             t_objectPtr->m_yPos + t_objectPtr->m_height   >= t_bottom )
    {
       r_ret = true;
    }
