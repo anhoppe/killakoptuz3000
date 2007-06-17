@@ -15,7 +15,7 @@
 //////////////////////////////////////////////////////////////////////////
 // Initialize static members
 //////////////////////////////////////////////////////////////////////////
-unsigned int CQuadTreeNode::M_maxDepth = 5;
+unsigned int CQuadTreeNode::M_maxDepth = 7;
 
 //////////////////////////////////////////////////////////////////////////
 // Implementation
@@ -186,13 +186,16 @@ void CQuadTreeNode::draw()
 {
    glPushMatrix();
    
-   glBegin(GL_LINES);
-   
-   glVertex2d(m_left,m_bottom + (m_top-m_bottom) / 2);
-   glVertex2d(m_right,m_bottom + (m_top-m_bottom) / 2);
+   glBegin(GL_LINE_LOOP);
 
-   glVertex2d(m_left + (m_right - m_left)/2,m_top);
-   glVertex2d(m_left + (m_right - m_left) / 2, m_bottom);
+   glColor4f(1.0,1.0,0.0,0.9);
+
+   glVertex2f(m_left, m_top);
+   glVertex2f(m_right, m_top);
+   glVertex2f(m_right, m_bottom);
+   glVertex2f(m_left, m_bottom);
+
+   glColor4f(1.0,1.0,1.0,1.0);
 
    glEnd();
 
