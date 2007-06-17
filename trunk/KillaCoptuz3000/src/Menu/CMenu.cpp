@@ -94,6 +94,11 @@ void CMenu::performAction()
       case e_quitGame:
          exit(-1);
          break;
+      case e_succeedingMenu:
+         CGame::getInstance().m_gameState = e_menu;
+         CGame::getInstance().m_menuName  = m_menuItems[m_currentMenuItem]->m_succeedingMenu;
+         CGame::getInstance().gameControl();
+
       }
    }
 }

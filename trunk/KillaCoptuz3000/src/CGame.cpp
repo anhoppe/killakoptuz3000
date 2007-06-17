@@ -35,7 +35,8 @@ CGame::CGame()
       CObjectStorage::getInstance().add(a_nodePtr, e_player);
    }
 
-   m_gameState = e_startMenu;
+   m_gameState = e_menu;
+   m_menuName  = "main";
 }
 
 CGame::~CGame()
@@ -75,12 +76,17 @@ void CGame::gameControl()
          glutTimerFunc (25, CLevel_timerCallback, 1);
          break;
       }
-   case e_startMenu:
+   case e_menu:
       {
          // load start menu
          TiXmlDocument  a_doc;
+         std::string    a_menuFileName = "";
 
-         if(a_doc.LoadFile("Data/menu/main.xml"))
+         a_menuFileName = "Data/menu/";
+         a_menuFileName += m_menuName;
+         a_menuFileName += ".xml";
+
+         if(a_doc.LoadFile(a_menuFileName.c_str()))
          {
             m_menu.load(a_doc.FirstChild("menu"));
 
@@ -112,10 +118,9 @@ void CGame::setGameState(EGameState t_gameState)
 // 
 void CGame::loadNextLevel()
 {
-   TiXmlDocument   a_doc;
-   TiXmlNode*      a_nodePtr  = 0;
-
-
+   TiXmlDocument  a_doc;
+   TiXmlNode*     a_nodePtr = 0;
+   
    if(a_doc.LoadFile("data\\levels\\level3.xml"))
    {
       //////////////////////////////////////////////////////////////////////////

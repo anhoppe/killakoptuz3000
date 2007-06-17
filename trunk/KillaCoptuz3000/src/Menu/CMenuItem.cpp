@@ -19,7 +19,9 @@
 //////////////////////////////////////////////////////////////////////////
 CMenuItem::CMenuItem()
 {
-
+   m_text            = "";
+   m_succeedingMenu  = "";
+   m_action          = e_quitGame;
 }
 
 CMenuItem::~CMenuItem()
@@ -47,6 +49,13 @@ bool CMenuItem::load(TiXmlNode* t_nodePtr)
       if(a_str == "startgame")
       {
          m_action = e_startGame;
+      }
+      else if(a_str == "menu")
+      {
+         m_action = e_succeedingMenu;
+
+         // get succeeding menu
+         r_ret &= getAttributeStr(a_elemPtr, "menu", m_succeedingMenu);
       }
       else if(a_str == "exit")
       {

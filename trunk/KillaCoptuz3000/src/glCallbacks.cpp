@@ -64,7 +64,8 @@ void CLevel_timerCallback(int value)
 
    if(CObjectStorage::getInstance().isGameOver())
    {
-      CGame::getInstance().m_gameState = e_startMenu;
+      CGame::getInstance().m_gameState    = e_menu;
+      CGame::getInstance().m_menuName     = "gameover";
       CGame::getInstance().gameControl();
    }
    else   
