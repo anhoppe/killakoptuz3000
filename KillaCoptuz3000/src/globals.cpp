@@ -14,13 +14,13 @@
 #include "globals.h"
 
 // Show bounding boxes for collision detection
-bool     g_showBox      = true;
+bool     g_showBox      = false;
 
 // Show hull polygons for collision detection
 bool     g_showHull     = false;
 
 // Show quad tree
-bool     g_showQuadTree = true;
+bool     g_showQuadTree = false;
 
 // Mute (==1) or not
 bool     g_mute         = false;

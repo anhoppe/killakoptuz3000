@@ -144,7 +144,7 @@ void CQuadTreeNode::getCollisionEvents()
    std::list<CObject*>::iterator a_it;
 
    std::list<CObject*>::iterator a_firstInnerIt;
-   std::list<CObject*>::iterator a_innerIt;
+   std::list<CObject*>::iterator a_innerIt;   
 
    if(m_objectList.size() > 1)
    {
@@ -153,10 +153,6 @@ void CQuadTreeNode::getCollisionEvents()
          a_firstInnerIt = a_it;
          a_firstInnerIt++;
 
-         if((*a_it)->getType() == e_player)
-         {
-            int tol = 0;
-         }
          for(a_innerIt = a_firstInnerIt; a_innerIt != m_objectList.end(); ++a_innerIt)
          {
             if(CObject::isCollided((*a_it), (*a_innerIt)))
