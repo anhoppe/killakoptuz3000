@@ -505,7 +505,7 @@ void CObject::draw()
 
 // Test for intersection of the segments
 // See: Sedgewick, Algorithms
-bool CObject::segmentsIntersect(CLine l1, CLine l2)
+bool CObject::segmentsIntersect(CLine& l1, CLine& l2)
 {
    bool r_ret;
 
@@ -517,7 +517,7 @@ bool CObject::segmentsIntersect(CLine l1, CLine l2)
 
 // Test 3 points for being counter clockwise ordered
 // See: Sedgewick, Algorithms
-int CObject::ccw(CPoint p0, CPoint p1, CPoint p2)
+int CObject::ccw(CPoint& p0, CPoint& p1, CPoint& p2)
 {
    float dx1, dx2, dy1, dy2;
    int   r_ret;
@@ -557,9 +557,37 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
    CPoint         a_p1, a_p2, a_p3, a_p4;
    CPoint         a_o1, a_o2, a_o3, a_o4;
    CLine          a_pl1, a_pl2, a_pl3, a_pl4;
-   CLine          a_ol1, a_ol2, a_ol3, a_ol4;   
-   CPoint         a_middlePoint1, a_middlePoint2;
+   CLine          a_ol1, a_ol2, a_ol3, a_ol4;      
 
+
+   //////////////////////////////////////////////////////////////////////////
+   // Two CObjects cant collide
+   if (t_firstPtr->getType() == e_object && t_secondPtr->getType() == e_object)
+   {
+      return false;
+   }
+
+   //////////////////////////////////////////////////////////////////////////
+   // two invincible Objects cant collide
+   if (t_firstPtr->m_invincible && t_secondPtr->m_invincible)
+   {
+      return false;
+   }
+
+   //////////////////////////////////////////////////////////////////////////
+   // two objects which do not make damage cant collide
+   if (t_firstPtr->m_damagePoints == 0 && t_secondPtr->m_damagePoints == 0)
+   {
+      return false;
+   }
+
+   //////////////////////////////////////////////////////////////////////////
+   // one object invincible, and makes no damage => no collision
+   if (t_firstPtr->m_damagePoints == 0 && t_firstPtr->m_invincible ||
+       t_secondPtr->m_damagePoints == 0 && t_secondPtr->m_invincible)
+   {
+      return false;
+   }
 
    //////////////////////////////////////////////////////////////////////////
    // shots don't kill their friends
@@ -578,6 +606,8 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
       }
    }
 
+   //////////////////////////////////////////////////////////////////////////
+   // Dying objects don't collide anymore
    if (t_firstPtr->m_isDying || t_secondPtr->m_isDying)
    {
       return false;
@@ -587,210 +617,284 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
    // We can only collide with non - background objects
    if(t_firstPtr->m_isBackground || t_secondPtr->m_isBackground)
    {
-      r_ret = false;
+      return false;
    }
-   else if(t_firstPtr->getType() == e_shot && t_secondPtr->getType() == e_shot)
+
+   //////////////////////////////////////////////////////////////////////////
+   // Two shots cant collide
+   if(t_firstPtr->getType() == e_shot && t_secondPtr->getType() == e_shot)
    {
-      r_ret = false;
+      return false;
+   }
+   
+   //////////////////////////////////////////////////////////////////////////
+   // Collision detection
+   //////////////////////////////////////////////////////////////////////////
+
+   //////////////////////////////////////////////////////////////////////////
+   // First: a simple distance test (is collsion possible)
+
+   float          a_radius1 = 0.0;
+   float          a_radius2 = 0.0;   
+   CPoint         a_middlePoint1 = CPoint(t_firstPtr->m_xPos + t_firstPtr->m_width/2, t_firstPtr->m_yPos + t_firstPtr->m_height/2);
+   CPoint         a_middlePoint2 = CPoint(t_secondPtr->m_xPos + t_secondPtr->m_width/2, t_secondPtr->m_yPos + t_secondPtr->m_height/2);
+
+   if (t_firstPtr->m_width > t_firstPtr->m_height)
+   {
+      a_radius1 = t_firstPtr->m_width;
    }
    else
-   {           
-      // Object 1 square coordinates
-      a_o1.x = t_firstPtr->m_xPos;
-      a_o1.y = t_firstPtr->m_yPos;
+   {
+      a_radius1 = t_firstPtr->m_height;
+   }
 
-      a_o2.x = t_firstPtr->m_xPos + t_firstPtr->m_width;
-      a_o2.y = t_firstPtr->m_yPos;
+   if (t_secondPtr->m_width > t_secondPtr->m_height)
+   {
+      a_radius2 = t_secondPtr->m_width;
+   }
+   else
+   {
+      a_radius2 = t_secondPtr->m_height;
+   }
+   
+   if (a_middlePoint1.dist(a_middlePoint2) < a_radius1+a_radius2)
+   {
+      r_ret = true;
+   }
 
-      a_o3.x = t_firstPtr->m_xPos + t_firstPtr->m_width;
-      a_o3.y = t_firstPtr->m_yPos + t_firstPtr->m_height;
+//    // Object 1 square coordinates
+//    a_o1.x = t_firstPtr->m_xPos;
+//    a_o1.y = t_firstPtr->m_yPos;
+// 
+//    a_o2.x = t_firstPtr->m_xPos + t_firstPtr->m_width;
+//    a_o2.y = t_firstPtr->m_yPos;
+// 
+//    a_o3.x = t_firstPtr->m_xPos + t_firstPtr->m_width;
+//    a_o3.y = t_firstPtr->m_yPos + t_firstPtr->m_height;
+// 
+//    a_o4.x = t_firstPtr->m_xPos;
+//    a_o4.y = t_firstPtr->m_yPos + t_firstPtr->m_height;
+// 
+//    // Object 2 square coordinates  
+//    a_p1.x = t_secondPtr->m_xPos;
+//    a_p1.y = t_secondPtr->m_yPos;
+// 
+//    a_p2.x = t_secondPtr->m_xPos + t_secondPtr->m_width;
+//    a_p2.y = t_secondPtr->m_yPos;
+// 
+//    a_p3.x = t_secondPtr->m_xPos + t_secondPtr->m_width;
+//    a_p3.y = t_secondPtr->m_yPos + t_secondPtr->m_height;
+// 
+//    a_p4.x = t_secondPtr->m_xPos;        
+//    a_p4.y = t_secondPtr->m_yPos + t_secondPtr->m_height;
+// 
+//    a_middlePoint1 = CPoint(a_o1.x + t_firstPtr->m_width/2, a_o1.y + t_firstPtr->m_height/2);
+//    a_middlePoint2 = CPoint(a_p1.x + t_secondPtr->m_width/2, a_p1.y + t_secondPtr->m_height/2);
+// 
+//    // Rotate with first object angle         
+//    a_o1 = a_o1 - a_middlePoint1;
+//    a_o2 = a_o2 - a_middlePoint1;
+//    a_o3 = a_o3 - a_middlePoint1;
+//    a_o4 = a_o4 - a_middlePoint1;
+// 
+//    a_o1.rotate(-t_firstPtr->m_angle);   
+//    a_o2.rotate(-t_firstPtr->m_angle);
+//    a_o3.rotate(-t_firstPtr->m_angle);
+//    a_o4.rotate(-t_firstPtr->m_angle);
+// 
+//    a_o1 = a_o1 + a_middlePoint1;
+//    a_o2 = a_o2 + a_middlePoint1;
+//    a_o3 = a_o3 + a_middlePoint1;
+//    a_o4 = a_o4 + a_middlePoint1;
+//   
+//    a_ol1.p1 = a_o1;
+//    a_ol1.p2 = a_o2;
+// 
+//    a_ol2.p1 = a_o2;
+//    a_ol2.p2 = a_o3;
+// 
+//    a_ol3.p1 = a_o3;
+//    a_ol3.p2 = a_o4;
+// 
+//    a_ol4.p1 = a_o4;
+//    a_ol4.p2 = a_o1;
+// 
+//    // Rotate Object2 with object angle      
+//    a_p1 = a_p1 - a_middlePoint2;
+//    a_p2 = a_p2 - a_middlePoint2;
+//    a_p3 = a_p3 - a_middlePoint2;
+//    a_p4 = a_p4 - a_middlePoint2;
+// 
+//    a_p1.rotate(-t_secondPtr->m_angle);   
+//    a_p2.rotate(-t_secondPtr->m_angle);
+//    a_p3.rotate(-t_secondPtr->m_angle);
+//    a_p4.rotate(-t_secondPtr->m_angle);
+// 
+//    a_p1 = a_p1 + a_middlePoint2;
+//    a_p2 = a_p2 + a_middlePoint2;
+//    a_p3 = a_p3 + a_middlePoint2;
+//    a_p4 = a_p4 + a_middlePoint2;
+// 
+//    // Lines
+//    a_pl1.p1 = a_p1;
+//    a_pl1.p2 = a_p2;
+// 
+//    a_pl2.p1 = a_p2;
+//    a_pl2.p2 = a_p3;
+// 
+//    a_pl3.p1 = a_p3;
+//    a_pl3.p2 = a_p4;
+// 
+//    a_pl4.p1 = a_p4;
+//    a_pl4.p2 = a_p1;           
+// 
+//    //////////////////////////////////////////////////////////////////////////
+//    // (1.) 
+//    // Test for intersection of object 1 
+//    // square and object 2 square
+//    //////////////////////////////////////////////////////////////////////////
+// 
+//    // Test all 4 border lines of player square
+//    // for intersection with all 4 object square lines   
+//    if (segmentsIntersect(a_pl1, a_ol1))
+//    {
+//       r_ret = true;
+//    }
+//    else if (segmentsIntersect(a_pl1, a_ol2))
+//    {
+//       r_ret = true;
+//    }
+//    else if (segmentsIntersect(a_pl1, a_ol3))
+//    {
+//       r_ret = true;
+//    }
+//    else if (segmentsIntersect(a_pl1, a_ol4))
+//    {
+//       r_ret = true;
+//    }
+//    else if (segmentsIntersect(a_pl2, a_ol1))
+//    {
+//       r_ret = true;
+//    }
+//    else if (segmentsIntersect(a_pl2, a_ol2))
+//    {
+//       r_ret = true;
+//    }
+//    else if (segmentsIntersect(a_pl2, a_ol3))
+//    {
+//       r_ret = true;
+//    }
+//    else if (segmentsIntersect(a_pl2, a_ol4))
+//    {
+//       r_ret = true;
+//    }
+//    else if (segmentsIntersect(a_pl3, a_ol1))
+//    {
+//       r_ret = true;
+//    }
+//    else if (segmentsIntersect(a_pl3, a_ol2))
+//    {
+//       r_ret = true;
+//    }
+//    else if (segmentsIntersect(a_pl3, a_ol3))
+//    {
+//       r_ret = true;
+//    }
+//    else if (segmentsIntersect(a_pl3, a_ol4))
+//    {
+//       r_ret = true;
+//    }
+//    else if (segmentsIntersect(a_pl4, a_ol1))
+//    {
+//       r_ret = true;
+//    }
+//    else if (segmentsIntersect(a_pl4, a_ol2))
+//    {
+//       r_ret = true;
+//    }
+//    else if (segmentsIntersect(a_pl4, a_ol3))
+//    {
+//       r_ret = true;
+//    }
+//    else if (segmentsIntersect(a_pl4, a_ol4))
+//    {
+//       r_ret = true;
+//    }
+//    // Center point inside bounding rect of the other?
+//    else if (pointInRect(a_middlePoint1, a_p1, a_p2, a_p3, a_p4))
+//    {
+//       r_ret = true;
+//    }
 
-      a_o4.x = t_firstPtr->m_xPos;
-      a_o4.y = t_firstPtr->m_yPos + t_firstPtr->m_height;
+   //////////////////////////////////////////////////////////////////////////
+   // (2.) 
+   // We have a collision candidate, look closer
+   // Check all polygon points for being inside target polygon
+   //////////////////////////////////////////////////////////////////////////
+   if (r_ret)
+   {            
+      // r_ret will be set to true if polygons collide
+      r_ret = false;
 
-      // Object 2 square coordinates  
-      a_p1.x = t_secondPtr->m_xPos;
-      a_p1.y = t_secondPtr->m_yPos;
+      CPolygon* a_polygonAPtr = t_firstPtr->m_textureKeys[t_firstPtr->m_activeAnimationPhase]->m_polygonPtr;
+      CPolygon* a_polygonBPtr = t_secondPtr->m_textureKeys[t_secondPtr->m_activeAnimationPhase]->m_polygonPtr;
+      
+      if((0 != a_polygonAPtr) &&
+         (0 != a_polygonBPtr)    )
+      {
+         // Translate polygon A to correct position
+         a_polygonAPtr->translate(t_firstPtr->m_xPos, t_firstPtr->m_yPos);
 
-      a_p2.x = t_secondPtr->m_xPos + t_secondPtr->m_width;
-      a_p2.y = t_secondPtr->m_yPos;
-
-      a_p3.x = t_secondPtr->m_xPos + t_secondPtr->m_width;
-      a_p3.y = t_secondPtr->m_yPos + t_secondPtr->m_height;
-
-      a_p4.x = t_secondPtr->m_xPos;        
-      a_p4.y = t_secondPtr->m_yPos + t_secondPtr->m_height;
-
-      a_middlePoint1 = CPoint(a_o1.x + t_firstPtr->m_width/2, a_o1.y + t_firstPtr->m_height/2);
-      a_middlePoint2 = CPoint(a_p1.x + t_secondPtr->m_width/2, a_p1.y + t_secondPtr->m_height/2);
-
-      // Rotate with first object angle         
-      a_o1 = a_o1 - a_middlePoint1;
-      a_o2 = a_o2 - a_middlePoint1;
-      a_o3 = a_o3 - a_middlePoint1;
-      a_o4 = a_o4 - a_middlePoint1;
-
-      a_o1.rotate(-t_firstPtr->m_angle);   
-      a_o2.rotate(-t_firstPtr->m_angle);
-      a_o3.rotate(-t_firstPtr->m_angle);
-      a_o4.rotate(-t_firstPtr->m_angle);
-
-      a_o1 = a_o1 + a_middlePoint1;
-      a_o2 = a_o2 + a_middlePoint1;
-      a_o3 = a_o3 + a_middlePoint1;
-      a_o4 = a_o4 + a_middlePoint1;
-     
-      a_ol1.p1 = a_o1;
-      a_ol1.p2 = a_o2;
-
-      a_ol2.p1 = a_o2;
-      a_ol2.p2 = a_o3;
-
-      a_ol3.p1 = a_o3;
-      a_ol3.p2 = a_o4;
-
-      a_ol4.p1 = a_o4;
-      a_ol4.p2 = a_o1;
-
-      // Rotate Object2 with object angle      
-      a_p1 = a_p1 - a_middlePoint2;
-      a_p2 = a_p2 - a_middlePoint2;
-      a_p3 = a_p3 - a_middlePoint2;
-      a_p4 = a_p4 - a_middlePoint2;
-
-      a_p1.rotate(-t_secondPtr->m_angle);   
-      a_p2.rotate(-t_secondPtr->m_angle);
-      a_p3.rotate(-t_secondPtr->m_angle);
-      a_p4.rotate(-t_secondPtr->m_angle);
-
-      a_p1 = a_p1 + a_middlePoint2;
-      a_p2 = a_p2 + a_middlePoint2;
-      a_p3 = a_p3 + a_middlePoint2;
-      a_p4 = a_p4 + a_middlePoint2;
-
-      // Lines
-      a_pl1.p1 = a_p1;
-      a_pl1.p2 = a_p2;
-
-      a_pl2.p1 = a_p2;
-      a_pl2.p2 = a_p3;
-
-      a_pl3.p1 = a_p3;
-      a_pl3.p2 = a_p4;
-
-      a_pl4.p1 = a_p4;
-      a_pl4.p2 = a_p1;           
-
-      //////////////////////////////////////////////////////////////////////////
-      // (1.) 
-      // Test for intersection of player 
-      // square (tilted with m_angle)
-      // and object square
-      //////////////////////////////////////////////////////////////////////////
-
-      // Test all 4 border lines of player square
-      // for intersection with all 4 object square lines
-
-      if (segmentsIntersect(a_pl1, a_ol1))
-         r_ret = true;
-      if (segmentsIntersect(a_pl1, a_ol2))
-         r_ret = true;
-      if (segmentsIntersect(a_pl1, a_ol3))
-         r_ret = true;
-      if (segmentsIntersect(a_pl1, a_ol4))
-         r_ret = true;
-
-      if (segmentsIntersect(a_pl2, a_ol1))
-         r_ret = true;
-      if (segmentsIntersect(a_pl2, a_ol2))
-         r_ret = true;
-      if (segmentsIntersect(a_pl2, a_ol3))
-         r_ret = true;
-      if (segmentsIntersect(a_pl2, a_ol4))
-         r_ret = true;
-
-      if (segmentsIntersect(a_pl3, a_ol1))
-         r_ret = true;
-      if (segmentsIntersect(a_pl3, a_ol2))
-         r_ret = true;
-      if (segmentsIntersect(a_pl3, a_ol3))
-         r_ret = true;
-      if (segmentsIntersect(a_pl3, a_ol4))
-         r_ret = true;
-
-      if (segmentsIntersect(a_pl4, a_ol1))
-         r_ret = true;
-      if (segmentsIntersect(a_pl4, a_ol2))
-         r_ret = true;
-      if (segmentsIntersect(a_pl4, a_ol3))
-         r_ret = true;
-      if (segmentsIntersect(a_pl4, a_ol4))
-         r_ret = true;
-
-      //////////////////////////////////////////////////////////////////////////
-      // (2.) 
-      // We have a collision candidate, look closer
-      // Check all polygon points for being inside target polygon
-      //////////////////////////////////////////////////////////////////////////
-      if (r_ret)
-      {            
-//          CPolygon* a_polygonAPtr = CLevel::M_textureMap[t_firstPtr->m_textureKeys[t_firstPtr->m_activeAnimationPhase]]->m_hullPolygonPtr;
-//          CPolygon* a_polygonBPtr = CLevel::M_textureMap[t_secondPtr->m_textureKeys[t_secondPtr->m_activeAnimationPhase]]->m_hullPolygonPtr;
-         CPolygon* a_polygonAPtr = t_firstPtr->m_textureKeys[t_firstPtr->m_activeAnimationPhase]->m_polygonPtr;
-         CPolygon* a_polygonBPtr = t_secondPtr->m_textureKeys[t_secondPtr->m_activeAnimationPhase]->m_polygonPtr;
-         
-         if((0 != a_polygonAPtr) &&
-            (0 != a_polygonBPtr)    )
+         // Rotate polygon A
+         if (0.0 != t_firstPtr->m_angle)
          {
-
-//             Scale polygon A to correct width and height
-//             a_polygonAPtr->rescale(t_firstPtr->m_width / a_polygonAPtr->m_width, t_firstPtr->m_height / a_polygonAPtr->m_height);     
-
-            // Translate polygon A to correct position
-            a_polygonAPtr->translate(t_firstPtr->m_xPos, t_firstPtr->m_yPos);
-
-            // Rotate polygon A
             a_polygonAPtr->rotate(-t_firstPtr->m_angle, t_firstPtr->m_xPos + t_firstPtr->m_width/2.0, t_firstPtr->m_yPos + t_firstPtr->m_height/2.0);
+         }
 
-//             // Scale polygon B to correct width and height
-//             a_polygonBPtr->rescale(t_secondPtr->m_width / a_polygonBPtr->m_width, t_secondPtr->m_height / a_polygonBPtr->m_height);     
+         // Translate polygon B to correct position
+         a_polygonBPtr->translate(t_secondPtr->m_xPos, t_secondPtr->m_yPos);
 
-            // Translate polygon B to correct position
-            a_polygonBPtr->translate(t_secondPtr->m_xPos, t_secondPtr->m_yPos);
-
-            // Rotate polygon B
+         // Rotate polygon B
+         if (0.0 != t_secondPtr->m_angle)
+         {
             a_polygonBPtr->rotate(-t_secondPtr->m_angle, t_secondPtr->m_xPos + t_secondPtr->m_width/2.0, t_secondPtr->m_yPos + t_secondPtr->m_height/2.0);
+         }         
 
-            for (a_n = 0; a_n < a_polygonAPtr->m_points.size(); a_n++)
+         // Check polygon A for having points in B
+         for (a_n = 0; a_n < a_polygonAPtr->m_points.size(); a_n++)
+         {
+            if (a_polygonBPtr->isInside(a_polygonAPtr->m_points[a_n]))
             {
-               if (a_polygonBPtr->isInside(a_polygonAPtr->m_points[a_n]))
+               r_ret = true;
+               break;
+            }
+         }
+
+         if (!r_ret)
+         {
+            // Check polygon B for having points in A
+            for (a_n = 0; a_n < a_polygonBPtr->m_points.size(); a_n++)
+            {
+               if (a_polygonAPtr->isInside(a_polygonBPtr->m_points[a_n]))
                {
                   r_ret = true;
                   break;
                }
             }
-
-            // Undo of: Rotate polygon A
-            a_polygonAPtr->rotate(t_firstPtr->m_angle, t_firstPtr->m_xPos + t_firstPtr->m_width/2.0, t_firstPtr->m_yPos + t_firstPtr->m_height/2.0);
-
-            // Undo of: Translate polygon A to correct position
-            a_polygonAPtr->translate(-t_firstPtr->m_xPos, -t_firstPtr->m_yPos);
-
-//             // Undo of: Scale polygon A to correct width and height
-//             a_polygonAPtr->rescale(a_polygonAPtr->m_width / t_firstPtr->m_width, a_polygonAPtr->m_height / t_firstPtr->m_height);     
-
-            // Undo of: Rotate polygon B
-            a_polygonBPtr->rotate(t_secondPtr->m_angle, t_secondPtr->m_xPos + t_secondPtr->m_width/2.0, t_secondPtr->m_yPos + t_secondPtr->m_height/2.0);
-
-            // Undo of: Translate polygon B to correct position
-            a_polygonBPtr->translate(- t_secondPtr->m_xPos, - t_secondPtr->m_yPos);
-
-//             // Undo of: Scale polygon B to correct width and height
-//             a_polygonBPtr->rescale(a_polygonBPtr->m_width / t_secondPtr->m_width, a_polygonBPtr->m_height / t_secondPtr->m_height);                 
-
-            int tol = 0;
          }
-      }               
+
+         // Undo of: Rotate polygon A
+         a_polygonAPtr->rotate(t_firstPtr->m_angle, t_firstPtr->m_xPos + t_firstPtr->m_width/2.0, t_firstPtr->m_yPos + t_firstPtr->m_height/2.0);
+
+         // Undo of: Translate polygon A to correct position
+         a_polygonAPtr->translate(-t_firstPtr->m_xPos, -t_firstPtr->m_yPos);
+
+         // Undo of: Rotate polygon B
+         a_polygonBPtr->rotate(t_secondPtr->m_angle, t_secondPtr->m_xPos + t_secondPtr->m_width/2.0, t_secondPtr->m_yPos + t_secondPtr->m_height/2.0);
+
+         // Undo of: Translate polygon B to correct position
+         a_polygonBPtr->translate(- t_secondPtr->m_xPos, - t_secondPtr->m_yPos);
+      }   
    }
 
    return r_ret;
