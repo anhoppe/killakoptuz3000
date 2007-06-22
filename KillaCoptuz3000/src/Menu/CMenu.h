@@ -12,6 +12,8 @@
 
 #include "CHashMap.h"
 
+#include "CTexture.h"
+
 #include <map>
 
 #include "tinyxml/tinyxml.h"
@@ -29,6 +31,7 @@ public:
 
    bool load(TiXmlNode* t_nodePtr);
    void draw();
+   void update();
 
    /** Switches to the next (lower) menu item */
    void next();
@@ -45,9 +48,16 @@ private:
    //////////////////////////////////////////////////////////////////////////
    // Variables
    //////////////////////////////////////////////////////////////////////////
+public:
+   /** map of all textures for a menu */
+   std::map<std::string, CTexture*> m_textureMap;
+
 private:
-   unsigned int            m_currentMenuItem;
-   std::vector<CMenuItem*> m_menuItems;
+   /** Currently selected menu item */
+   unsigned int                     m_currentMenuItem;
+
+   /** vector with all menu items */
+   std::vector<CMenuItem*>          m_menuItems;
 };
 
 #endif

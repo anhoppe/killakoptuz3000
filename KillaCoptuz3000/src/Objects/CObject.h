@@ -15,9 +15,9 @@
 #include <vector>
 #include <string>
 #include <list>
-#include "glut.h"
-#include "CPolygon.h"
-#include "tinyxml.h"
+#include "glut/glut.h"
+#include "KillaCoptuz3000/src/CPolygon.h"
+#include "tinyxml/tinyxml.h"
 
 class CLevel;
 

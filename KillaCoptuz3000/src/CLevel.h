@@ -14,7 +14,7 @@
 #include <string>
 
 #include "tinyxml/tinyxml.h"
-#include "fmod.h"
+#include "fmod375/fmod.h"
 
 
 class CLevel

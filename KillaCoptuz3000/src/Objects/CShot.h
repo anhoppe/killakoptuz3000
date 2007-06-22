@@ -10,8 +10,8 @@
 #ifndef CSHOT_H
 #define CSHOT_H
 
-#include "Objects/CSprite.h"
-#include "tinyxml.h"
+#include "KillaCoptuz3000/src/Objects/CSprite.h"
+#include "tinyxml/tinyxml.h"
 
 class CLevel;
 

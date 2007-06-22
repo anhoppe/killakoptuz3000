@@ -13,9 +13,9 @@
 
 #include <tchar.h>
 #include <vector>
-#include "behaviour/CScript.h"
+#include "KillaCoptuz3000/src/behaviour/CScript.h"
 
-#include "objects/CObject.h"
+#include "KillaCoptuz3000/src/objects/CObject.h"
 
 class CSprite : public CObject
 {

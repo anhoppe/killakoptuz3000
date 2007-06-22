@@ -8,13 +8,13 @@
 // 
 // ***************************************************************
 
-#include "CLevel.h"
-#include "Objects/CEnemy.h"
-#include "Objects/CWeapon.h"
-#include "CObjectStorage.h"
-#include "Functions.h"
-#include "globals.h"
-#include "main.h"
+#include "KillaCoptuz3000/src/CLevel.h"
+#include "KillaCoptuz3000/src/Objects/CEnemy.h"
+#include "KillaCoptuz3000/src/Objects/CWeapon.h"
+#include "KillaCoptuz3000/src/CObjectStorage.h"
+#include "KillaCoptuz3000/src/Functions.h"
+#include "KillaCoptuz3000/src/globals.h"
+#include "KillaCoptuz3000/src/main.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Implementation

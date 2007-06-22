@@ -9,17 +9,17 @@
 // ***************************************************************
 
 
-#include "Objects/CObject.h"
-#include "CObjectStorage.h"
+#include "KillaCoptuz3000/src/Objects/CObject.h"
+#include "KillaCoptuz3000/src/CObjectStorage.h"
 
-#include "CTgaLoader.h"
-#include "Functions.h"
-#include "lodepng.h"
-#include "CLevel.h"
-#include "globals.h"
-#include "CTexture.h"
+#include "KillaCoptuz3000/src/CTgaLoader.h"
+#include "KillaCoptuz3000/src/Functions.h"
+#include "lodepng/lodepng.h"
+#include "KillaCoptuz3000/src/CLevel.h"
+#include "KillaCoptuz3000/src/globals.h"
+#include "KillaCoptuz3000/src/CTexture.h"
 
-#include "Objects/CShot.h"
+#include "KillaCoptuz3000/src/Objects/CShot.h"
 
 #include <stdio.h>
 #include <string>
@@ -43,6 +43,9 @@ CObject::CObject()
    m_cycleInterval         = 10;   
    m_startAngle            = 0.0;
    m_drawLayer             = 0;
+
+   m_id                    = 0;
+   m_parentId              = 0;
 }
 
 
@@ -198,6 +201,7 @@ bool CObject::load(TiXmlNode* t_nodePtr)
    return r_ret;
 }
 
+#if(PRODUCT == KK30000)
 void CObject::draw()
 {  
    std::string a0       = m_textureKeys[m_activeAnimationPhase]->m_textureKey;
@@ -437,6 +441,306 @@ void CObject::draw()
       // DEBUG END
    }
 }
+#else
+void CObject::draw()
+{
+   if(m_textureKeys.size() > 0)
+   {
+      std::string a0       = m_textureKeys[m_activeAnimationPhase]->m_textureKey;
+      CTexture*   a1       = CObjectStorage::getInstance().m_textureMap[m_textureKeys[m_activeAnimationPhase]->m_textureKey];
+      GLuint      a2       = a1->m_textureIdVector[m_activeTexture];
+
+      float       a_xPos   = m_xPos;
+      float       a_yPos   = m_yPos;
+
+      glEnable( GL_TEXTURE_2D );
+      glBindTexture(GL_TEXTURE_2D, a2/*CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]]->m_textureIdVector[m_activeTexture]*/);
+
+      if (m_activeTexture==1)
+      {
+         m_activeTexture = m_activeTexture;
+      }
+
+      glPushMatrix();
+
+      //////////////////////////////////////////////////////////////////////////
+      // rotate around parent angle
+      CObject* a_parentPtr = 0;
+      if(0 != m_parentId)
+      {
+         a_parentPtr = CObjectStorage::getInstance().m_objectMap[m_parentId];
+         a_xPos += a_parentPtr->m_xPos;
+         a_yPos += a_parentPtr->m_yPos;
+      }
+
+      if(a_parentPtr != 0)
+      {
+         if (getType() != e_shot)
+         {
+            glTranslatef(a_parentPtr->m_xPos + a_parentPtr->m_width/2.0, a_parentPtr->m_yPos + a_parentPtr->m_height/2.0, 0.0);
+            if(0 != a_parentPtr)
+            {
+               if(a_parentPtr->m_direction)
+               {
+                  glRotatef(180.0, 0., 1., 0);
+               }
+            }
+
+            glRotatef(a_parentPtr->m_angle, 0., 0., 1.);
+            glTranslatef(-a_parentPtr->m_xPos - a_parentPtr->m_width/2.0, -a_parentPtr->m_yPos - a_parentPtr->m_height/2.0, 0.0);
+         }      
+      }      
+      //////////////////////////////////////////////////////////////////////////
+      // rotate around own axis
+      glTranslatef(a_xPos + m_width/2.0, a_yPos + m_height/2.0, 0.0);
+      if (m_direction)
+      {
+         glRotatef(180.0, 0., 1., 0);
+      }
+      glRotatef(m_angle+m_startAngle, 0., 0., 1.);   
+      glTranslatef(-a_xPos - m_width/2.0, -a_yPos - m_height/2.0, 0.0);
+
+      glBegin( GL_QUADS );
+      glTexCoord2d(0.0,0.0); 
+      glVertex2d(a_xPos, a_yPos);
+
+      glTexCoord2d(1.0,0.0);
+      glVertex2d(m_width+a_xPos, a_yPos);
+
+      glTexCoord2d(1.0,1.0); 
+      glVertex2d(m_width+a_xPos, m_height+a_yPos);
+
+      glTexCoord2d(0.0,1.0); 
+      glVertex2d(a_xPos,m_height+a_yPos);
+
+      glEnd();
+
+      glPopMatrix();
+      glDisable( GL_TEXTURE_2D );
+
+      //////////////////////////////////////////////////////////////////////////
+      // The following section is for hull drawing (only for debugging purposes)
+      //////////////////////////////////////////////////////////////////////////
+      // DEBUG: Show Hull         
+
+      // If object has a parent, rotate with parent angle around parent center
+      float a_angle     = 0.0;
+      float a_xCenter   = 0.0;
+      float a_yCenter   = 0.0;
+      bool  a_direction = 0.0;
+
+      if (g_showBox || g_showBox)
+      {
+         if (0 != a_parentPtr)
+         {
+            // Object has parent, use parent coordinates
+            if (getType() == e_shot)
+            {  
+               if (a_parentPtr->getType() != e_player)
+               {
+                  a_angle     =  a_parentPtr->m_angle;
+               }         
+               else
+               {
+                  a_angle     = m_angle;
+               }
+            }
+            else
+            {
+               a_angle     = a_parentPtr->m_angle + m_angle;      
+            }      
+            a_xCenter   = a_parentPtr->m_xPos + a_parentPtr->m_width/2.0;
+            a_yCenter   = a_parentPtr->m_yPos + a_parentPtr->m_height/2.0;
+            a_direction = a_parentPtr->m_direction;
+         }
+         else
+         {
+            // Object has no parent, use own coordinates
+            a_angle     = m_angle;
+            a_xCenter   = a_xPos + m_width/2.0;
+            a_yCenter   = a_yPos + m_height/2.0;
+            a_direction = m_direction;
+         }
+      }
+
+      if (g_showBox)
+      {
+         // Show bounding rect
+         glPushMatrix();
+
+         // Rotation around object (or parent, if present) center with a_angle
+         glTranslatef(a_xCenter, a_yCenter, 0.0);
+         if (a_direction)
+         {
+            glRotatef(180.0, 0., 1., 0);
+         }
+         glRotatef(a_angle, 0.0, 0.0, 1.0);
+         glTranslatef(-a_xCenter, -a_yCenter, 0.0);
+
+         // Rotation around object angle with m_startAngle
+         glTranslatef(a_xPos + m_width/2.0, a_yPos + m_height/2.0, 0.0);
+         if (a_direction)
+         {
+            glRotatef(180.0, 0., 1., 0);
+         }
+         glRotatef(m_startAngle, 0.0, 0.0, 1.0);
+         glTranslatef(-a_xPos - m_width/2.0, -a_yPos - m_height/2.0, 0.0); 
+
+         if (getType() == e_shot)
+         {
+            glTranslatef(a_xPos + m_width/2.0, a_yPos + m_height/2.0, 0.0);
+
+            glRotatef(m_angle, 0.0, 0.0, 1.0);   
+
+            glTranslatef(-a_xPos - m_width/2.0, -a_yPos - m_height/2.0, 0.0); 
+         }
+
+         glColor4f(1.0,0.0,0.0,0.9);
+         glBegin(GL_LINE_LOOP);
+         glVertex2d(a_xPos, a_yPos);
+         glVertex2d(m_width+a_xPos,a_yPos);
+         glVertex2d(m_width+a_xPos,m_height+a_yPos);
+         glVertex2d(a_xPos,m_height+a_yPos);
+         glEnd();
+         glPopMatrix();
+         glColor4f(1.0,1.0,1.0,1.0);
+      }
+
+      // DEBUG: Show Hull poly
+      CPolygon* a_polygonPtr = CObjectStorage::getInstance().m_textureMap[m_textureKeys[m_activeAnimationPhase]->m_textureKey]->m_hullPolygonPtr;
+      if (g_showHull && 0 != a_polygonPtr)
+      {         
+         glColor4f(1.0,1.0,1.0,0.5);
+         // Scale polygon to correct width and height
+         a_polygonPtr->rescale(m_width / a_polygonPtr->m_width, m_height / a_polygonPtr->m_height);     
+
+         // Translate polygon to correct position
+         a_polygonPtr->translate(m_xPos, m_yPos);
+
+         // Add start angle to rotation
+         if (0.0 != m_startAngle)
+         {
+            a_polygonPtr->rotate(-m_startAngle, a_xPos + m_width/2.0, a_yPos + m_height/2.0);
+         }
+
+         // Rotate polygon
+         a_polygonPtr->rotate(-a_angle, a_xCenter, a_yCenter);
+
+         // Rotate polygon around center
+         if (getType() == e_shot)
+         {
+            a_polygonPtr->rotate(-m_angle, a_xPos + m_width/2.0, a_yPos + m_height/2.0);
+         }      
+
+         // Flip polygon
+         if (a_direction)
+         {         
+            if (0 != a_parentPtr)
+               a_polygonPtr->flip(a_parentPtr->m_xPos + a_parentPtr->m_width/2.0);
+            else
+               a_polygonPtr->flip(a_xPos + m_width/2.0);
+         }
+
+         glBegin(GL_LINE_LOOP);      
+         std::vector<CPoint*>::iterator a_it;
+         for (a_it = a_polygonPtr->m_points.begin(); a_it != a_polygonPtr->m_points.end(); a_it++)
+         {      
+            glVertex2d((*a_it)->x, (*a_it)->y);      
+         }
+         glEnd();
+
+         // Undo of: Flip polygon
+         if (a_direction)
+         {         
+            if (0 != a_parentPtr)
+               a_polygonPtr->flip(a_parentPtr->m_xPos + a_parentPtr->m_width/2.0);
+            else
+               a_polygonPtr->flip(a_xPos + m_width/2.0);
+         }
+
+         if (getType() == e_shot)
+         {
+            // Undo: Rotate polygon around center
+            a_polygonPtr->rotate(m_angle, a_xPos + m_width/2.0, a_yPos + m_height/2.0);
+         }      
+
+         // Undo of: Rotate polygon
+         a_polygonPtr->rotate(a_angle, a_xCenter, a_yCenter);
+
+         // Undo of: Add start angle to rotation
+         if (0.0 != m_startAngle)
+         {
+            a_polygonPtr->rotate(m_startAngle, a_xPos + m_width/2.0, a_yPos + m_height/2.0);
+         }
+
+         // Undo of: Translate polygon to correct position
+         a_polygonPtr->translate(-a_xPos, -a_yPos);
+
+         // Undo of: Scale polygon to correct width and height
+         a_polygonPtr->rescale(a_polygonPtr->m_width / m_width, a_polygonPtr->m_height / m_height);
+
+         glColor4f(1.0,1.0,1.0,1.0);
+         // DEBUG END
+      }
+   }
+   else
+   {
+      float       a_xPos   = m_xPos;
+      float       a_yPos   = m_yPos;
+
+      glPushMatrix();
+
+      //////////////////////////////////////////////////////////////////////////
+      // rotate around parent angle
+      CObject* a_parentPtr = 0;
+      if(0 != m_parentId)
+      {
+         a_parentPtr = CObjectStorage::getInstance().m_objectMap[m_parentId];
+         a_xPos += a_parentPtr->m_xPos;
+         a_yPos += a_parentPtr->m_yPos;
+      }
+
+      if(a_parentPtr != 0)
+      {
+         if (getType() != e_shot)
+         {
+            glTranslatef(a_parentPtr->m_xPos + a_parentPtr->m_width/2.0, a_parentPtr->m_yPos + a_parentPtr->m_height/2.0, 0.0);
+            if(0 != a_parentPtr)
+            {
+               if(a_parentPtr->m_direction)
+               {
+                  glRotatef(180.0, 0., 1., 0);
+               }
+            }
+
+            glRotatef(a_parentPtr->m_angle, 0., 0., 1.);
+            glTranslatef(-a_parentPtr->m_xPos - a_parentPtr->m_width/2.0, -a_parentPtr->m_yPos - a_parentPtr->m_height/2.0, 0.0);
+         }      
+      }      
+      //////////////////////////////////////////////////////////////////////////
+      // rotate around own axis
+      glTranslatef(a_xPos + m_width/2.0, a_yPos + m_height/2.0, 0.0);
+      if (m_direction)
+      {
+         glRotatef(180.0, 0., 1., 0);
+      }
+      glRotatef(m_angle+m_startAngle, 0., 0., 1.);   
+      glTranslatef(-a_xPos - m_width/2.0, -a_yPos - m_height/2.0, 0.0);
+
+      glBegin(GL_LINE_LOOP);
+      
+      glVertex2f(m_xPos, m_yPos);
+      glVertex2f(m_xPos+m_width, m_yPos);
+      glVertex2f(m_xPos+m_width, m_yPos+m_height);
+      glVertex2f(m_xPos, m_yPos+m_height);
+      glVertex2f(m_xPos, m_yPos);
+
+      glEnd();
+
+      glPopMatrix();
+   }
+}
+#endif
 
 
 // void CObject::draw() 

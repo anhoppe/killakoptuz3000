@@ -242,7 +242,8 @@ void CLevel_releaseKey(int key, int x, int y)
 //////////////////////////////////////////////////////////////////////////
 void CMenu_timerCallback(int t_value)
 {
-   glutTimerFunc (25, CMenu_timerCallback, t_value);
+   CGame::getInstance().m_menu.update();
+   glutTimerFunc (100, CMenu_timerCallback, t_value);
 }
 
 void CMenu_renderScene()

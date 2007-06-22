@@ -8,16 +8,16 @@
 // 
 // ***************************************************************
 //
-#include "CLevel.h"
+#include "KillaCoptuz3000/src/CLevel.h"
 
-#include "glut.h"
+#include "glut/glut.h"
 
-#include "CObjectStorage.h"
+#include "KillaCoptuz3000/src/CObjectStorage.h"
 
-#include "Functions.h"
-#include "globals.h"
+#include "KillaCoptuz3000/src/Functions.h"
+#include "KillaCoptuz3000/src/globals.h"
 
-#include "Objects/CPlayer.h"
+#include "KillaCoptuz3000/src/Objects/CPlayer.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Implementation
@@ -62,9 +62,9 @@ bool CLevel::load(TiXmlNode* t_nodePtr)
 
    if (getAttributeStr(a_elemPtr, "music", a_str))
    {
-      std::string a_path = "data\\sound\\";
-      a_path += a_str;
-      m_sound = FSOUND_Stream_Open(a_path.c_str(), FSOUND_LOOP_NORMAL, 0, 0);
+//       std::string a_path = "data\\sound\\";
+//       a_path += a_str;
+//       m_sound = FSOUND_Stream_Open(a_path.c_str(), FSOUND_LOOP_NORMAL, 0, 0);
    }
 
    // Iterate over all elements in objectlist

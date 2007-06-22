@@ -8,7 +8,7 @@
 // 
 // ***************************************************************
 
-#include "Behaviour/CWaypoint.h"
+#include "KillaCoptuz3000/src/Behaviour/CWaypoint.h"
 #ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES
 #endif
@@ -16,7 +16,7 @@
 #include <math.h>
 #include <float.h>
 #include <string>
-#include "Functions.h"
+#include "KillaCoptuz3000/src/Functions.h"
 
 CWaypoint::CWaypoint()
 {

@@ -11,8 +11,8 @@
 #ifndef CBEHAVIOR_H
 #define CBEHAVIOR_H
 
-#include "CPolygon.h"
-#include "tinyxml.h"
+#include "KillaCoptuz3000/src/CPolygon.h"
+#include "tinyxml/tinyxml.h"
 #include <vector>
 
 struct SBehaviorData

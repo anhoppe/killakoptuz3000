@@ -12,8 +12,8 @@
 
 #include "tinyxml/tinyxml.h"
 
-#include "Objects/CSprite.h"
-#include "Objects/CWeapon.h"
+#include "KillaCoptuz3000/src/Objects/CSprite.h"
+#include "KillaCoptuz3000/src/Objects/CWeapon.h"
 
 class CCombatant : public CSprite
 {

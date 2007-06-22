@@ -98,8 +98,6 @@ void CGame::gameControl()
 
             glutTimerFunc (25, CMenu_timerCallback, 1);
          }
-
-         
       }
 
    default:

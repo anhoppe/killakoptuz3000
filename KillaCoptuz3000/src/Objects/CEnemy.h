@@ -11,8 +11,8 @@
 #define CENEMY_H
 
 #include <list>
-#include "objects/CCombatant.h"
-#include "tinyxml.h"
+#include "KillaCoptuz3000/src/objects/CCombatant.h"
+#include "tinyxml/tinyxml.h"
 
 class CWeapon;
 class CLevel;

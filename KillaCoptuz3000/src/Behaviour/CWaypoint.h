@@ -11,8 +11,8 @@
 #ifndef CWAYPOINT_H
 #define CWAYPOINT_H
 
-#include "CPoint.h"
-#include "Behaviour/CBehavior.h"
+#include "KillaCoptuz3000/src/CPoint.h"
+#include "KillaCoptuz3000/src/Behaviour/CBehavior.h"
 
 class CWaypoint : public CBehavior
 {

@@ -8,14 +8,14 @@
 // 
 // ***************************************************************
 
-#include "Objects/CSprite.h"
+#include "KillaCoptuz3000/src/Objects/CSprite.h"
 
-#include "CPoint.h"
-#include "CLevel.h"
-#include "CObjectStorage.h"
+#include "KillaCoptuz3000/src/CPoint.h"
+#include "KillaCoptuz3000/src/CLevel.h"
+#include "KillaCoptuz3000/src/CObjectStorage.h"
 
-#include "glut.h"
-#include "globals.h"
+#include "glut/glut.h"
+#include "KillaCoptuz3000/src/globals.h"
 
 #include <memory.h>
 

@@ -13,7 +13,7 @@
 
 #include <vector>
 
-#include "Objects/CCombatant.h"
+#include "KillaCoptuz3000/src/Objects/CCombatant.h"
 
 
 class CPlayer : public CCombatant
