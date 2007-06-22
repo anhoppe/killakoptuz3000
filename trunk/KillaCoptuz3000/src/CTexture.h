@@ -12,15 +12,15 @@
 #define CTEXTURE_H
 
 #include <vector>
-#include "CPolygon.h"
-#include "tinyxml.h"
-#include "glut.h"
+#include "KillaCoptuz3000/src/CPolygon.h"
+#include "tinyxml/tinyxml.h"
+#include "glut/glut.h"
 
 class CTexture
 {
 public:
    CTexture();
-   CTexture(TiXmlElement* t_elemPtr);
+   CTexture(TiXmlElement* t_elemPtr, const std::string& t_texturePath);
    ~CTexture();
 
 private:
@@ -28,7 +28,7 @@ private:
    static GLuint loadTexture(CTexture* t_texturePtr, const char* t_filename, const std::string& t_gfxType, unsigned int t_nPolyPoints);
 
    // Constructs all files from a base file name and loads textures
-   static bool loadTextureBase(CTexture* t_texturePtr, const std::string& t_baseFileName, const std::string& t_gfxType, unsigned int t_nPolyPoints = 4);   
+   static bool loadTextureBase(CTexture* t_texturePtr, const std::string& t_texturePath, const std::string& t_baseFileName, const std::string& t_gfxType, unsigned int t_nPolyPoints = 4);   
 
 public:
    // List of textures for the object

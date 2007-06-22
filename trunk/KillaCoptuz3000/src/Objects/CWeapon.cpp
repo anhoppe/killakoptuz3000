@@ -13,16 +13,16 @@
 
 #include <math.h>
 
-#include "Functions.h"
-#include "globals.h"
+#include "KillaCoptuz3000/src/Functions.h"
+#include "KillaCoptuz3000/src/globals.h"
 
-#include "CLevel.h"
+#include "KillaCoptuz3000/src/CLevel.h"
 
-#include "CObjectStorage.h"
+#include "KillaCoptuz3000/src/CObjectStorage.h"
 
-#include "Objects/CWeapon.h"
-#include "Objects/CShot.h"
-#include "Objects/CCombatant.h"
+#include "KillaCoptuz3000/src/Objects/CWeapon.h"
+#include "KillaCoptuz3000/src/Objects/CShot.h"
+#include "KillaCoptuz3000/src/Objects/CCombatant.h"
 
 #define MAX_FIRE_ANGLE_DEVIATION 10
 

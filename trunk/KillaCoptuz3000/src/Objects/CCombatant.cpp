@@ -8,9 +8,9 @@
 // 
 // ***************************************************************
 
-#include "Objects/CCombatant.h"
+#include "KillaCoptuz3000/src/Objects/CCombatant.h"
 
-#include "CObjectStorage.h"
+#include "KillaCoptuz3000/src/CObjectStorage.h"
 
 CCombatant::CCombatant()
 {

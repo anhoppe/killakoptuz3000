@@ -12,7 +12,11 @@
 
 #include "tinyxml/tinyxml.h"
 
+#include "glut/glut.h"
+
 #include <string>
+
+class CMenu;
 
 enum EMenuAction
 {
@@ -27,12 +31,13 @@ class CMenuItem
    // Methods
    //////////////////////////////////////////////////////////////////////////
 public:
-   CMenuItem();
+   CMenuItem(CMenu* t_parentPtr);
    ~CMenuItem();
 
    bool load(TiXmlNode* t_nodePtr);
 
-   void draw(float t_position);
+   void draw(float t_position, float t_depth);
+   void update();
 
    //////////////////////////////////////////////////////////////////////////
    // Variables
@@ -40,13 +45,23 @@ public:
 public:
 
    /** This text is displayed for the menu */
-   std::string m_text;
+   //////////////////////////////////////////////////////////////////////////
+   std::string m_textureKey;
 
    /** This is the succeeding menu when this is selected. Only set if menu action is 'menu' */
    std::string m_succeedingMenu;
 
    /** Type of action (start game / end program / menu) */
    EMenuAction m_action;
+
+   /** size of the menu item */
+   float       m_width;
+   float       m_height;
+
+private:
+   CMenu*      m_parentPtr;
+
+   GLuint      m_textureIndex;
 };
 
 #endif

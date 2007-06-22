@@ -8,7 +8,7 @@
 // 
 // ***************************************************************
 
-#include "Behaviour/CBehavior.h"
+#include "KillaCoptuz3000/src/Behaviour/CBehavior.h"
 
 CBehavior::CBehavior()
 {   

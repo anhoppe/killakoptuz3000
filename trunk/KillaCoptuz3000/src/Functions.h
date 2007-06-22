@@ -13,7 +13,7 @@
 #define KILLER_COPTUZ_3000_FUNCTIONS_H
 
 #include <string>
-#include "tinyxml.h"
+#include "tinyxml/tinyxml.h"
 
 bool getAttributeStr(TiXmlElement* t_elemPtr, std::string t_attributeStr, std::string& t_resultStr);
 

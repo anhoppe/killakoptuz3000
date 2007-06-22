@@ -12,11 +12,11 @@
 #define _USE_MATH_DEFINES
 #endif
 #include <math.h>
-#include "Objects/CShot.h"
-#include "CObjectStorage.h"
-#include "CEvent.h"
-#include "CLevel.h"
-#include "Functions.h"
+#include "KillaCoptuz3000/src/Objects/CShot.h"
+#include "KillaCoptuz3000/src/CObjectStorage.h"
+#include "KillaCoptuz3000/src/CEvent.h"
+#include "KillaCoptuz3000/src/CLevel.h"
+#include "KillaCoptuz3000/src/Functions.h"
 
 
 CShot::CShot(CShot* t_shotPtr, std::list<unsigned int>* t_friendObjectsListPtr)

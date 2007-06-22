@@ -9,9 +9,9 @@
 // ***************************************************************
 
 #include <string>
-#include "Behaviour\CScript.h"
-#include "Behaviour\CWaypoint.h"
-#include "Functions.h"
+#include "KillaCoptuz3000/src/Behaviour\CScript.h"
+#include "KillaCoptuz3000/src/Behaviour\CWaypoint.h"
+#include "KillaCoptuz3000/src/Functions.h"
 
 CScript::CScript(const char* t_scriptFileName)
 {

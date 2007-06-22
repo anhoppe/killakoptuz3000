@@ -23,6 +23,15 @@
 #include "Objects/CEnemy.h"
 
 
+//////////////////////////////////////////////////////////////////////////
+// Definitions
+//////////////////////////////////////////////////////////////////////////
+#define GFX_BASE     "data\\gfx\\"
+
+
+//////////////////////////////////////////////////////////////////////////
+// Implementation
+//////////////////////////////////////////////////////////////////////////
 CObjectStorage::CObjectStorage()
 {
    m_objectIdCount = 1;
@@ -356,7 +365,7 @@ bool CObjectStorage::addTextureMap(TiXmlNode* t_nodePtr)
          {
             if(m_textureMap[a_key] == 0)
             {
-               m_textureMap[a_key] = new CTexture(a_elemPtr);
+               m_textureMap[a_key] = new CTexture(a_elemPtr, GFX_BASE);
             }
          }
       }      

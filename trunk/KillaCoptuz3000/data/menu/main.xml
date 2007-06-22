@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu>
-   <menuitem text="New Game" action="startgame">
+   <texturelist>
+      <texture basefilename="play" key="play" gfxType="tga"/>
+      <texture basefilename="loadgame" key="load" gfxType="tga"/>
+      <texture basefilename="highscore" key="high" gfxType="tga"/>
+      <texture basefilename="quit" key="quit" gfxType="tga"/>
+   </texturelist>
+   
+   
+   <menuitem text="New Game" action="startgame" texturekey="play">
    </menuitem>
 
-   <menuitem text="Load Game" action="startgame">
+   <menuitem text="Load Game" action="startgame" texturekey="load">
    </menuitem>
 
-   <menuitem text="Highscore" action="exit">
+   <menuitem text="Highscore" action="exit" texturekey="high">
    </menuitem>
 
-   <menuitem text="Quit" action="exit">
+   <menuitem text="Quit" action="exit" texturekey="quit">
    </menuitem>
 </menu>

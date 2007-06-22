@@ -11,7 +11,7 @@
 #define CSCIPT_H
 
 #include <vector>
-#include "behaviour/CBehavior.h"
+#include "KillaCoptuz3000/src/behaviour/CBehavior.h"
 
 class CScript
 {

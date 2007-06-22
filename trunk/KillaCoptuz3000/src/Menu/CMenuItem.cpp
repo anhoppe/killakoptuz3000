@@ -12,16 +12,25 @@
 
 #include "Functions.h"
 
+#include "CMenu.h"
+
+
 #include "glut/glut.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Implementation
 //////////////////////////////////////////////////////////////////////////
-CMenuItem::CMenuItem()
+CMenuItem::CMenuItem(CMenu* t_parentPtr)
+: m_parentPtr(t_parentPtr)
 {
-   m_text            = "";
+   m_textureKey      = "";
    m_succeedingMenu  = "";
    m_action          = e_quitGame;
+
+   m_width           = 2.5;
+   m_height          = .5;
+
+   m_textureIndex    = 0;
 }
 
 CMenuItem::~CMenuItem()
@@ -43,7 +52,13 @@ bool CMenuItem::load(TiXmlNode* t_nodePtr)
    {
       a_elemPtr = t_nodePtr->ToElement();
 
-      r_ret = getAttributeStr(a_elemPtr, "text", m_text);
+      //////////////////////////////////////////////////////////////////////////
+      // get texture ID
+      r_ret = getAttributeStr(a_elemPtr, "texturekey", m_textureKey);
+      
+
+      //////////////////////////////////////////////////////////////////////////
+      // get and save action
       r_ret &= getAttributeStr(a_elemPtr, "action", a_str);
 
       if(a_str == "startgame")
@@ -66,16 +81,45 @@ bool CMenuItem::load(TiXmlNode* t_nodePtr)
    return r_ret;
 }
 
-void CMenuItem::draw(float t_yPos)
+void CMenuItem::update()
+{
+   m_textureIndex++;
+
+   if(m_textureIndex >= m_parentPtr->m_textureMap[m_textureKey]->m_textureIdVector.size())
+   {
+      m_textureIndex = 0;
+   }
+}
+
+void CMenuItem::draw(float t_yPos, float t_depth)
 {
    int   a_index  = 0;
    float a_xPos   = -1.;
 
+   glPushMatrix();
 
-   glRasterPos3f(a_xPos, t_yPos, 1.00);
+   glTranslatef(0., 0., t_depth);
 
-   for(a_index = 0; a_index < m_text.size(); a_index++)
-   {
-      glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, m_text[a_index]);
-   }
+   glEnable( GL_TEXTURE_2D );
+   glBindTexture(GL_TEXTURE_2D, m_parentPtr->m_textureMap[m_textureKey]->m_textureIdVector[m_textureIndex]);
+
+   glBegin( GL_QUADS );
+   glTexCoord2d(0.0,0.0); 
+   glVertex2d(a_xPos, t_yPos);
+
+   glTexCoord2d(1.0,0.0);
+   glVertex2d(m_width+a_xPos, t_yPos);
+
+   glTexCoord2d(1.0,1.0); 
+   glVertex2d(m_width+a_xPos, m_height+t_yPos);
+
+   glTexCoord2d(0.0,1.0); 
+   glVertex2d(a_xPos,m_height+t_yPos);
+
+   glEnd();
+
+   glPopMatrix();
+
+   glDisable( GL_TEXTURE_2D );
+
 }

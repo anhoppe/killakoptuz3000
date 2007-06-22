@@ -10,17 +10,17 @@
 	purpose:	
 *********************************************************************/
 
-#include "Objects/CPlayer.h"
-#include "CLevel.h"
+#include "KillaCoptuz3000/src/Objects/CPlayer.h"
+#include "KillaCoptuz3000/src/CLevel.h"
 
 #ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES
 #endif
 #include <math.h>
 
-#include "Functions.h"
-#include "globals.h"
-#include "Objects/CWeapon.h"
+#include "KillaCoptuz3000/src/Functions.h"
+#include "KillaCoptuz3000/src/globals.h"
+#include "KillaCoptuz3000/src/Objects/CWeapon.h"
 
 #define ACCEL_DELTA     .00004
 #define GRAVITY_VALUE   .0006

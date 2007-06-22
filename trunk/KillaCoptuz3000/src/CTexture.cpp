@@ -8,11 +8,11 @@
 // 
 // ***************************************************************
 
-#include "CTexture.h"
-#include "Functions.h"
-#include "CTgaLoader.h "
+#include "KillaCoptuz3000/src/CTexture.h"
+#include "KillaCoptuz3000/src/Functions.h"
+#include "KillaCoptuz3000/src/CTgaLoader.h "
 
-#include "lodepng.h"
+#include "lodepng/lodepng.h"
 
 #include <string>
 
@@ -25,7 +25,7 @@ CTexture::CTexture()
 
 }
 
-CTexture::CTexture(TiXmlElement* t_elemPtr)
+CTexture::CTexture(TiXmlElement* t_elemPtr, const std::string& t_texturePath)
 {
    TiXmlNode*     a_nodePtr      = 0;
    TiXmlElement*  a_elemPtr      = 0;
@@ -50,21 +50,21 @@ CTexture::CTexture(TiXmlElement* t_elemPtr)
          {
             if(getAttributeStr(t_elemPtr, "gfxType", a_gfxType))
             {
-               assert(loadTextureBase(this, a_baseFileName, a_gfxType, atoi(a_str.c_str())));
+               assert(loadTextureBase(this, t_texturePath, a_baseFileName, a_gfxType, atoi(a_str.c_str())));
             }
          }                 
          else
          {
             if(getAttributeStr(t_elemPtr, "gfxType", a_gfxType))
             {
-               assert(loadTextureBase(this, a_baseFileName, a_gfxType));
+               assert(loadTextureBase(this, t_texturePath, a_baseFileName, a_gfxType));
             }
          }
       }      
    }
 }
 
-bool CTexture::loadTextureBase(CTexture* t_texturePtr, const std::string& t_baseFileName, const std::string& t_gfxType, unsigned int t_nPolyPoints)
+bool CTexture::loadTextureBase(CTexture* t_texturePtr, const std::string& t_texturePath, const std::string& t_baseFileName, const std::string& t_gfxType, unsigned int t_nPolyPoints)
 {
    std::string a_fileName     = "";
    int         a_count        = 0;
@@ -77,7 +77,7 @@ bool CTexture::loadTextureBase(CTexture* t_texturePtr, const std::string& t_base
 
    do
    {
-      a_fileName = GFX_PATH;
+      a_fileName = t_texturePath;
       a_fileName += t_baseFileName;
 
       _itoa_s(a_count, a_str, 1024, 10);

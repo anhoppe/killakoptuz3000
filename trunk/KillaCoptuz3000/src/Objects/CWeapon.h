@@ -10,8 +10,8 @@
 #ifndef CWEAPON_H
 #define CWEAPON_H
 
-#include "Objects/CSprite.h"
-#include "tinyxml.h"
+#include "KillaCoptuz3000/src/Objects/CSprite.h"
+#include "tinyxml/tinyxml.h"
 
 #include <list>
 
