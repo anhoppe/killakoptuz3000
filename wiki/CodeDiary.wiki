@@ -126,8 +126,8 @@ H & F. Implemented the quad tree. Problems could not be vaporized... Some object
 
 == Sun, 17. June 2007 ==
 
-H & F, Michi L. as guest star
-Very informative (for our guest star who gained massive C++ knowledge)
+H & F, Michi L. as guest star.
+Very informative for our guest star who gained massive C++ knowledge.
 Otherwise as usual...
 We reached the same state we had before the re-implementation phase.
 
@@ -136,3 +136,11 @@ We reached the same state we had before the re-implementation phase.
   * Worked on game control, added menu class
   * Game starts with menu now! After you've been killed, you get back to the main menu
   * Added menu class CMenu and CMenuItem
+
+== Fri, 23. June 2007 ==
+
+H & F. Willy. A litte flabby evening. Project proceeds, but we really need a kick.
+
+  * Kollision works now 100%
+  * Hoppe has started a LevelEditor
+  * Menus are Texture based now
