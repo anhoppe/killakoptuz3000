@@ -142,5 +142,5 @@ We reached the same state we had before the re-implementation phase.
 H & F. Willy. A litte flabby evening. Project proceeds, but we really need a kick.
 
   * Kollision works now 100%
-  * Hoppe has started a LevelEditor
+  * Hoppe has started a Level Editor
   * Menus are Texture based now
