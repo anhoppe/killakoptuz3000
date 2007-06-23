@@ -137,7 +137,7 @@ We reached the same state we had before the re-implementation phase.
   * Game starts with menu now! After you've been killed, you get back to the main menu
   * Added menu class CMenu and CMenuItem
 
-== Fri, 23. June 2007 ==
+== Fri, 22. June 2007 ==
 
 H & F. Willy. A litte flabby evening. Project proceeds, but we really need a kick.
 
