@@ -144,3 +144,15 @@ H & F. Willy. A litte flabby evening. Project proceeds, but we really need a kic
   * Kollision works now 100%
   * Hoppe has started a Level Editor
   * Menus are Texture based now
+
+== Sun, 24. June 2007 ==
+
+Hoppe after visiting my grandmother before playing Angband (Level 42 now!!!)
+  * Proceeded with the level editor, started property grid
+
+== Mo, 25. June 2007 ==
+
+Of course motivation is not the tiniest problem for members of The CommanderZZ! To proof this to ourselfs we (especially Fab) integrated ballistic shots. It really kicks ass!
+  * Shots have a type (normal, ballistic, guided is planned)
+  * All sprites have a velocity (we believe so)
+  * Code becomes a bit ... ummm ... sort of ugly again
