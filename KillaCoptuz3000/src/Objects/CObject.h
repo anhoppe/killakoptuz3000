@@ -92,75 +92,75 @@ protected:
    // Variables
    //////////////////////////////////////////////////////////////////////////
 public:
-   bool                 m_isDying;
+   bool                       m_isDying;
 
    /** Absolute position */
-   float                m_xPos;
-   float                m_yPos;
-   float                m_width;
-   float                m_height;
+   float                      m_xPos;
+   float                      m_yPos;
+   float                      m_width;
+   float                      m_height;
 
-   int                  m_cycleInterval;
+   int                        m_cycleInterval;
 
-   bool                 m_isBackground;
+   bool                       m_isBackground;
 
-   std::string          m_gfxType;
+   std::string                m_gfxType;
 
    /** Flag, indicates that object is dying (death animation, no more damage) /*
    bool                 m_isDying;
 
    /** Index of the explosion (death) sequence */
-   int                  m_explosionIndex;
+   int                        m_explosionIndex;
 
    // Active texture (zero based index)
-   unsigned int         m_activeTexture;
+   unsigned int               m_activeTexture;
 
    // 
-   unsigned int         m_activeAnimationPhase;
+   unsigned int               m_activeAnimationPhase;
 
    // Angle of the sprite
-   float                m_angle;
+   float                      m_angle;
 
    /** Start angle (only valid for child objects */
-   float                m_startAngle;
+   float                      m_startAngle;
 
    /** direction*/
-   bool                 m_direction;
+   bool                       m_direction;
 
    /** Remember movement deltas for children updates */
-   float                m_dx;
-   float                m_dy;
+   float                      m_dx;
+   float                      m_dy;
 
 
    /** Hit points */
-   int                  m_hitPoints;
-   int                  m_maxHitPoints;
+   int                        m_hitPoints;
+   int                        m_maxHitPoints;
 
    /** Damage points (to others) */
-   int                  m_damagePoints;
+   int                        m_damagePoints;
 
    /** Flag if object is invincible (set if no hit points are defined in xml file) */
-   int                  m_invincible;
+   int                        m_invincible;
 
    /** Objects unique ID for storage class map key. 0 is illegal */
-   unsigned int         m_id;
+   unsigned int               m_id;
 
    /** Id of the parent. If it equals 0, object has no parent */
-   unsigned int         m_parentId;
+   unsigned int               m_parentId;
 
    /** layer position determines draw order */
-   unsigned int         m_drawLayer;
+   unsigned int               m_drawLayer;
 
    // list of children
-   std::list<unsigned int>      m_children;
+   std::list<unsigned int>    m_children;
 
 protected:
    // List of textures for the object
 //    std::vector <GLuint> m_textureIdVector;
-   std::vector<CTextureInfo*>   m_textureKeys;
+   std::vector<CTextureInfo*> m_textureKeys;
 
    // Time counter for animation
-   int                          m_timeCounter;
+   int                        m_timeCounter;
 };
 
 #endif

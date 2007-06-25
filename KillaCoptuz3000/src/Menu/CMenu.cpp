@@ -153,7 +153,7 @@ void CMenu::performAction()
          CGame::getInstance().m_gameState = e_menu;
          CGame::getInstance().m_menuName  = m_menuItems[m_currentMenuItem]->m_succeedingMenu;
          CGame::getInstance().gameControl();
-
+         break;
       }
    }
 }

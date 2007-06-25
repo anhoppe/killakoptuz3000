@@ -64,7 +64,27 @@
          </texturelist>
       </object>
 
-      <object name="tank" cycleInterval="7" xpos="6.5" ypos="-1.8" width="0.8" height="0.4" type="enemy" hitpoints="90" drawLayer="4" damagepoints="10">
+      <object name="tank2" cycleInterval="7" xpos="6.5" ypos="-1.8" width="0.8" height="0.4" type="enemy" hitpoints="90" drawLayer="4" damagepoints="10">
+         <texturelist>
+            <texture key="battletruck"/>
+            <texture key="explosion" explosion="1" />
+         </texturelist>
+         <script filename="./scripts/tankmove2.xml">
+         </script>
+         <weapon minAngle="-30" maxAngle="60" cycleInterval="7" xpos="0.2" ypos="0.01" width=".2" height=".5" gfxType="tga" maxShots="5" framesPShot="80" shotRadius="5." background="1" drawLayer="4">
+            <texturelist>
+               <texture key="rocketlauncher"/>
+            </texturelist>
+            <shot cycleInterval="2" xpos="0.0" ypos="0.2" width="0.12" height="0.25" v="0.05" hitpoints="1" drawLayer="5">
+               <texturelist>
+                  <texture key="rocketA"/>
+                  <texture key="explosion" explosion="1" />
+               </texturelist>
+            </shot>
+         </weapon>
+      </object>
+
+      <object name="tank3" cycleInterval="7" xpos="2.5" ypos="-1.8" width="0.8" height="0.4" type="enemy" hitpoints="90" drawLayer="4" damagepoints="10">
          <texturelist>
             <texture key="battletruck"/>
             <texture key="explosion" explosion="1" />
@@ -82,7 +102,9 @@
                </texturelist>
             </shot>
          </weapon>
-      </object> 
+      </object>
+
+
    </objectlist>      
 
 </level>

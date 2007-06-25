@@ -43,7 +43,9 @@ public:
    std::vector<unsigned int>   m_trackList;
 
    /** Tracked object index*/
-   unsigned int            m_trackIndex;
+   unsigned int                m_trackIndex;
+
+
 protected:
    /** List of ID's of weapons */
    std::vector<unsigned int>   m_weaponList;

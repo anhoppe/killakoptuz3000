@@ -23,7 +23,6 @@
 #include "KillaCoptuz3000/src/Objects/CWeapon.h"
 
 #define ACCEL_DELTA     .00004
-#define GRAVITY_VALUE   .0006
 #define ANGLE_DELTA     2
 #define MINMAX_ANGLE    45
 #define FRICTION_COEFF  0.98
@@ -116,7 +115,7 @@ void CPlayer::update(CLevel* t_levelPtr)
    //////////////////////////////////////////////////////////////////////////
    // Update velocity
    //////////////////////////////////////////////////////////////////////////
-   m_velocityY = m_velocityY*FRICTION_COEFF + m_accel*cos(M_PI*m_angle/180) - GRAVITY_VALUE;   
+   m_velocityY = m_velocityY*FRICTION_COEFF + m_accel*cos(M_PI*m_angle/180) - g_gravity;   
 
    if (m_direction)
       m_velocityX = m_velocityX*FRICTION_COEFF - m_accel*sin(-M_PI*m_angle/180.0);
@@ -134,7 +133,9 @@ void CPlayer::update(CLevel* t_levelPtr)
       m_yPos += m_velocityY;         
    }
    else      
-      m_velocityY = 0.0;      
+   {
+      m_velocityY = 0.0;
+   }
 
    // Movement in x
    if (t_levelPtr->positionAllowed(m_xPos + m_width/2.0 + m_velocityX, m_yPos + m_height/2.0))

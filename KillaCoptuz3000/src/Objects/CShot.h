@@ -15,6 +15,12 @@
 
 class CLevel;
 
+enum EShotType
+{
+   e_shotNormal    = 0,
+   e_shotBallistic = 1
+};
+
 class CShot : public CSprite
 {
 public:
@@ -22,9 +28,6 @@ public:
    CShot(CShot* t_shotPtr, std::list<unsigned int>* t_friendObjectsListPtr);
    CShot(TiXmlNode* t_nodePtr);
    ~CShot();
-
-   // Velocity (per frame)
-   float m_v;
 
    virtual VeObjectType getType() { return e_shot; };
    
@@ -34,9 +37,13 @@ public:
 
    bool         isFriend(unsigned int t_objectPtr);
 
+   EShotType               m_shotType;
+
+   float                   m_velocityX;
+   float                   m_velocityY;
 
 private:
-   std::list<unsigned int> m_friendObjects;
+   std::list<unsigned int> m_friendObjects;   
 };
 
 #endif
