@@ -18,6 +18,7 @@
 #include "KillaCoptuz3000/src/CLevel.h"
 #include "KillaCoptuz3000/src/Functions.h"
 
+#include "KillaCoptuz3000/src/globals.h"
 
 CShot::CShot(CShot* t_shotPtr, std::list<unsigned int>* t_friendObjectsListPtr)
 {
@@ -62,6 +63,10 @@ CShot::CShot(CShot* t_shotPtr, std::list<unsigned int>* t_friendObjectsListPtr)
 
    m_damagePoints    = t_shotPtr->m_damagePoints;
 
+   // copy shot type
+   m_shotType        = t_shotPtr->m_shotType;
+
+
    // copy friend objects. bit sorry that they are not in the t_srcPtr
    if(0 != t_friendObjectsListPtr)
    {
@@ -72,6 +77,7 @@ CShot::CShot(CShot* t_shotPtr, std::list<unsigned int>* t_friendObjectsListPtr)
          m_friendObjects.push_back(*a_it);
       }
    }
+
 }
 
 CShot::CShot(TiXmlNode* t_nodePtr)
@@ -97,15 +103,52 @@ bool CShot::load(TiXmlNode* t_nodePtr)
       m_v = atof(a_str.c_str());
    }
 
+   m_shotType = e_shotNormal;
+   
+   if(getAttributeStr(a_elemPtr, "ballistic", a_str))
+   {
+      if(a_str == "1")
+      {
+         m_shotType = e_shotBallistic;
+      }
+   }
+
    CObject::load(t_nodePtr);
    return true;
 }
 
 void CShot::update(CLevel* t_levelPtr)
 {
-   float a_dx = -m_v*sin(m_angle*M_PI/180);
-   float a_dy = m_v*cos(m_angle*M_PI/180);
+   float          a_dx = 0.;
+   float          a_dy = 0.;
 
+//    static double  s_startAngle = m_angle;   
+   
+   m_velocityX       = -m_v*sin(m_angle/180.0*M_PI);
+   m_velocityY       = m_v*cos(m_angle/180.0*M_PI);
+
+   if(m_shotType == e_shotBallistic)
+   {
+      m_velocityY -= g_gravity;
+
+      if (0.0 != m_velocityY)
+      {
+         m_angle = -atan(m_velocityX / m_velocityY)* (180.0 / M_PI) + 180.0;
+      }
+      else
+      {
+         //m_angle = -180.0;
+      }
+
+      m_v = sqrt(m_velocityX*m_velocityX + m_velocityY*m_velocityY);
+   }
+
+   a_dx = m_velocityX;
+   a_dy = m_velocityY;
+
+
+   //////////////////////////////////////////////////////////////////////////
+   // move shot and check if shot must be deleted
    if (t_levelPtr->positionAllowed(m_xPos + m_width/2.0 + a_dx, m_yPos + m_height/2.0 + a_dy))
    {
       m_xPos += a_dx;

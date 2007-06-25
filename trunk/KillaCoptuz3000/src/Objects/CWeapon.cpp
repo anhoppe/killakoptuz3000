@@ -23,6 +23,8 @@
 #include "KillaCoptuz3000/src/Objects/CWeapon.h"
 #include "KillaCoptuz3000/src/Objects/CShot.h"
 #include "KillaCoptuz3000/src/Objects/CCombatant.h"
+#include "KillaCoptuz3000/src/Objects/CPlayer.h"
+#include "KillaCoptuz3000/src/Objects/CEnemy.h"
 
 #define MAX_FIRE_ANGLE_DEVIATION 10
 
@@ -210,6 +212,26 @@ void CWeapon::fire()
       if(0 != m_parentId)
       {
          a_parentPtr = CObjectStorage::getInstance().m_objectMap[m_parentId];
+      }
+
+      // Add parents velocity to ballistic shots velocity
+      if (a_newShotPtr->m_shotType == e_shotBallistic)
+      {
+         float a_dvx, a_dvy;
+         if (a_parentPtr->getType() == e_player)
+         {
+            a_dvx = ((CPlayer*)a_parentPtr)->m_velocityX;
+            a_dvy = ((CPlayer*)a_parentPtr)->m_velocityY;
+         }
+         else if (a_parentPtr->getType() == e_enemy)
+         {
+            a_dvx = *((CEnemy*)a_parentPtr)->m_behaviorData.m_dxPtr;
+            a_dvy = *((CEnemy*)a_parentPtr)->m_behaviorData.m_dyPtr;
+         }
+
+         a_newShotPtr->m_v += sqrt(a_dvx*a_dvx + a_dvy*a_dvy);
+         a_newShotPtr->m_velocityX += a_dvx;
+         a_newShotPtr->m_velocityY += a_dvy;
       }
 
       

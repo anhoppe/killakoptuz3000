@@ -23,7 +23,7 @@ public:
 
    void update(SBehaviorData& t_data);
 
-   unsigned int m_activeBehavior;   
+   unsigned int m_activeBehavior;
 };
 
 #endif

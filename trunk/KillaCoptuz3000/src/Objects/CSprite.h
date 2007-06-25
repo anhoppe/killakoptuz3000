@@ -26,6 +26,9 @@ public:
    virtual VeObjectType getType() { return e_sprite; };
    virtual void update(CLevel* m_levelPtr);
 
+   // Velocity (per frame)
+   float m_v;
+
    /** Switches direction*/
    void flip();
 

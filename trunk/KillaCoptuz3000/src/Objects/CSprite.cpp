@@ -19,11 +19,13 @@
 
 #include <memory.h>
 
+#include <math.h>
 
 CSprite::CSprite()
 {   
    m_behaviorData.m_dxPtr  = 0;
    m_behaviorData.m_dyPtr  = 0;      
+   m_v                     = 0.;
 }
 
 CSprite::~CSprite()
@@ -39,7 +41,6 @@ void CSprite::flip()
 void CSprite::update(CLevel* t_levelPtr)
 {
    CObject::update(t_levelPtr);
-
 }
 // void CSprite::draw()
 // {  
