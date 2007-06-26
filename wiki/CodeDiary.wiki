@@ -164,4 +164,4 @@ I don't know if I have mentioned it yet, but the LE provides a control panel to 
 
   * Fixed the wxSizer settings for control panel
   * stored object properties in the property sheet
-  * if valued are altered in the property sheet, the object is updated
+  * if values are altered in the property sheet, the object is updated
