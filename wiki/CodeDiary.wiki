@@ -156,3 +156,12 @@ Of course motivation is not the tiniest problem for members of The CommanderZZ! 
   * Shots have a type (normal, ballistic, guided is planned)
   * All sprites have a velocity (we believe so)
   * Code becomes a bit ... ummm ... sort of ugly again
+
+== Di, 26 June 2007 ==
+
+Hop: Motivated by Fab via Skype I continued programming the level editor, otherwise I would have played Angband for the whole time (Level 44 now). Maybe I call it LE3000?
+I don't know if I have mentioned it yet, but the LE provides a control panel to the left that holds the control and the property sheet for the objects and a GL panel for outout to the right. It is developed again in C++ with wxWidgets.
+
+  * Fixed the wxSizer settings for control panel
+  * stored object properties in the property sheet
+  * if valued are altered in the property sheet, the object is updated
