@@ -29,6 +29,19 @@
 CLevel*  g_levelPtr  = 0;
 
 //////////////////////////////////////////////////////////////////////////
+// Help functions
+//////////////////////////////////////////////////////////////////////////
+void renderBitmapString(float t_x, float t_y, char *t_string, void *t_font)
+{  
+   char *a_c;
+   glRasterPos3f(t_x, t_y, 0.0);
+   for (a_c=t_string; *a_c != '\0'; a_c++)
+   {
+      glutBitmapCharacter(t_font, *a_c);
+   }
+}
+
+//////////////////////////////////////////////////////////////////////////
 // Callbacks used while level is running
 //////////////////////////////////////////////////////////////////////////
 void setCallbackLevelPtr(CLevel* t_levelPtr)
@@ -113,7 +126,7 @@ void CLevel_renderScene(void)
    }
 
    glPopMatrix();
-
+   
    // swapping the buffers causes the rendering above to be  
    // shown
    glutSwapBuffers();

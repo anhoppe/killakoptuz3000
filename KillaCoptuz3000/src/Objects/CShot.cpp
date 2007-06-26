@@ -50,7 +50,9 @@ CShot::CShot(CShot* t_shotPtr, std::list<unsigned int>* t_friendObjectsListPtr)
 
    m_timeCounter     = 0;
 
-   m_v               = t_shotPtr->m_v;   
+   m_v               = t_shotPtr->m_v;
+   m_velocityX       =  -t_shotPtr->m_v*sin(m_angle/180.0*M_PI);
+   m_velocityY       =  t_shotPtr->m_v*cos(m_angle/180.0*M_PI);
 
    m_invincible      = t_shotPtr->m_invincible;
 
@@ -123,11 +125,13 @@ void CShot::update(CLevel* t_levelPtr)
    float          a_dy = 0.;
 
 //    static double  s_startAngle = m_angle;   
-   
-   m_velocityX       = -m_v*sin(m_angle/180.0*M_PI);
-   m_velocityY       = m_v*cos(m_angle/180.0*M_PI);
-
-   if(m_shotType == e_shotBallistic)
+  
+   if (m_shotType == e_shotNormal)
+   {
+      m_velocityX       = -m_v*sin(m_angle/180.0*M_PI);
+      m_velocityY       = m_v*cos(m_angle/180.0*M_PI);
+   }
+   else if(m_shotType == e_shotBallistic)
    {
       m_velocityY -= g_gravity;
 

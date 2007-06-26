@@ -13,16 +13,23 @@
 class CLevel;
 
 //////////////////////////////////////////////////////////////////////////
+// Help functions for the callbacks
+//////////////////////////////////////////////////////////////////////////
+void renderBitmapString(float t_x, float t_y, char *t_string, void *t_font);
+
+//////////////////////////////////////////////////////////////////////////
 // GL callbacks used while level is running
 //////////////////////////////////////////////////////////////////////////
 void setCallbackLevelPtr(CLevel* t_levelPtr);
-
 void CLevel_timerCallback(int t_value);
 void CLevel_renderScene();
 void CLevel_pressKey(int t_key, int t_x, int t_y);      
 void CLevel_releaseKey(int t_key, int t_x, int t_y);
 void CLevel_processNormalKeys(unsigned char t_key, int t_x, int t_y);
 
+//////////////////////////////////////////////////////////////////////////
+// GL callbacks used while menue is running
+//////////////////////////////////////////////////////////////////////////
 void CMenu_timerCallback(int t_value);
 void CMenu_renderScene();
 void CMenu_pressKey(int t_key, int t_x, int t_y);      
