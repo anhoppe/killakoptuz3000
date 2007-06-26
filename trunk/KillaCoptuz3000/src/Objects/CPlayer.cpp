@@ -22,8 +22,8 @@
 #include "KillaCoptuz3000/src/globals.h"
 #include "KillaCoptuz3000/src/Objects/CWeapon.h"
 
-#define ACCEL_DELTA     .00004
-#define ANGLE_DELTA     2
+#define ACCEL_DELTA     .00006
+#define ANGLE_DELTA     3
 #define MINMAX_ANGLE    45
 #define FRICTION_COEFF  0.98
 
@@ -37,12 +37,12 @@ CPlayer::CPlayer()
 
    m_angle        = 0;
    m_direction    = 0;
-   m_maxAccel     = 0.0015;
+   m_maxAccel     = 0.0030;
    m_accel        = 0.;
    m_velocityX    = 0.;
    m_velocityY    = 0.;
 
-   m_velocityMax  = .007;
+   m_velocityMax  = .018;
    m_isBackground = false;
 
 }
