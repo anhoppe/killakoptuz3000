@@ -26,8 +26,7 @@ CEnemy::CEnemy()
 
    m_behaviorData.m_xPosPtr         = &m_xPos;
    m_behaviorData.m_yPosPtr         = &m_yPos;
-   m_behaviorData.m_x0              = m_xPos;
-   m_behaviorData.m_y0              = m_yPos;
+   m_behaviorData.m_direction       = &m_direction;
    m_behaviorData.m_dxPtr           = &m_dx;
    m_behaviorData.m_dyPtr           = &m_dy;   
 }

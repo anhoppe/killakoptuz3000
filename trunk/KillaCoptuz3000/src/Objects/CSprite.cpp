@@ -24,7 +24,7 @@
 CSprite::CSprite()
 {   
    m_behaviorData.m_dxPtr  = 0;
-   m_behaviorData.m_dyPtr  = 0;      
+   m_behaviorData.m_dyPtr  = 0;
    m_v                     = 0.;
 }
 
