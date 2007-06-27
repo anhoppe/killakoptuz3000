@@ -110,6 +110,7 @@ bool CObject::load(TiXmlNode* t_nodePtr)
    TiXmlElement*  a_subElemPtr      = 0;
 
    CTextureInfo*  a_textureInfoPtr  = 0;
+   CTexture*      a_texturePtr      = 0;
 
    std::string    a_str             = "";
    std::string    a_dummy           = "";
@@ -156,6 +157,11 @@ bool CObject::load(TiXmlNode* t_nodePtr)
          a_textureInfoPtr = new CTextureInfo;
 
          // Create the polygon         
+         a_texturePtr = CObjectStorage::getInstance().m_textureMap[a_str];
+         if (a_str == "drone")
+         {
+            int bla=2;
+         }
          a_textureInfoPtr->m_polygonPtr = new CPolygon(CObjectStorage::getInstance().m_textureMap[a_str]->m_hullPolygonPtr);
 
          // Scale the new polygon

@@ -54,8 +54,7 @@ CScript::~CScript()
 }
 
 void CScript::update(SBehaviorData& t_data)
-{
-   int tol = 0;
+{   
    if(m_behavior.size() > 0)
    {
       if (m_behavior[m_activeBehavior]->update(t_data))

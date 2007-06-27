@@ -25,9 +25,8 @@ struct SBehaviorData
    float* m_dxPtr;
    float* m_dyPtr;
 
-   // Initial positions
-   float  m_x0;
-   float  m_y0;
+   // Reference pointer to direction
+   bool* m_direction;
 }; 
 
 class CBehavior

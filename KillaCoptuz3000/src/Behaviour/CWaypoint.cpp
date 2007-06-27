@@ -66,10 +66,19 @@ bool CWaypoint::load(TiXmlNode* t_nodePtr)
 bool CWaypoint::update(SBehaviorData& t_data)
 {   
    bool     r_ret = false;
-   
-   float    a_dx  = t_data.m_x0 - m_point.x - *t_data.m_xPosPtr; 
-   float    a_dy  = t_data.m_y0 - m_point.y - *t_data.m_yPosPtr;
-   
+
+   float    a_dx  = m_point.x - *t_data.m_xPosPtr; 
+   float    a_dy  = m_point.y - *t_data.m_yPosPtr;
+
+   if (a_dx > 0)
+   {
+      *t_data.m_direction = true;
+   }
+   else
+   {
+      *t_data.m_direction = false;
+   }
+
    float    a_dist = sqrt(a_dx*a_dx + a_dy*a_dy);
 
    *t_data.m_dxPtr = 0.;
