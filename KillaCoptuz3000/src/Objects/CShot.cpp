@@ -41,10 +41,17 @@ CShot::CShot(CShot* t_shotPtr, std::list<unsigned int>* t_friendObjectsListPtr)
 
    unsigned int a_i;
 
+#if (PRODUCT == KK3000)
    for(a_i = 0; a_i < t_shotPtr->m_textureKeys.size(); a_i++)
    {      
       m_textureKeys.push_back(new CTextureInfo(t_shotPtr->m_textureKeys[a_i]));
    }
+#else
+   for(a_i = 0; a_i < t_shotPtr->m_textureKeys.size(); a_i++)
+   {      
+      m_textureKeys.push_back(t_shotPtr->m_textureKeys[a_i]);
+   }
+#endif
 
    m_activeTexture   = t_shotPtr->m_activeTexture;
 

@@ -16,12 +16,28 @@
 #include "tinyxml/tinyxml.h"
 #include "glut/glut.h"
 
+#include "KillaCoptuz3000/src/globals.h"
+
 class CTexture
 {
 public:
    CTexture();
    CTexture(TiXmlElement* t_elemPtr, const std::string& t_texturePath);
    ~CTexture();
+
+#if(PRODUCT == LE3000)
+   /**
+   *  Loads the texture content without XML file
+   *  @param t_texturePath directory of the GFX files
+   *  @param t_baseFileName file name
+   *  @param t_gfxType extension of the file
+   *  @param t_hullPoints hull points for the file
+   */
+   void loadFromBaseFile(const std::string& t_texturePath, const std::string& t_baseFileName, const std::string& t_gfxType, int t_hullPoints);
+   std::string m_baseFileName;
+   std::string m_gfxType;
+   int         m_hullPoints;
+#endif
 
 private:
    // Loads a texture via TGA loader

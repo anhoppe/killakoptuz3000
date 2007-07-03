@@ -11,6 +11,11 @@
 #define CDATASTORAGE_H
 
 #include "../KillaCoptuz3000/src/Objects/CObject.h"
+#include "../KillaCoptuz3000/src/CTexture.h"
+
+#include <wx/wx.h>
+
+#include <map>
 
 //////////////////////////////////////////////////////////////////////////
 // Object IDs
@@ -33,15 +38,28 @@ public:
    static CDataStorage& getInstance();
 
    void add(int t_objectId);
+
+   /** Adds textures to the texture map */
+   void addTextures(std::list<wxString>& t_fileList);
+
    void draw();
 
+   /** 
+   *  Generates key from file name 
+   *  @param t_fileName base file name
+   **/
+   std::string getKey(const std::string& t_fileName);
+
+private:
    //////////////////////////////////////////////////////////////////////////
    // Variables
    //////////////////////////////////////////////////////////////////////////
 public:
-   std::vector<CObject*>   m_objects;
-   float                   m_xPos;
-   float                   m_yPos;
+   std::vector<CObject*>            m_objects;
+
+   std::map<wxString, CTexture*>    m_textureMap;
+   float                            m_xPos;
+   float                            m_yPos;
 };
 
 #endif

@@ -192,6 +192,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\CDlgAddTextures.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\CDlgTypeSelection.cpp"
 				>
 			</File>
@@ -211,12 +215,6 @@
 				RelativePath=".\src\CUpdateContainer.cpp"
 				>
 			</File>
-			<Filter
-				Name="Resource Files"
-				Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
-				UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
-				>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -233,6 +231,10 @@
 			</File>
 			<File
 				RelativePath=".\src\CDataStorage.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\CDlgAddTextures.h"
 				>
 			</File>
 			<File
@@ -407,6 +409,12 @@
 				RelativePath="..\tinyxml\tinyxmlparser.cpp"
 				>
 			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
+			>
 		</Filter>
 	</Files>
 	<Globals>

@@ -17,6 +17,9 @@
 #include <list>
 #include "glut/glut.h"
 #include "KillaCoptuz3000/src/CPolygon.h"
+
+#include "KillaCoptuz3000\src\globals.h"
+
 #include "tinyxml/tinyxml.h"
 
 class CLevel;
@@ -157,7 +160,16 @@ public:
 protected:
    // List of textures for the object
 //    std::vector <GLuint> m_textureIdVector;
+#if (PRODUCT == KK3000)
    std::vector<CTextureInfo*> m_textureKeys;
+#else
+public:
+   // LE3000 does not need the hull polygon
+   std::vector<std::string>   m_textureKeys;
+
+   std::string                m_texture;
+protected:  
+#endif
 
    // Time counter for animation
    int                        m_timeCounter;

@@ -19,10 +19,10 @@ class CLevel;
 // global variables
 //////////////////////////////////////////////////////////////////////////
 // 'good' old trick
-#define KK30000 1
-#define LEV_GEN 2
+#define KK3000 1
+#define LE3000 2
 
-#define PRODUCT KK3000
+#define PRODUCT LE3000
 
 // Show bounding boxes for collision detection
 extern bool     g_showBox;
