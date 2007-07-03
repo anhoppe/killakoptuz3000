@@ -64,6 +64,28 @@ CTexture::CTexture(TiXmlElement* t_elemPtr, const std::string& t_texturePath)
    }
 }
 
+CTexture::~CTexture()
+{
+   if(0 != m_hullPolygonPtr)
+   {
+      delete m_hullPolygonPtr;
+   }
+}
+
+#if(PRODUCT == LE3000)
+void CTexture::loadFromBaseFile(const std::string& t_texturePath, const std::string& t_baseFileName, const std::string& t_gfxType, int t_hullPoints)
+{
+   m_baseFileName = t_baseFileName;
+   m_gfxType      = t_gfxType;
+   m_hullPoints   = t_hullPoints;
+   
+   loadTextureBase(this, t_texturePath, t_baseFileName, t_gfxType, t_hullPoints);
+}
+#endif
+
+//////////////////////////////////////////////////////////////////////////
+// Private members
+//////////////////////////////////////////////////////////////////////////
 bool CTexture::loadTextureBase(CTexture* t_texturePtr, const std::string& t_texturePath, const std::string& t_baseFileName, const std::string& t_gfxType, unsigned int t_nPolyPoints)
 {
    std::string a_fileName     = "";
@@ -112,13 +134,6 @@ bool CTexture::loadTextureBase(CTexture* t_texturePtr, const std::string& t_text
 
 
 
-CTexture::~CTexture()
-{
-   if(0 != m_hullPolygonPtr)
-   {
-      delete m_hullPolygonPtr;
-   }
-}
 
 
 GLuint CTexture::loadTexture(CTexture* t_texturePtr, const char* t_filename, const std::string& t_gfxType, unsigned int t_nPolyPoints)

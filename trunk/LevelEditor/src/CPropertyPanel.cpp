@@ -166,6 +166,15 @@ void CPropertyPanel::initObjectProperties()
    a_desc.m_intPtr = &a_objectPtr->m_damagePoints;
    a_desc.m_rowIndex = m_startIndexObject+10;
    m_objectProperties.push_back(a_desc);
+
+   a_desc.m_name      = "textureKeys";
+   a_desc.m_type      = e_combo;
+   a_desc.m_stringPtr = &a_objectPtr->m_texture;
+   a_desc.m_rowIndex = m_selectedObjectIndex+11;
+   a_desc.m_editorPtr = 0;
+   m_objectProperties.push_back(a_desc);
+
+
 }
 
 void CPropertyPanel::appendProperties(CObject* t_objectPtr, std::vector<SPropDesc>& t_properties)
@@ -191,7 +200,7 @@ void CPropertyPanel::appendProperties(CObject* t_objectPtr, std::vector<SPropDes
       wxString a_str = (*a_it).m_name;
 
       m_gridPropertyPtr->SetCellValue(a_index, 0, (*a_it).m_name);
-
+      
       a_index++;
    }
 
@@ -226,7 +235,33 @@ void CPropertyPanel::setProperties()
       case e_string:
          a_str = (*a_it).m_stringPtr->c_str();
          break;
+      case e_combo:
+         if((*a_it).m_name == "textureKeys")
+         {
+            int                                          a_count     = 0;
+            int                                          a_index     = 0;
+            wxString*                                    a_keys;
+            wxGridCellChoiceEditor*                      a_editorPtr = 0;
+            std::map<wxString, CTexture*>::iterator   a_mapIt;
 
+            if(0 != (*a_it).m_editorPtr)
+            {
+               (*a_it).m_editorPtr->Destroy();
+            }
+
+            a_count = CDataStorage::getInstance().m_textureMap.size();
+            a_keys = new wxString[a_count];
+
+            for(a_mapIt = CDataStorage::getInstance().m_textureMap.begin(); a_mapIt != CDataStorage::getInstance().m_textureMap.end(); a_mapIt++)
+            {
+               a_keys[a_index] = a_mapIt->first;
+               a_index++;
+            }
+
+            a_editorPtr = new wxGridCellChoiceEditor(a_count, a_keys);
+            m_gridPropertyPtr->SetCellEditor((*a_it).m_rowIndex, 1, a_editorPtr);
+         }
+         break;
       }
 
       m_gridPropertyPtr->SetCellValue((*a_it).m_rowIndex, 1, a_str);
@@ -282,6 +317,10 @@ void CPropertyPanel::onGridChange(wxGridEvent& t_event)
       case e_string:
          *a_descPtr->m_stringPtr = a_str.c_str();
          break;
+      case e_combo:
+         *a_descPtr->m_stringPtr = a_str.c_str();
+         break;
+
       }
 
       CUpdateContainer::getInstance().update();

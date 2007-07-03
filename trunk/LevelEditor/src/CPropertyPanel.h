@@ -33,7 +33,8 @@ enum EObjectProperties
    e_explosionIndex  = 7,
    e_startAngle      = 8,
    e_maxHitpoints    = 9,
-   e_damagePoints    = 10
+   e_damagePoints    = 10,
+   e_textureKeys     = 11
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -44,7 +45,8 @@ enum EPropertyType
    e_boolean = 0,
    e_int     = 1,
    e_float   = 2,
-   e_string  = 3
+   e_string  = 3,
+   e_combo   = 4
 };
 
 
@@ -54,19 +56,22 @@ enum EPropertyType
 struct SPropDesc
 {
    /** Name of the property */
-   wxString       m_name;
+   wxString          m_name;
 
    /** Type of the property */
-   EPropertyType  m_type;
+   EPropertyType     m_type;
 
    /** row index in property sheet */
-   int            m_rowIndex;
+   int               m_rowIndex;
 
    /** Point to represented value. Only the pointer with the correct type is valid */
-   float*         m_floatPtr;
-   int*           m_intPtr;
-   bool*          m_booleanPtr;
-   std::string*   m_stringPtr;
+   float*            m_floatPtr;
+   int*              m_intPtr;
+   bool*             m_booleanPtr;
+   std::string*      m_stringPtr;
+   
+   /** Pointer to the cell editor */
+   wxGridCellEditor* m_editorPtr;
 };
 
 

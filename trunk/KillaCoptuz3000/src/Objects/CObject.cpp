@@ -21,6 +21,10 @@
 
 #include "KillaCoptuz3000/src/Objects/CShot.h"
 
+#if(PRODUCT == LE3000)
+#include "../LevelEditor/src/CDataStorage.h"
+#endif
+
 #include <stdio.h>
 #include <string>
 
@@ -55,6 +59,7 @@ CObject::~CObject()
 
 void CObject::nextTexture()
 {
+#if(PRODUCT == KK3000)
    m_timeCounter++;
    
    if (m_timeCounter >= m_cycleInterval)
@@ -92,13 +97,18 @@ void CObject::nextTexture()
 
       m_timeCounter = 0;
    }
+#endif
 }
 
 
 // Return: number of textures in m_textureIdVector
 size_t CObject::getTextureCount()
 {
+#if (PRODUCT == KK3000)
    return CObjectStorage::getInstance().m_textureMap[m_textureKeys[m_activeAnimationPhase]->m_textureKey]->m_textureIdVector.size();
+#else
+   return 1;
+#endif
 }
 
 bool CObject::load(TiXmlNode* t_nodePtr)
@@ -176,7 +186,11 @@ bool CObject::load(TiXmlNode* t_nodePtr)
          if(r_ret)
          {
             a_textureInfoPtr->m_textureKey = a_str;
+#if (PRODUCT == KK3000)
             m_textureKeys.push_back(a_textureInfoPtr);
+#else
+            m_textureKeys.push_back(a_str);
+#endif
          }
       }
    }
@@ -207,9 +221,9 @@ bool CObject::load(TiXmlNode* t_nodePtr)
    return r_ret;
 }
 
-#if(PRODUCT == KK30000)
+#if(PRODUCT == KK3000)
 void CObject::draw()
-{  
+{
    std::string a0       = m_textureKeys[m_activeAnimationPhase]->m_textureKey;
    CTexture*   a1       = CObjectStorage::getInstance().m_textureMap[m_textureKeys[m_activeAnimationPhase]->m_textureKey];
    GLuint      a2       = a1->m_textureIdVector[m_activeTexture];
@@ -452,15 +466,15 @@ void CObject::draw()
 {
    if(m_textureKeys.size() > 0)
    {
-      std::string a0       = m_textureKeys[m_activeAnimationPhase]->m_textureKey;
-      CTexture*   a1       = CObjectStorage::getInstance().m_textureMap[m_textureKeys[m_activeAnimationPhase]->m_textureKey];
+      std::string a0       = m_textureKeys[0];
+      CTexture*   a1       = CObjectStorage::getInstance().m_textureMap[m_textureKeys[0]];
       GLuint      a2       = a1->m_textureIdVector[m_activeTexture];
 
       float       a_xPos   = m_xPos;
       float       a_yPos   = m_yPos;
 
       glEnable( GL_TEXTURE_2D );
-      glBindTexture(GL_TEXTURE_2D, a2/*CLevel::M_textureMap[m_textureKeys[m_activeAnimationPhase]]->m_textureIdVector[m_activeTexture]*/);
+      glBindTexture(GL_TEXTURE_2D, a2);
 
       if (m_activeTexture==1)
       {
@@ -612,82 +626,6 @@ void CObject::draw()
          glColor4f(1.0,1.0,1.0,1.0);
       }
 
-      // DEBUG: Show Hull poly
-      CPolygon* a_polygonPtr = CObjectStorage::getInstance().m_textureMap[m_textureKeys[m_activeAnimationPhase]->m_textureKey]->m_hullPolygonPtr;
-      if (g_showHull && 0 != a_polygonPtr)
-      {         
-         glColor4f(1.0,1.0,1.0,0.5);
-         // Scale polygon to correct width and height
-         a_polygonPtr->rescale(m_width / a_polygonPtr->m_width, m_height / a_polygonPtr->m_height);     
-
-         // Translate polygon to correct position
-         a_polygonPtr->translate(m_xPos, m_yPos);
-
-         // Add start angle to rotation
-         if (0.0 != m_startAngle)
-         {
-            a_polygonPtr->rotate(-m_startAngle, a_xPos + m_width/2.0, a_yPos + m_height/2.0);
-         }
-
-         // Rotate polygon
-         a_polygonPtr->rotate(-a_angle, a_xCenter, a_yCenter);
-
-         // Rotate polygon around center
-         if (getType() == e_shot)
-         {
-            a_polygonPtr->rotate(-m_angle, a_xPos + m_width/2.0, a_yPos + m_height/2.0);
-         }      
-
-         // Flip polygon
-         if (a_direction)
-         {         
-            if (0 != a_parentPtr)
-               a_polygonPtr->flip(a_parentPtr->m_xPos + a_parentPtr->m_width/2.0);
-            else
-               a_polygonPtr->flip(a_xPos + m_width/2.0);
-         }
-
-         glBegin(GL_LINE_LOOP);      
-         std::vector<CPoint*>::iterator a_it;
-         for (a_it = a_polygonPtr->m_points.begin(); a_it != a_polygonPtr->m_points.end(); a_it++)
-         {      
-            glVertex2d((*a_it)->x, (*a_it)->y);      
-         }
-         glEnd();
-
-         // Undo of: Flip polygon
-         if (a_direction)
-         {         
-            if (0 != a_parentPtr)
-               a_polygonPtr->flip(a_parentPtr->m_xPos + a_parentPtr->m_width/2.0);
-            else
-               a_polygonPtr->flip(a_xPos + m_width/2.0);
-         }
-
-         if (getType() == e_shot)
-         {
-            // Undo: Rotate polygon around center
-            a_polygonPtr->rotate(m_angle, a_xPos + m_width/2.0, a_yPos + m_height/2.0);
-         }      
-
-         // Undo of: Rotate polygon
-         a_polygonPtr->rotate(a_angle, a_xCenter, a_yCenter);
-
-         // Undo of: Add start angle to rotation
-         if (0.0 != m_startAngle)
-         {
-            a_polygonPtr->rotate(m_startAngle, a_xPos + m_width/2.0, a_yPos + m_height/2.0);
-         }
-
-         // Undo of: Translate polygon to correct position
-         a_polygonPtr->translate(-a_xPos, -a_yPos);
-
-         // Undo of: Scale polygon to correct width and height
-         a_polygonPtr->rescale(a_polygonPtr->m_width / m_width, a_polygonPtr->m_height / m_height);
-
-         glColor4f(1.0,1.0,1.0,1.0);
-         // DEBUG END
-      }
    }
    else
    {
@@ -972,177 +910,15 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
       r_ret = true;
    }
 
-//    // Object 1 square coordinates
-//    a_o1.x = t_firstPtr->m_xPos;
-//    a_o1.y = t_firstPtr->m_yPos;
-// 
-//    a_o2.x = t_firstPtr->m_xPos + t_firstPtr->m_width;
-//    a_o2.y = t_firstPtr->m_yPos;
-// 
-//    a_o3.x = t_firstPtr->m_xPos + t_firstPtr->m_width;
-//    a_o3.y = t_firstPtr->m_yPos + t_firstPtr->m_height;
-// 
-//    a_o4.x = t_firstPtr->m_xPos;
-//    a_o4.y = t_firstPtr->m_yPos + t_firstPtr->m_height;
-// 
-//    // Object 2 square coordinates  
-//    a_p1.x = t_secondPtr->m_xPos;
-//    a_p1.y = t_secondPtr->m_yPos;
-// 
-//    a_p2.x = t_secondPtr->m_xPos + t_secondPtr->m_width;
-//    a_p2.y = t_secondPtr->m_yPos;
-// 
-//    a_p3.x = t_secondPtr->m_xPos + t_secondPtr->m_width;
-//    a_p3.y = t_secondPtr->m_yPos + t_secondPtr->m_height;
-// 
-//    a_p4.x = t_secondPtr->m_xPos;        
-//    a_p4.y = t_secondPtr->m_yPos + t_secondPtr->m_height;
-// 
-//    a_middlePoint1 = CPoint(a_o1.x + t_firstPtr->m_width/2, a_o1.y + t_firstPtr->m_height/2);
-//    a_middlePoint2 = CPoint(a_p1.x + t_secondPtr->m_width/2, a_p1.y + t_secondPtr->m_height/2);
-// 
-//    // Rotate with first object angle         
-//    a_o1 = a_o1 - a_middlePoint1;
-//    a_o2 = a_o2 - a_middlePoint1;
-//    a_o3 = a_o3 - a_middlePoint1;
-//    a_o4 = a_o4 - a_middlePoint1;
-// 
-//    a_o1.rotate(-t_firstPtr->m_angle);   
-//    a_o2.rotate(-t_firstPtr->m_angle);
-//    a_o3.rotate(-t_firstPtr->m_angle);
-//    a_o4.rotate(-t_firstPtr->m_angle);
-// 
-//    a_o1 = a_o1 + a_middlePoint1;
-//    a_o2 = a_o2 + a_middlePoint1;
-//    a_o3 = a_o3 + a_middlePoint1;
-//    a_o4 = a_o4 + a_middlePoint1;
-//   
-//    a_ol1.p1 = a_o1;
-//    a_ol1.p2 = a_o2;
-// 
-//    a_ol2.p1 = a_o2;
-//    a_ol2.p2 = a_o3;
-// 
-//    a_ol3.p1 = a_o3;
-//    a_ol3.p2 = a_o4;
-// 
-//    a_ol4.p1 = a_o4;
-//    a_ol4.p2 = a_o1;
-// 
-//    // Rotate Object2 with object angle      
-//    a_p1 = a_p1 - a_middlePoint2;
-//    a_p2 = a_p2 - a_middlePoint2;
-//    a_p3 = a_p3 - a_middlePoint2;
-//    a_p4 = a_p4 - a_middlePoint2;
-// 
-//    a_p1.rotate(-t_secondPtr->m_angle);   
-//    a_p2.rotate(-t_secondPtr->m_angle);
-//    a_p3.rotate(-t_secondPtr->m_angle);
-//    a_p4.rotate(-t_secondPtr->m_angle);
-// 
-//    a_p1 = a_p1 + a_middlePoint2;
-//    a_p2 = a_p2 + a_middlePoint2;
-//    a_p3 = a_p3 + a_middlePoint2;
-//    a_p4 = a_p4 + a_middlePoint2;
-// 
-//    // Lines
-//    a_pl1.p1 = a_p1;
-//    a_pl1.p2 = a_p2;
-// 
-//    a_pl2.p1 = a_p2;
-//    a_pl2.p2 = a_p3;
-// 
-//    a_pl3.p1 = a_p3;
-//    a_pl3.p2 = a_p4;
-// 
-//    a_pl4.p1 = a_p4;
-//    a_pl4.p2 = a_p1;           
-// 
-//    //////////////////////////////////////////////////////////////////////////
-//    // (1.) 
-//    // Test for intersection of object 1 
-//    // square and object 2 square
-//    //////////////////////////////////////////////////////////////////////////
-// 
-//    // Test all 4 border lines of player square
-//    // for intersection with all 4 object square lines   
-//    if (segmentsIntersect(a_pl1, a_ol1))
-//    {
-//       r_ret = true;
-//    }
-//    else if (segmentsIntersect(a_pl1, a_ol2))
-//    {
-//       r_ret = true;
-//    }
-//    else if (segmentsIntersect(a_pl1, a_ol3))
-//    {
-//       r_ret = true;
-//    }
-//    else if (segmentsIntersect(a_pl1, a_ol4))
-//    {
-//       r_ret = true;
-//    }
-//    else if (segmentsIntersect(a_pl2, a_ol1))
-//    {
-//       r_ret = true;
-//    }
-//    else if (segmentsIntersect(a_pl2, a_ol2))
-//    {
-//       r_ret = true;
-//    }
-//    else if (segmentsIntersect(a_pl2, a_ol3))
-//    {
-//       r_ret = true;
-//    }
-//    else if (segmentsIntersect(a_pl2, a_ol4))
-//    {
-//       r_ret = true;
-//    }
-//    else if (segmentsIntersect(a_pl3, a_ol1))
-//    {
-//       r_ret = true;
-//    }
-//    else if (segmentsIntersect(a_pl3, a_ol2))
-//    {
-//       r_ret = true;
-//    }
-//    else if (segmentsIntersect(a_pl3, a_ol3))
-//    {
-//       r_ret = true;
-//    }
-//    else if (segmentsIntersect(a_pl3, a_ol4))
-//    {
-//       r_ret = true;
-//    }
-//    else if (segmentsIntersect(a_pl4, a_ol1))
-//    {
-//       r_ret = true;
-//    }
-//    else if (segmentsIntersect(a_pl4, a_ol2))
-//    {
-//       r_ret = true;
-//    }
-//    else if (segmentsIntersect(a_pl4, a_ol3))
-//    {
-//       r_ret = true;
-//    }
-//    else if (segmentsIntersect(a_pl4, a_ol4))
-//    {
-//       r_ret = true;
-//    }
-//    // Center point inside bounding rect of the other?
-//    else if (pointInRect(a_middlePoint1, a_p1, a_p2, a_p3, a_p4))
-//    {
-//       r_ret = true;
-//    }
 
    //////////////////////////////////////////////////////////////////////////
    // (2.) 
    // We have a collision candidate, look closer
    // Check all polygon points for being inside target polygon
    //////////////////////////////////////////////////////////////////////////
+#if(PRODUCT == KK3000)
    if (r_ret)
-   {            
+   {
       // r_ret will be set to true if polygons collide
       r_ret = false;
 
@@ -1206,6 +982,7 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
          a_polygonBPtr->translate(- t_secondPtr->m_xPos, - t_secondPtr->m_yPos);
       }   
    }
+#endif
 
    return r_ret;
 }

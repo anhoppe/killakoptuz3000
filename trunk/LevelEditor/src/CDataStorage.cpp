@@ -12,6 +12,8 @@
 
 #include "KillaCoptuz3000/src/Objects/CEnemy.h"
 
+#include <wx/filename.h>
+
 //////////////////////////////////////////////////////////////////////////
 // Implementation
 //////////////////////////////////////////////////////////////////////////
@@ -61,6 +63,14 @@ void CDataStorage::add(int t_objectId)
       m_objects.push_back(a_objectPtr);
    }
 }
+
+std::string CDataStorage::getKey(const std::string& t_fileName)
+{
+   wxFileName a_fileName(t_fileName);
+
+   return a_fileName.GetName();
+}
+
 
 void CDataStorage::draw()
 {
