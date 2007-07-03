@@ -167,3 +167,9 @@ I don't know if I have mentioned it yet, but the LE provides a control panel to 
   * if values are altered in the property sheet, the object is updated
 
 The existing code was added to our repository today
+
+== Di., 4. July 2007 ==
+
+Hop: after a great party weekend at the Fusion Festival in east germany I am back in business. Continued on the LE3000 project.
+  * LE3000 is compilable again
+  * tga files are addable and selectable, altough selected them has no effect yet
