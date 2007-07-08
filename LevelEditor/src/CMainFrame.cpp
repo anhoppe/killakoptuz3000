@@ -29,7 +29,7 @@
 #define ID_MENU_NEW_OBJECT          1001
 #define ID_MENU_PROJECT_ADD_TEXTURE 1002
 
-#define GFX_BASE_FILE               "..\\KillCoptuz3000\\data\\gfx"
+#define GFX_BASE_FILE               "..\\KillaCoptuz3000\\data\\gfx\\"
 
 //////////////////////////////////////////////////////////////////////////
 // Event Table

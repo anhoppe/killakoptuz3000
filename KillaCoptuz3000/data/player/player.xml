@@ -5,7 +5,7 @@
    <texture key="playergun" basefilename="heliBgun" gfxType="tga"/>
    <texture key="bombholder" basefilename="bombholder" gfxType="tga"/>
    <texture key="explosion" basefilename="explosion" gfxType="tga"/>
-   <texture key="bombA" basefilename="bombA" gfxType="tga"/>
+   <texture key="bombA" basefilename="braun" gfxType="tga"/>
    <texture key="rocketA" basefilename="rocketA" gfxType="tga"/>
 </texturelist>
 

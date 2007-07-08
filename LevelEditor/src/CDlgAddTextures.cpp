@@ -104,7 +104,7 @@ void CDlgAddTextures::update()
 
    for(a_it = m_textures.begin();  a_it != m_textures.end(); a_it++)
    {
-      a_str.sprintf("%s (poly: %d)", (*a_it).m_baseFileName, (*a_it).m_hullPoints);
+      a_str.sprintf("%s (poly: %d)", (*a_it).m_baseFileName.c_str(), (*a_it).m_hullPoints);
       m_listTexturePtr->Append(a_str);
    }
 }
