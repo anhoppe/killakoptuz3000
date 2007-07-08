@@ -173,3 +173,10 @@ The existing code was added to our repository today
 Hop: after a great party weekend at the Fusion Festival in east germany I am back in business. Continued on the LE3000 project.
   * LE3000 is compilable again
   * tga files are addable and selectable, altough selected them has no effect yet
+
+== Sun., 8. July 2007 ==
+
+Hop: Fab wasn't in town this weekend and I had to do some other stuff for a certain firm... But I had a bit time to work on LE3000 after a regular visit to my grandmother.
+  * an added object can select it's texture.
+
+The code is terrible. Still very buggy (only the first object can select a texture). But the success of seeing an added object with a texture was cool.
