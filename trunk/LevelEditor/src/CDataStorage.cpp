@@ -66,9 +66,13 @@ void CDataStorage::add(int t_objectId)
 
 std::string CDataStorage::getKey(const std::string& t_fileName)
 {
-   wxFileName a_fileName(t_fileName);
+   wxFileName  a_fileName(t_fileName);
+   wxString    r_ret = "";
 
-   return a_fileName.GetName();
+   r_ret = a_fileName.GetName(); 
+   r_ret = r_ret.Left(r_ret.Length()-1);
+
+   return r_ret;
 }
 
 

@@ -464,10 +464,11 @@ void CObject::draw()
 #else
 void CObject::draw()
 {
-   if(m_textureKeys.size() > 0)
+   if(m_texture != "")
    {
-      std::string a0       = m_textureKeys[0];
-      CTexture*   a1       = CObjectStorage::getInstance().m_textureMap[m_textureKeys[0]];
+      std::string a0       = m_texture;
+      CTexture*   a1       = CDataStorage::getInstance().m_textureMap[m_texture.c_str()];
+      assert(a1 && "No valid CTexture object in texture map");
       GLuint      a2       = a1->m_textureIdVector[m_activeTexture];
 
       float       a_xPos   = m_xPos;
@@ -831,8 +832,8 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
 
    //////////////////////////////////////////////////////////////////////////
    // one object invincible, and makes no damage => no collision
-   if (t_firstPtr->m_damagePoints == 0 && t_firstPtr->m_invincible ||
-       t_secondPtr->m_damagePoints == 0 && t_secondPtr->m_invincible)
+   if ((t_firstPtr->m_damagePoints == 0 && t_firstPtr->m_invincible && t_secondPtr->getType() != e_shot) ||
+       (t_secondPtr->m_damagePoints == 0 && t_secondPtr->m_invincible && t_firstPtr->getType() != e_shot) )
    {
       return false;
    }
@@ -865,14 +866,14 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
    // We can only collide with non - background objects
    if(t_firstPtr->m_isBackground || t_secondPtr->m_isBackground)
    {
-      return false;
+       return false;
    }
 
    //////////////////////////////////////////////////////////////////////////
    // Two shots cant collide
    if(t_firstPtr->getType() == e_shot && t_secondPtr->getType() == e_shot)
    {
-      return false;
+//      return false;
    }
    
    //////////////////////////////////////////////////////////////////////////

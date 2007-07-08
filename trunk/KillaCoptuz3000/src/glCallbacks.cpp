@@ -90,18 +90,22 @@ void CLevel_timerCallback(int value)
 void CLevel_renderScene(void)
 {
    CPlayer*       a_playerPtr = CObjectStorage::getInstance().getPlayerPtr();
-   static float   s_xCenter = 0.0;
+
+   static float   s_xCenter   = 0.0;
+   static float   s_yCenter   = 0.0;
    
+
    if (a_playerPtr)
    {
       s_xCenter = a_playerPtr->m_xPos;
+      s_yCenter = a_playerPtr->m_yPos;
    }
 
    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
    glPushMatrix();     
 
-   glTranslatef(-s_xCenter, 0.0, 0.0);
+   glTranslatef(-s_xCenter, -s_yCenter, 0.0);
 
    //////////////////////////////////////////////////////////////////////////
    // draw the level

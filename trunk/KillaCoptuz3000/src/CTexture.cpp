@@ -94,8 +94,11 @@ bool CTexture::loadTextureBase(CTexture* t_texturePtr, const std::string& t_text
    char        a_str[1024];
    FILE*       a_fPtr         = 0;
    GLuint      a_textureId;
+   int         a_numLoaded    = 0;
+
    bool        r_ret          = true;
-   errno_t     a_err;   
+
+   errno_t     a_err;
 
    do
    {
@@ -106,7 +109,7 @@ bool CTexture::loadTextureBase(CTexture* t_texturePtr, const std::string& t_text
       a_fileName += a_str;
 
       a_fileName += ".";
-      a_fileName += t_gfxType;         
+      a_fileName += t_gfxType;
 
       a_err = fopen_s(&a_fPtr, a_fileName.c_str(), "rb");
       if(0 == a_err)
@@ -123,11 +126,18 @@ bool CTexture::loadTextureBase(CTexture* t_texturePtr, const std::string& t_text
       {
          a_textureId = loadTexture(t_texturePtr, a_fileName.c_str(), t_gfxType, t_nPolyPoints);
          if (a_textureId != -1)
+         {
             t_texturePtr->m_textureIdVector.push_back(a_textureId);
+         }
+         a_numLoaded++;
       }
 
       a_count++;
    } while(a_fileExists);
+
+#if(PRODUCT == LE3000)
+   assert((a_numLoaded > 0) && "Requested gfx file does not exist");
+#endif
 
    return r_ret;  
 }
@@ -147,7 +157,9 @@ GLuint CTexture::loadTexture(CTexture* t_texturePtr, const char* t_filename, con
    if (t_gfxType == "tga")
    {
       if (!a_tgaImage.LoadTGA(t_filename))
+      {
          return -1;
+      }
 
       a_image     = a_tgaImage.image;
       a_width     = a_tgaImage.imageWidth; 
