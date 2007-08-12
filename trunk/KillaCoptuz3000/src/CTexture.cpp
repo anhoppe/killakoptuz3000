@@ -189,7 +189,7 @@ GLuint CTexture::loadTexture(CTexture* t_texturePtr, const char* t_filename, con
          }
       }      
    }
-   else return -1;   
+   else return -1;
 
    // Bind the texture
 
