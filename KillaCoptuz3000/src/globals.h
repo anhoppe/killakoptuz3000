@@ -22,7 +22,7 @@ class CLevel;
 #define KK3000 1
 #define LE3000 2
 
-#define PRODUCT LE3000
+#define PRODUCT KK3000
 
 // Show bounding boxes for collision detection
 extern bool     g_showBox;
