@@ -10,7 +10,7 @@
 
 #include "KillaCoptuz3000/src/CTexture.h"
 #include "KillaCoptuz3000/src/Functions.h"
-#include "KillaCoptuz3000/src/CTgaLoader.h "
+#include "KillaCoptuz3000/src/CTgaLoader.h"
 
 #include "lodepng/lodepng.h"
 
@@ -119,7 +119,7 @@ bool CTexture::loadTextureBase(CTexture* t_texturePtr, const std::string& t_text
       }
       else
       {
-         a_fileExists = false;
+         a_fileExists = false;         
       }
 
       if(a_fileExists)
@@ -138,6 +138,8 @@ bool CTexture::loadTextureBase(CTexture* t_texturePtr, const std::string& t_text
 #if(PRODUCT == LE3000)
    assert((a_numLoaded > 0) && "Requested gfx file does not exist");
 #endif
+
+   r_ret = a_numLoaded > 0;
 
    return r_ret;  
 }
