@@ -4,15 +4,24 @@
 
 Here, we will list the project targets for KillaKoptuz3000. Please try to write the targets as simple and clearly, as possible.
 
+*Please
+
 = Version Numbering Style =
 
-In my opinion, the first playable version should be called Version 1. Minor improvements and bugfixes should be denoted by (Fabs)
+In my opinion, the first playable version of the game should be called Version 1. Minor improvements and bugfixes should be denoted by an incrementing number after the main version number, serperated by a dot. E.g. Version 1.161 (Version 1, re-release number 162) 
 
+I propose the same system for the leveleditor. (Fabs).
 
+= Roadmap: Game, Version 1 =
+*Graphics* with coherent style
+*Music*, loopable
+*Sound* effects
+*Shops* between the levels
+*Level targets*, necessary to complete the level (xml coded)
+*Improved helicopter physics* needs to be, good balance of realism and arcade fun
 
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+= Roadmap: Leveleditor, Version 1 =
+*Gui* programming
+*Drag and drop* of grapical elements
+*Save levels* as xml
+*Level targets* save as xml
