@@ -19,4 +19,4 @@ KK3000 includes very funny, very ambigious humor. If you feel insulted and want 
 
 BrainStorm Pool of ideas for the game
 CodeDiary Our development blog
-Roadmap The plan for the first release and later versions
+RoadMap The plan for the first release and later versions
