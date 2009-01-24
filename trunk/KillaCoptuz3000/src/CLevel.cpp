@@ -62,9 +62,15 @@ bool CLevel::load(TiXmlNode* t_nodePtr)
 
    if (getAttributeStr(a_elemPtr, "music", a_str))
    {
-//       std::string a_path = "data\\sound\\";
-//       a_path += a_str;
-//       m_sound = FSOUND_Stream_Open(a_path.c_str(), FSOUND_LOOP_NORMAL, 0, 0);
+       std::string a_path = "data\\sound\\";
+       a_path += a_str;
+       m_sound = FSOUND_Stream_Open(a_path.c_str(), FSOUND_LOOP_NORMAL, 0, 0);
+
+	   // Start to play level music
+	   if (m_sound)
+	   {
+		   FSOUND_Stream_Play(0, m_sound);
+	   }
    }
 
    // Iterate over all elements in objectlist

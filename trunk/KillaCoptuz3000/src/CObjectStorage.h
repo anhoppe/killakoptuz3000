@@ -75,7 +75,6 @@ public:
    /** Updates all objects */
    void updateObjects(CLevel* t_levelPtr);
 
-
    /** Process events which were generated during last cycle */
    void processEvents();
 
