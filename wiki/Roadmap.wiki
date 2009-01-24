@@ -6,7 +6,7 @@ Here, we will list the project targets for KillaKoptuz3000. Please try to write 
 
 = Version Numbering Style =
 
-In my opinion, the first playable version should be called Version 1.
+In my opinion, the first playable version should be called Version 1. Minor improvements and bugfixes should be denoted by (Fabs)
 
 
 
