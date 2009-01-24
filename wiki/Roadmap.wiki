@@ -13,15 +13,15 @@ In my opinion, the first playable version of the game should be called Version 1
 I propose the same system for the leveleditor. (Fabs).
 
 = Roadmap: Game, Version 1 =
-*Graphics with coherent style
-*Music, loopable
-*Sound effects
-*Shops between the levels
-*Level targets, necessary to complete the level (xml coded)
-*Improved helicopter physics, good balance of realism and arcade fun
+ *Graphics with coherent style
+ *Music, loopable
+ *Sound effects
+ *Shops between the levels
+ *Level targets, necessary to complete the level (xml coded)
+ *Improved helicopter physics, good balance of realism and arcade fun
 
 = Roadmap: Leveleditor, Version 1 =
-*Gui programming
-*Drag and drop of grapical elements
-*Save levels as xml
-*Level targets save as xml
+ *Gui programming
+ *Drag and drop of grapical elements
+ *Save levels as xml
+ *Level targets save as xml
