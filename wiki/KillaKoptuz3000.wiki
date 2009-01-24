@@ -17,6 +17,9 @@ KK3000 includes very funny, very ambigious humor. If you feel insulted and want 
 
 *The CommanderZZ*
 
+= Further reading =
 BrainStorm Pool of ideas for the game
+
 CodeDiary Our development blog
+
 RoadMap The plan for the first release and later versions
