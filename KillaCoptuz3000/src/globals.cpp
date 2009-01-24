@@ -20,7 +20,7 @@ bool     g_showBox      = false;
 bool     g_showHull     = false;
 
 // Show quad tree
-bool     g_showQuadTree = false;
+bool     g_showQuadTree = true;
 
 // Mute (==1) or not
 bool     g_mute         = false;
