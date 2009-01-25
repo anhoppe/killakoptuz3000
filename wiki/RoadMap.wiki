@@ -21,7 +21,10 @@ This page is still uncomplete!
  * Level targets save as xml
 
 == Version Numbering Style ==
+Proposal of fabs:
 
-In my opinion, the first playable version of the game should be called Version 1. Minor improvements and bugfixes should be denoted by an incrementing number after the main version number, serperated by a dot. E.g. Version 1.161 (Version 1, re-release number 162) 
+In my opinion, the first playable version of the game should be called Version 1. 
 
-I propose the same system for the leveleditor. (Fabs).
+Minor improvements and bugfixes should be denoted by an incrementing number after the main version number, serparated by a dot. 
+
+Example: Version 1.161 (Version 1, re-release number 162).
