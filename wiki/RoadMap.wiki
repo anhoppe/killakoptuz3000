@@ -1,6 +1,6 @@
 == Introduction ==
 
-A description of planned features for the first KillaKoptuz3000 release.
+A description of necessary steps for the first KillaKoptuz3000 release.
 
 This page is still uncomplete!
 
