@@ -2,10 +2,9 @@
 
 A description of planned features for the first KillaKoptuz3000 release.
 
-This page is still uncomplete!
+This page is still uncomplete! 
 
 == Roadmap: Game, Version 1 ==
-To do: Feature description of KK3000 V1
 
  * Graphics with coherent style
  * Music, loopable
@@ -15,7 +14,6 @@ To do: Feature description of KK3000 V1
  * Improved helicopter physics, good balance of realism and arcade fun
 
 == Roadmap: Leveleditor, Version 1 ==
-To do: Feature description of LE3000 V1
 
  * Gui programming
  * Drag and drop of grapical elements
