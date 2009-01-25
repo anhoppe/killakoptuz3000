@@ -180,3 +180,7 @@ Hop: Fab wasn't in town this weekend and I had to do some other stuff for a cert
   * an added object can select it's texture.
 
 The code is terrible. Still very buggy (only the first object can select a texture). But the success of seeing an added object with a texture was cool.
+
+== Sun., 25. Jan 2009 ==
+
+The project lives!!! We decided to re begin working KK3000! Fabs (With a little hangover from H's birthdayparty): Started to polish the google code project page a little.
