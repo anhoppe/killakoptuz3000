@@ -9,7 +9,7 @@ This page is still uncomplete!
  * Core game engine
    * Player movement
    * Object movements
-     * Enemys, Background objects, Shots, ...
+     * Enemys, Background objects, Shots
    * Shooting (ballistic, rocket like)
    * Enemy behaviour
    * Fast collision detection
