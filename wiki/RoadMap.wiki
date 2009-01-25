@@ -2,7 +2,7 @@
 
 = Introduction =
 
-Here, we will list the project targets for KillaKoptuz3000. Please try to write the targets as simple and clearly, as possible.
+A description of planned features for the first KillaKoptuz3000 release as well as future versions.
 
 This page is still uncomplete!
 
