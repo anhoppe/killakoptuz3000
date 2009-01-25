@@ -1,18 +1,18 @@
 #Project Roadmap
 
-= Introduction =
+== Introduction ==
 
 A description of planned features for the first KillaKoptuz3000 release.
 
 This page is still uncomplete!
 
-= Version Numbering Style =
+== Version Numbering Style ==
 
 In my opinion, the first playable version of the game should be called Version 1. Minor improvements and bugfixes should be denoted by an incrementing number after the main version number, serperated by a dot. E.g. Version 1.161 (Version 1, re-release number 162) 
 
 I propose the same system for the leveleditor. (Fabs).
 
-= Roadmap: Game, Version 1 =
+== Roadmap: Game, Version 1 ==
  * Graphics with coherent style
  * Music, loopable
  * Sound effects
@@ -20,7 +20,7 @@ I propose the same system for the leveleditor. (Fabs).
  * Level targets, necessary to complete the level (xml coded)
  * Improved helicopter physics, good balance of realism and arcade fun
 
-= Roadmap: Leveleditor, Version 1 =
+== Roadmap: Leveleditor, Version 1 ==
  * Gui programming
  * Drag and drop of grapical elements
  * Save levels as xml
