@@ -12,8 +12,9 @@ This page is still uncomplete!
    * Fast collision detection
    * Display graphics
    * Play sound and Music
-   * User interface
-   * Basic game chain (level, shop, menu, game over)
+   * User interface (Keyboard control)
+   * Basic game chain control (level, shop, menu, game over)
+   * Show status of player on top of page (Hitpoints, ammo, weapon)
 
  * Look and feel
    * Nice and coherent graphics
