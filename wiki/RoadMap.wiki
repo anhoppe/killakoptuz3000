@@ -9,6 +9,9 @@ This page is still uncomplete!
  * Core game engine
    * Player movement
    * Object movements
+     * Enemys, Background objects, Shots, ...
+   * Shooting (ballistic, rocket like)
+   * Enemy behaviour
    * Fast collision detection
    * Display graphics
    * Play sound and Music
@@ -23,7 +26,7 @@ This page is still uncomplete!
 
  * Playable levels + shops
    * Design several levels
-   * Level targets required for winning (Free hostages, Destruction of object, Reach some far away point on the map, ...)
+   * Level targets required for winning (Free hostages, Destruction of an object, Reach some far away point on the map, ...)
    * Shop system
 
 
