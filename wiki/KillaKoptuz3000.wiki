@@ -1,11 +1,11 @@
 #summary KillaKoptuz3000 - prepare to be blasted!
 
-= Introduction =
+== Introduction ==
 
 KillaKoptuz3000 Wiki includes game planning.
 
 
-= Details =
+== Details ==
 
 We are some dump asses so lazy that we never thought to accomplish anything in live. But those days are over now: We decided to develop KillaKoptuz3000, *THE* (hey, bold is cool) kickass- motherfucking incredible 21st century shooting experience of the newest generation.
 
@@ -17,7 +17,7 @@ KK3000 includes very funny, very ambigious humor. If you feel insulted and want 
 
 *The CommanderZZ*
 
-= Further reading =
+== Further reading ==
 BrainStorm Pool of ideas for the game
 
 CodeDiary Our development blog
