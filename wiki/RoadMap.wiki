@@ -4,9 +4,10 @@ A description of planned features for the first KillaKoptuz3000 release.
 
 This page is still uncomplete!
 
-To do: transform the lists below into a real roadmap of project targets... 
-
 == Roadmap: Game, Version 1 ==
+
+ * Game engine
+   * bla bla bla
 
  * Graphics with coherent style
  * Music, loopable
