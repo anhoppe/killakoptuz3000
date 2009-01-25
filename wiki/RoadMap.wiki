@@ -6,15 +6,25 @@ This page is still uncomplete!
 
 == Roadmap: Game, Version 1 ==
 
- * Game engine
-   * bla bla bla
+ * Core game engine
+   * Player movement
+   * Object movements
+   * Fast collision detection
+   * Display graphics
+   * Play sound and Music
+   * User interface
+   * Basic game chain (level, shop, menu, game over)
 
- * Graphics with coherent style
- * Music, loopable
- * Sound effects
- * Shops between the levels
- * Level targets, necessary to complete the level (xml coded)
- * Improved helicopter physics, good balance of realism and arcade fun
+ * Look and feel
+   * Nice and coherent graphics
+   * Sound FX
+   * Music (loopable)
+
+ * Playable levels + shops
+   * Design several levels
+   * Level targets required for winning (Free hostages, Destruction of object, Reach some far away point on the map, ...)
+   * Shop system
+
 
 == Roadmap: Leveleditor, Version 1 ==
 
