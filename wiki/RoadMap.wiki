@@ -2,7 +2,7 @@
 
 = Introduction =
 
-A description of planned features for the first KillaKoptuz3000 release as well as future versions.
+A description of planned features for the first KillaKoptuz3000 release.
 
 This page is still uncomplete!
 
