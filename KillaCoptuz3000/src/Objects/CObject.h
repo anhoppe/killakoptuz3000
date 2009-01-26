@@ -82,7 +82,9 @@ public:
    size_t getTextureCount();   
 
    /** Collision functions */
-   static bool    segmentsIntersect(CLine& l1, CLine& l2);   
+   static bool    segmentsIntersect(CLine& l1, CLine& l2);
+
+   /** Counter Clock Wise */
    static int     ccw(CPoint& p0, CPoint& p1, CPoint& p2);
    static bool    isCollided(CObject* t_firstPtr, CObject* t_secondPtr);
    virtual void   collisionImpact(CObject* t_objectPtr, bool t_checkOther = true);
