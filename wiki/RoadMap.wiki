@@ -9,10 +9,3 @@ This page is still incomplete!
  * CoreGameEngine
  * LookFeel
  * PlayableLevels
-
-== Roadmap: Leveleditor, Version 1 ==
-
- * Gui programming
- * Drag and drop of grapical elements
- * Save levels as xml
- * Level targets save as xml
