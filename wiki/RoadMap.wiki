@@ -7,11 +7,8 @@ This page is still incomplete!
 == Roadmap: Game, Version 1 ==
 
  * CoreGameEngine
- * Look and feel
-   * Nice and coherent graphics
-   * Sound FX
-   * Music (loopable)
-
+ * LookFeel
+   
  * Playable levels + shops
    * Design several levels
    * Level targets required for winning (Free hostages, Destruction of an object, Reach some far away point on the map, ...)
