@@ -9,4 +9,4 @@ We want level. Quick!
 
  * Design several levels
  * Level targets required for winning (Free hostages, Destruction of an object, Reach some far away point on the map, ...)
- * Level Editor
+ * LevelEditor
