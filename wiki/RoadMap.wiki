@@ -6,18 +6,7 @@ This page is still incomplete!
 
 == Roadmap: Game, Version 1 ==
 
- * Core game engine
-   * Player movement
-   * Object movements (Enemys, Background objects, Shots)
-   * Shooting (ballistic, rocket like)
-   * Enemy behaviour
-   * Fast collision detection
-   * Display graphics
-   * Play sound and Music
-   * User interface (Keyboard control)
-   * Basic game chain control (level, shop, menu, game over)
-   * Show status of player on top of page (Hitpoints, ammo, weapon)
-
+ * CoreGameEngine
  * Look and feel
    * Nice and coherent graphics
    * Sound FX
@@ -39,4 +28,3 @@ This page is still incomplete!
  * Drag and drop of grapical elements
  * Save levels as xml
  * Level targets save as xml
-
