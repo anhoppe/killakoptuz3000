@@ -1,6 +1,6 @@
 == Introduction ==
 
-So far (Jan, 2009), there is no coheent style of the game. Especially better graphics is needed. SoundFx are also important.
+So far (Jan, 2009), there is no coheent style of the game. Especially better graphics is needed. !SoundFx are also important.
 
 We need the following:
 
