@@ -8,7 +8,7 @@ This page is still incomplete!
 
  * CoreGameEngine
  * LookFeel
- * Playable levels
+ * PlayableLevels
 
    * ShopSystem
 
