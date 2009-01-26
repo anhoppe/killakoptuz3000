@@ -51,7 +51,7 @@ protected:
    std::vector<unsigned int>   m_weaponList;
 
    /** Index of active weapon */
-   unsigned int            m_activeWeapon;
+   unsigned int                m_activeWeapon;
 
 };
 
