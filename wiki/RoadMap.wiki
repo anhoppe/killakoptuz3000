@@ -28,6 +28,10 @@ This page is still incomplete!
    * Level targets required for winning (Free hostages, Destruction of an object, Reach some far away point on the map, ...)
    * Shop system
 
+=== Roadmap: Main Goals ===
+ * LevelEditor
+ * ShopSystem
+ * FreeHostages
 
 == Roadmap: Leveleditor, Version 1 ==
 
@@ -35,3 +39,4 @@ This page is still incomplete!
  * Drag and drop of grapical elements
  * Save levels as xml
  * Level targets save as xml
+
