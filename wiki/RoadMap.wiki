@@ -8,15 +8,12 @@ This page is still incomplete!
 
  * CoreGameEngine
  * LookFeel
-   
- * Playable levels + shops
-   * Design several levels
-   * Level targets required for winning (Free hostages, Destruction of an object, Reach some far away point on the map, ...)
-   * Shop system
+ * Playable levels
+
+   * ShopSystem
 
 === Roadmap: Main Goals ===
  * LevelEditor
- * ShopSystem
  * FreeHostages
 
 == Roadmap: Leveleditor, Version 1 ==
