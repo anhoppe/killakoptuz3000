@@ -1,10 +1,10 @@
-#summary One-sentence summary of this page.
+Description of the core engine content.
 
-= Introduction =
+== Introduction ==
 
-description of the core engine content.
+In this document, we describe the basic features of the game engine for KillaKoptuz3000.
 
-= Details =
+== Details ==
 
    * Player movement
    * Object movements (Enemys, Background objects, Shots)
