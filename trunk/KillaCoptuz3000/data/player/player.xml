@@ -5,8 +5,9 @@
    <texture key="playergun" basefilename="heliBgun" gfxType="tga"/>
    <texture key="bombholder" basefilename="bombholder" gfxType="tga"/>
    <texture key="explosion" basefilename="explosion" gfxType="tga"/>
-   <texture key="bombA" basefilename="bombA" gfxType="tga"/>
+   <texture key="bombA" basefilename="flower" gfxType="tga"/>
    <texture key="rocketA" basefilename="rocketA" gfxType="tga"/>
+   <texture key="shotC" basefilename="shotC" gfxType="tga"/>
 </texturelist>
 
 <object xpos="0.0" ypos="1.0" width="1.0" height="0.5" hitpoints="1000" drawLayer="10" damagepoints="100">
@@ -26,16 +27,28 @@
          </texturelist>
       </shot>
    </weapon>
-   
-   <weapon minAngle="0" maxAngle="360" startAngle="270" cycleInterval="7" xpos=".85" ypos="0.12" width=".1" height=".2" maxShots="5" framesPShot="80" shotRadius="5." background="1"  drawLayer="10">
+
+  <weapon minAngle="0" maxAngle="360" startAngle="270" cycleInterval="7" xpos=".85" ypos="0.12" width=".1" height=".2" maxShots="5" framesPShot="80" shotRadius="5." background="1"  drawLayer="10">
+    <texturelist>
+      <texture key="playergun"/>
+    </texturelist>
+    <shot cycleInterval="1" xpos="0.0" ypos="0.0" width="0.15" height="0.3" v="0.06" hitpoints="10" drawLayer="10" damagepoints="2">
       <texturelist>
-         <texture key="playergun"/>
+        <texture key="rocketA"/>
+        <texture key="explosion" explosion="1" />
       </texturelist>
-      <shot cycleInterval="1" xpos="0.0" ypos="0.0" width="0.15" height="0.3" v="0.06" hitpoints="10" drawLayer="10" damagepoints="2">
-         <texturelist>
-            <texture key="rocketA"/>
-            <texture key="explosion" explosion="1" />
-         </texturelist>
-      </shot>
-   </weapon>   
+    </shot>
+  </weapon>
+
+  <weapon minAngle="0" maxAngle="360" startAngle="270" cycleInterval="7" xpos=".85" ypos="0.12" width=".1" height=".2" maxShots="5" framesPShot="80" shotRadius="5." background="1"  drawLayer="10">
+    <texturelist>
+      <texture key="playergun"/>
+    </texturelist>
+    <shot cycleInterval="1" xpos="0.0" ypos="0.0" width="0.02" height="0.02" v="0.2" hitpoints="1" drawLayer="10" damagepoints="1">
+      <texturelist>
+        <texture key="shotC"/>
+        <texture key="explosion" explosion="1" />
+      </texturelist>
+    </shot>
+  </weapon>
 </object>
