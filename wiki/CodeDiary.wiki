@@ -184,3 +184,9 @@ The code is terrible. Still very buggy (only the first object can select a textu
 == Sun., 25. Jan 2009 ==
 
 The project lives!!! We decided to re begin working KK3000! Fabs (With a little hangover from H's birthdayparty): Started to polish the google code project page a little.
+
+== Sun., 29. Jan 2009 ==
+
+Fabs: added sound effects. Each weapon has its own fireing sound and each object makes an explosion sound. It's all editable via the xml file...
+
+Implementation of hostages is the next on the list.
