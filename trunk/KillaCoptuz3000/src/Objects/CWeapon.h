@@ -50,7 +50,9 @@ public:
    CShot*            m_shotPtr;
 
    /** Auto tracking of weapon on / off*/
-   bool              m_isTracking;
+   bool              m_isTracking;   
+  
+   FSOUND_SAMPLE*    m_soundPtr;
 };
 
 #endif

@@ -26,9 +26,10 @@ CGame::CGame()
    // load player
    if(a_doc.LoadFile("Data/player/player.xml"))
    {
-      // load player textures 
-      a_nodePtr = a_doc.FirstChild("texturelist");
-      CObjectStorage::getInstance().addTextureMap(a_nodePtr);
+	  // add player resources to object storage (sound effects and textures)
+     assert(a_doc.FirstChild("object"));     
+	  a_nodePtr = a_doc.FirstChild("object")->FirstChild("resources");
+	  CObjectStorage::getInstance().addResources(a_nodePtr);
 
       // load player
       a_nodePtr = a_doc.FirstChild("object");
@@ -123,11 +124,11 @@ void CGame::loadNextLevel()
    {
       //////////////////////////////////////////////////////////////////////////
       // load levels 
-      a_nodePtr = a_doc.FirstChild("texturelist");
-      assert(a_nodePtr);
+      assert(a_doc.FirstChild("level"));
+      a_nodePtr = a_doc.FirstChild("level")->FirstChild("resources");      
       if(0 != a_nodePtr)
       {
-         CObjectStorage::getInstance().addTextureMap(a_nodePtr);
+         CObjectStorage::getInstance().addResources(a_nodePtr);
       }
       //////////////////////////////////////////////////////////////////////////
       // load level content

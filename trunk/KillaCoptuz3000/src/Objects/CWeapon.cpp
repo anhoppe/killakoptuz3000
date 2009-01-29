@@ -40,7 +40,8 @@ CWeapon::CWeapon()
    m_framesSinceShot = 0;
    m_framesPerShot   = 100;
    m_shotPtr         = 0;
-   m_isTracking      = true;
+   m_isTracking      = true;  
+   m_soundPtr        = 0;
 }
 
 CWeapon::~CWeapon()
@@ -79,17 +80,27 @@ bool CWeapon::load(TiXmlNode* t_nodePtr)
    r_ret = r_ret & getAttributeStr(a_elemPtr, "framesPShot", a_str);
    m_framesPerShot    = atof(a_str.c_str());   
 
-   // Find shot of weapon
+   // Find shot and sound of weapon
    a_nodePtr = t_nodePtr->FirstChild();
    do
    {
       a_elemPtr = a_nodePtr->ToElement();
+
+      // Add shot
       if(!strcmp("shot", a_elemPtr->Value()))
       {
          m_shotPtr = new CShot(a_nodePtr);
          m_shotPtr->m_parentId = m_id;
          break;  
       }
+
+      // Add sound
+      if (!strcmp("soundeffect", a_elemPtr->Value()))
+      {
+         getAttributeStr(a_elemPtr, "key", a_str);
+         m_soundPtr = CObjectStorage::getInstance().m_soundMap[a_str];
+      }
+
       a_nodePtr = t_nodePtr->IterateChildren(a_nodePtr);      
    }
    while(a_nodePtr);   
@@ -234,11 +245,6 @@ void CWeapon::fire()
          a_newShotPtr->m_velocityY += a_dvy;
       }
 
-      
-      //       a_shotPtr->m_xPos = m_xPos + m_width / 2.0;
-//       a_shotPtr->m_yPos = m_yPos + m_height / 2.0;
-
-
       //////////////////////////////////////////////////////////////////////////
       // set start position of the shot
       a_newShotPtr->m_xPos += m_xPos + m_width / 2.0;
@@ -290,7 +296,29 @@ void CWeapon::fire()
          }
       }
 
-//       CLevel::M_addList.push_back(a_shotPtr);
       m_framesSinceShot = 0;
+	  
+	  // Play weapon sound      
+	  if (m_soundPtr)
+	  {        
+        int    a_channel   = 0;
+        float  a_dist;       
+        int    a_volume    = 0;
+        
+		  a_channel = FSOUND_PlaySound(FSOUND_FREE, m_soundPtr);        
+
+        // Volume depends on distance from heli
+        float a_dx = CObjectStorage::getInstance().getPlayerPtr()->m_xPos - a_parentPtr->m_xPos;
+        float a_dy = CObjectStorage::getInstance().getPlayerPtr()->m_yPos - a_parentPtr->m_yPos;
+        a_dist     = sqrt(a_dx*a_dx + a_dy*a_dy);
+
+        // Calculate distance to player in units of player height
+        a_dist     = a_dist/CObjectStorage::getInstance().getPlayerPtr()->m_height;
+
+        // Function describing volume decay
+        a_volume   = (int)255*exp(-a_dist/g_soundDecay);
+
+        FSOUND_SetVolume(a_channel, a_volume);
+	  }
    }   
 }

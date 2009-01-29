@@ -47,7 +47,7 @@ public:
    double               m_maxY;
 
 private:
-   FSOUND_STREAM*      m_sound;
+   FSOUND_STREAM*       m_sound;
 
 };
 

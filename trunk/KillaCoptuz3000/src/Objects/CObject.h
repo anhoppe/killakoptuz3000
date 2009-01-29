@@ -17,9 +17,8 @@
 #include <list>
 #include "glut/glut.h"
 #include "KillaCoptuz3000/src/CPolygon.h"
-
-#include "KillaCoptuz3000\src\globals.h"
-
+#include "KillaCoptuz3000/src/globals.h"
+#include "fmod375/fmod.h"
 #include "tinyxml/tinyxml.h"
 
 class CLevel;
@@ -97,6 +96,7 @@ protected:
    // Variables
    //////////////////////////////////////////////////////////////////////////
 public:
+   /** Flag, indicates that object is dying (death animation, no more damage) */
    bool                       m_isDying;
 
    /** Absolute position */
@@ -110,9 +110,6 @@ public:
    bool                       m_isBackground;
 
    std::string                m_gfxType;
-
-   /** Flag, indicates that object is dying (death animation, no more damage) /*
-   bool                 m_isDying;
 
    /** Index of the explosion (death) sequence */
    int                        m_explosionIndex;
@@ -158,6 +155,9 @@ public:
 
    // list of children
    std::list<unsigned int>    m_children;
+
+   // Explosion sound 
+   FSOUND_SAMPLE*             m_explosionSoundPtr;
 
 protected:
    // List of textures for the object
