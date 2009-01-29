@@ -29,7 +29,10 @@ CLevel::CLevel()
 
 CLevel::~CLevel()
 {
-
+	if (m_sound)
+	{
+		FSOUND_Stream_Close(m_sound);
+	}
 }
 
 
@@ -69,7 +72,7 @@ bool CLevel::load(TiXmlNode* t_nodePtr)
 	   // Start to play level music
 	   if (m_sound)
 	   {
-		   FSOUND_Stream_Play(0, m_sound);
+		   //FSOUND_Stream_Play(0, m_sound);
 	   }
    }
 

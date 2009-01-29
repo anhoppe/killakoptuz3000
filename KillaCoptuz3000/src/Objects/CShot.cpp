@@ -75,6 +75,8 @@ CShot::CShot(CShot* t_shotPtr, std::list<unsigned int>* t_friendObjectsListPtr)
    // copy shot type
    m_shotType        = t_shotPtr->m_shotType;
 
+   m_explosionSoundPtr = t_shotPtr->m_explosionSoundPtr;
+
 
    // copy friend objects. bit sorry that they are not in the t_srcPtr
    if(0 != t_friendObjectsListPtr)
@@ -166,7 +168,7 @@ void CShot::update(CLevel* t_levelPtr)
       m_yPos += a_dy;
    }
    else
-   {
+   {      
       // Create a delete event
       CEvent* a_event         = new CEvent;
       a_event->m_event        = e_delete;

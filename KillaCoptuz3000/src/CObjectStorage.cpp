@@ -27,6 +27,7 @@
 // Definitions
 //////////////////////////////////////////////////////////////////////////
 #define GFX_BASE     "data\\gfx\\"
+#define SOUND_BASE	 "data\\sound\\"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -44,6 +45,8 @@ CObjectStorage::~CObjectStorage()
    {
       delete m_quadTreeRootPtr;
    }
+
+   // Todo: delete sound fx (FSOUND_Sample_Free) and Textures
 }
 
 CObjectStorage& CObjectStorage::getInstance()
@@ -338,6 +341,69 @@ void CObjectStorage::addToDrawList(CObject* t_objectPtr)
 
 }
 
+bool CObjectStorage::addResources(TiXmlNode* t_nodePtr)
+{
+	bool           r_ret       = true;
+
+	TiXmlNode*     a_nodePtr   = 0;
+	TiXmlElement*  a_elemPtr   = 0;
+
+   std::string    a_key       = "";
+   std::string    a_fileStr   = "";
+
+	// Iterate over all textures
+	for(a_nodePtr = t_nodePtr->FirstChild("texture"); a_nodePtr; a_nodePtr = t_nodePtr->IterateChildren("texture", a_nodePtr))
+	{
+      a_elemPtr = a_nodePtr->ToElement();
+		if (a_elemPtr)
+		{        
+         // read 
+		   if(getAttributeStr(a_elemPtr, "key", a_key) == 0)
+		   {
+		   	r_ret = false;
+		   }
+    
+		   if(r_ret)
+		   {
+			   // Add the object if not already added
+			   if(m_textureMap[a_key] == 0)
+			   {
+			      m_textureMap[a_key] = new CTexture(a_elemPtr, GFX_BASE);
+			   }
+		   }
+		} 
+	}
+
+	// Iterate over all sound effects
+	for(a_nodePtr = t_nodePtr->FirstChild("sound"); a_nodePtr; a_nodePtr = t_nodePtr->IterateChildren("sound", a_nodePtr))
+	{
+		a_elemPtr = a_nodePtr->ToElement();
+
+      if (a_elemPtr)
+      {
+         // read
+         if (true != (getAttributeStr(a_elemPtr, "key", a_key) && getAttributeStr(a_elemPtr, "filename", a_fileStr)))
+         {
+            r_ret = false;
+         }
+
+         if (r_ret)
+         {
+            // Add the object if not already added
+            if (m_soundMap[a_key] == 0)
+            {
+               // Full path of sound file
+			      a_fileStr = SOUND_BASE + a_fileStr;
+               
+               m_soundMap[a_key] = FSOUND_Sample_Load(FSOUND_FREE, a_fileStr.c_str(), FSOUND_LOOP_OFF, 0, 0); 
+            }
+         }
+      }
+	}
+	
+	return r_ret;
+}
+
 bool CObjectStorage::addTextureMap(TiXmlNode* t_nodePtr)
 {
    TiXmlNode*     a_nodePtr   = 0;
@@ -363,6 +429,7 @@ bool CObjectStorage::addTextureMap(TiXmlNode* t_nodePtr)
 
          if(r_ret)
          {
+			// Add the object if not already added
             if(m_textureMap[a_key] == 0)
             {
                m_textureMap[a_key] = new CTexture(a_elemPtr, GFX_BASE);
@@ -372,6 +439,57 @@ bool CObjectStorage::addTextureMap(TiXmlNode* t_nodePtr)
    }
 
    return r_ret;
+}
+
+/** Add sound effects into a map */
+bool CObjectStorage::addSoundEffectMap(TiXmlNode* t_nodePtr)
+{
+   TiXmlNode*     a_nodePtr   = 0;
+   TiXmlElement*  a_elemPtr   = 0;
+
+   std::string    a_key       = "";
+   std::string	  a_fileStr	  = "";
+   std::string	  a_buffer	  = "";
+
+   bool           r_ret       = true;
+
+
+   for(a_nodePtr = t_nodePtr->FirstChild("soundlist"); a_nodePtr; a_nodePtr = t_nodePtr->IterateChildren("soundlist", a_nodePtr))
+   {
+      a_elemPtr = a_nodePtr->ToElement();
+
+      if (0 != a_elemPtr)
+      {        
+
+         // read 
+         if(!getAttributeStr(a_elemPtr, "key", a_key))
+         {
+            r_ret = false;
+         }
+
+         if(r_ret)
+         {
+		    r_ret = getAttributeStr(a_elemPtr, "filename", a_buffer);
+
+			if (r_ret)
+			{
+			   // Full path of sound file
+			   a_fileStr = SOUND_BASE + a_buffer;
+			   
+
+			   // Add the object if not already added
+			   if(m_soundMap[a_key] == 0)
+			   {
+			   
+				  a_fileStr = SOUND_BASE;
+				  // m_soundFXMap[a_key] = FSOUND_Sample_Load(FSOUND_FREE, ;
+			   }
+			}
+         }
+      }      
+   }
+
+   return	r_ret;
 }
 
 void CObjectStorage::updateObjects(CLevel* t_levelPtr)

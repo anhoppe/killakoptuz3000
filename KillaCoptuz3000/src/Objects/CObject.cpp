@@ -18,8 +18,9 @@
 #include "KillaCoptuz3000/src/CLevel.h"
 #include "KillaCoptuz3000/src/globals.h"
 #include "KillaCoptuz3000/src/CTexture.h"
-
+#include "KillaCoptuz3000/src/Objects/CPlayer.h"
 #include "KillaCoptuz3000/src/Objects/CShot.h"
+#include <math.h>
 
 #if(PRODUCT == LE3000)
 #include "../LevelEditor/src/CDataStorage.h"
@@ -50,6 +51,7 @@ CObject::CObject()
 
    m_id                    = 0;
    m_parentId              = 0;
+   m_explosionSoundPtr     = 0;
 }
 
 
@@ -168,10 +170,7 @@ bool CObject::load(TiXmlNode* t_nodePtr)
 
          // Create the polygon         
          a_texturePtr = CObjectStorage::getInstance().m_textureMap[a_str];
-         if (a_str == "drone")
-         {
-            int bla=2;
-         }
+
          a_textureInfoPtr->m_polygonPtr = new CPolygon(CObjectStorage::getInstance().m_textureMap[a_str]->m_hullPolygonPtr);
 
          // Scale the new polygon
@@ -217,7 +216,21 @@ bool CObject::load(TiXmlNode* t_nodePtr)
    else
    {
       m_isBackground = false;
-   }   
+   }  
+
+   // Load explosion sound (if given)
+   a_nodePtr = t_nodePtr->FirstChild("soundeffect");
+   if (a_nodePtr)
+   {
+      a_elemPtr = a_nodePtr->ToElement();
+      getAttributeStr(a_elemPtr, "explosion", a_str);
+      if (a_str == "1")
+      {
+         getAttributeStr(a_elemPtr, "key", a_str);
+         m_explosionSoundPtr = CObjectStorage::getInstance().m_soundMap[a_str];
+      }
+   }
+
    return r_ret;
 }
 
@@ -870,7 +883,7 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
    }
 
    //////////////////////////////////////////////////////////////////////////
-   // Two shots cant collide
+   // Two shots can't collide
    if(t_firstPtr->getType() == e_shot && t_secondPtr->getType() == e_shot)
    {
 //      return false;
@@ -1088,6 +1101,29 @@ void CObject::startDying()
    {
       // Set explosion as active texture
       m_activeAnimationPhase = m_explosionIndex;
+
+      // Play explosion sound
+      if (m_explosionSoundPtr)
+      {        
+        int    a_channel   = 0;
+        float  a_dist;       
+        int    a_volume    = 0;
+        
+        a_channel = FSOUND_PlaySound(FSOUND_FREE, m_explosionSoundPtr);        
+
+        // Volume depends on distance from heli
+        float a_dx = CObjectStorage::getInstance().getPlayerPtr()->m_xPos - m_xPos;
+        float a_dy = CObjectStorage::getInstance().getPlayerPtr()->m_yPos - m_yPos;
+        a_dist     = sqrt(a_dx*a_dx + a_dy*a_dy);
+
+        // Calculate distance to player in units of player height
+        a_dist     = a_dist/CObjectStorage::getInstance().getPlayerPtr()->m_height;
+
+        // Function describing volume decay
+        a_volume   = (int)255*exp(-a_dist/g_soundDecay);
+
+        FSOUND_SetVolume(a_channel, a_volume);
+      }
 
       // Set animation to start
       m_timeCounter           = 0;

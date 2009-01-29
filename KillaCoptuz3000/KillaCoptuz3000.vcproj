@@ -507,14 +507,6 @@
 				Name="levels"
 				>
 				<File
-					RelativePath=".\data\levels\level1.xml"
-					>
-				</File>
-				<File
-					RelativePath=".\data\levels\level2.xml"
-					>
-				</File>
-				<File
 					RelativePath=".\data\levels\level3.xml"
 					>
 				</File>

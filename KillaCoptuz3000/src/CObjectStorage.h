@@ -18,6 +18,7 @@
 #include "Objects/CObject.h"
 #include "CEvent.h"
 #include "CQuadTreeNode.h"
+#include "fmod375/fmod.h"
 
 class CPlayer;
 class CTexture;
@@ -72,6 +73,22 @@ public:
    /** Add textures into texture map */
    bool addTextureMap(TiXmlNode* t_nodePtr);
 
+   /** Add sound effects into a map */
+   bool addSoundEffectMap(TiXmlNode* t_nodePtr);
+
+   /** Loads textures and sound effects from player or level xml file,      
+   adds them to m_soundMap or m_textureMap. 
+   Example xml:
+   
+   <resources>
+     <texture key="playerheli" basefilename="heliB" hullpoints="24" gfxType="tga"/>
+	 ...
+	 <sound key="explosion" filename="boom.mp3"/>
+	 <sound key="shot" filename="shot.mp3"/>
+   </resources>
+   */
+   bool addResources(TiXmlNode* t_nodePtr);
+
    /** Updates all objects */
    void updateObjects(CLevel* t_levelPtr);
 
@@ -95,6 +112,9 @@ public:
 
    /** map of objects to delete */
    CHashMap<CObject*>               m_deleteMap;
+
+   /* map of all sound effects */
+   std::map<std::string, FSOUND_SAMPLE*>	m_soundMap;
    
    /** map of all game textures (player and level) */
    std::map<std::string, CTexture*> m_textureMap;

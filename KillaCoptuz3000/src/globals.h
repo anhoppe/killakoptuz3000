@@ -59,4 +59,9 @@ extern int      g_windowId;
 //////////////////////////////////////////////////////////////////////////
 extern float    g_gravity;
 
+// How far distant sounds can be heard. The higher, the lower is the decay of volume.
+// Formula used: volume = volume_max*exp(-distance/g_soundDecay).
+// Distance is in units of Heli height. 
+extern float    g_soundDecay;
+
 #endif
