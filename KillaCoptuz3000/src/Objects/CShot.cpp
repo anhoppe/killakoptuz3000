@@ -132,8 +132,6 @@ void CShot::update(CLevel* t_levelPtr)
 {
    float          a_dx = 0.;
    float          a_dy = 0.;
-
-//    static double  s_startAngle = m_angle;   
   
    if (m_shotType == e_shotNormal)
    {
@@ -159,6 +157,12 @@ void CShot::update(CLevel* t_levelPtr)
    a_dx = m_velocityX;
    a_dy = m_velocityY;
 
+   // Velocity reduces greatly on impact (looks more realistic)
+   if (m_isDying)
+   {      
+      a_dx = a_dx*0.27;
+      a_dy = a_dy*0.27;
+   }
 
    //////////////////////////////////////////////////////////////////////////
    // move shot and check if shot must be deleted

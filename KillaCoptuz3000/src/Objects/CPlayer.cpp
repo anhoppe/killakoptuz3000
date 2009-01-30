@@ -22,8 +22,8 @@
 #include "KillaCoptuz3000/src/globals.h"
 #include "KillaCoptuz3000/src/Objects/CWeapon.h"
 
-#define ACCEL_DELTA     .00006
-#define ANGLE_DELTA     3
+#define ACCEL_DELTA     .00009
+#define ANGLE_DELTA     2
 #define MINMAX_ANGLE    45
 #define FRICTION_COEFF  0.98
 
@@ -50,6 +50,19 @@ CPlayer::CPlayer()
 void CPlayer::update(CLevel* t_levelPtr)
 {  
    float a_oldAngle = m_angle;
+
+   // Prevent keyboard control, when exploding
+   if (m_isDying)
+   {
+      m_upPressed       = false;
+      m_downPressed     = false;
+      m_leftPressed     = false;
+      m_rightPressed    = false;
+
+      // Velocity remains, but strong friction
+      m_velocityX       = m_velocityX*0.83;
+      m_velocityY       = m_velocityY*0.83;
+   }
 
    if (m_upPressed)
    {

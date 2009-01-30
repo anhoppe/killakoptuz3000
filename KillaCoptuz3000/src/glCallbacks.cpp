@@ -77,6 +77,10 @@ void CLevel_timerCallback(int value)
 
    if(CObjectStorage::getInstance().isGameOver())
    {
+      // Delete all objects in ObjectStorage (except Player)
+      CObjectStorage::getInstance().clearLevel();
+
+      // Set new game state and start gameover menu
       CGame::getInstance().m_gameState    = e_menu;
       CGame::getInstance().m_menuName     = "gameover";
       CGame::getInstance().gameControl();

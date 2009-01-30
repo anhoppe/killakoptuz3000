@@ -19,23 +19,6 @@
 //////////////////////////////////////////////////////////////////////////
 CGame::CGame()
 {
-   // Load player
-   TiXmlDocument  a_doc;
-   TiXmlNode*     a_nodePtr   = 0;
-
-   // load player
-   if(a_doc.LoadFile("Data/player/player.xml"))
-   {
-	  // add player resources to object storage (sound effects and textures)
-     assert(a_doc.FirstChild("object"));     
-	  a_nodePtr = a_doc.FirstChild("object")->FirstChild("resources");
-	  CObjectStorage::getInstance().addResources(a_nodePtr);
-
-      // load player
-      a_nodePtr = a_doc.FirstChild("object");
-      CObjectStorage::getInstance().add(a_nodePtr, e_player);
-   }
-
    m_gameState = e_menu;   
    m_menuName  = "main";
 }
@@ -59,10 +42,19 @@ CGame& CGame::getInstance()
 // Game control
 void CGame::gameControl()
 {
+   CPlayer* a_player;
+
    switch (m_gameState)
    {
    case e_level:
       {
+         // Check, if player exists
+         a_player = CObjectStorage::getInstance().getPlayerPtr();
+         if (a_player == 0)
+         {
+            loadPlayer();
+         }
+
          loadNextLevel();
 
          // Register callback functions
@@ -112,6 +104,27 @@ void CGame::gameControl()
 void CGame::setGameState(EGameState t_gameState)
 {
    m_gameState = t_gameState;
+}
+
+//
+void CGame::loadPlayer()
+{
+   // Load player
+   TiXmlDocument  a_doc;
+   TiXmlNode*     a_nodePtr   = 0;
+
+   // load player
+   if(a_doc.LoadFile("Data/player/player.xml"))
+   {
+	  // add player resources to object storage (sound effects and textures)
+     assert(a_doc.FirstChild("object"));     
+	  a_nodePtr = a_doc.FirstChild("object")->FirstChild("resources");
+	  CObjectStorage::getInstance().addResources(a_nodePtr);
+
+      // load player
+      a_nodePtr = a_doc.FirstChild("object");
+      CObjectStorage::getInstance().add(a_nodePtr, e_player);
+   }
 }
 
 // 
