@@ -53,7 +53,7 @@
       </shot>
    </weapon>
 
-   <weapon minAngle="0" maxAngle="360" startAngle="270" cycleInterval="7" xpos=".85" ypos="0.12" width=".1" height=".2" maxShots="5" framesPShot="80" shotRadius="5." background="1"  drawLayer="10">
+   <weapon minAngle="0" maxAngle="360" startAngle="270" cycleInterval="7" xpos=".45" ypos="0.22" width=".04" height=".02" maxShots="5" framesPShot="80" shotRadius="5." background="1"  drawLayer="10">
       <texturelist>
          <texture key="playergun"/>
       </texturelist>

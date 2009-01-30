@@ -28,7 +28,7 @@ CMenuItem::CMenuItem(CMenu* t_parentPtr)
    m_action          = e_quitGame;
 
    m_width           = 2.5;
-   m_height          = .5;
+   m_height          = 0.5;
 
    m_textureIndex    = 0;
 }
