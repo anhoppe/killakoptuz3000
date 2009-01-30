@@ -1103,7 +1103,7 @@ void CObject::startDying()
       m_activeAnimationPhase = m_explosionIndex;
 
       // Play explosion sound
-      if (m_explosionSoundPtr)
+      if (m_explosionSoundPtr  && !g_mute)
       {        
         int    a_channel   = 0;
         float  a_dist;       
@@ -1130,7 +1130,7 @@ void CObject::startDying()
       m_activeTexture         = 0;
 
       // Set explosion speed
-      m_cycleInterval         = 20*m_hitPoints/(m_hitPoints + 5);
+      m_cycleInterval         = 20*m_maxHitPoints/(m_maxHitPoints+10);
    }
    else
    {

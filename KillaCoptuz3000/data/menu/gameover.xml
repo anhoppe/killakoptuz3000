@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu>
-   <menuitem text="Game Over" action="menu" menu="main"/>
+<menu music="copter_Gameover.ogg">
+   <texturelist>
+      <texture basefilename="gameover" key="gameover" gfxType="tga"/>      
+   </texturelist>
+
+   <menuitem text="Game Over" action="menu" menu="main" texturekey="gameover"/>
 </menu>

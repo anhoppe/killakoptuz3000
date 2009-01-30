@@ -36,7 +36,7 @@ CGame::CGame()
       CObjectStorage::getInstance().add(a_nodePtr, e_player);
    }
 
-   m_gameState = e_menu;
+   m_gameState = e_menu;   
    m_menuName  = "main";
 }
 

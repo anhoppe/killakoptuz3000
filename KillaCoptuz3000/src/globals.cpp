@@ -28,9 +28,6 @@ bool     g_mute         = false;
 // The level object
 CLevel   g_level;
 
-// The player object pointer
-// CPlayer* g_playerPtr    = 0;
-
 // Windowed (==1) or full screen
 bool	   g_windowedMode = 1;
 

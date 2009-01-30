@@ -66,7 +66,7 @@ bool CLevel::load(TiXmlNode* t_nodePtr)
        m_sound = FSOUND_Stream_Open(a_path.c_str(), FSOUND_LOOP_NORMAL, 0, 0);
 
 	   // Start to play level music
-	   if (m_sound)
+	   if (m_sound && !g_mute)
 	   {
 		   FSOUND_Stream_Play(0, m_sound);
 	   }

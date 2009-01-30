@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<object xpos="0.0" ypos="1.0" width="1.0" height="0.5" hitpoints="1000" drawLayer="10" damagepoints="100">
+<object xpos="0.0" ypos="1.0" width="1.0" height="0.5" hitpoints="10" drawLayer="10" damagepoints="100">
   <resources>
     <texture key="playerheli" basefilename="heliB" hullpoints="24" gfxType="tga"/>
     <texture key="playergun" basefilename="heliBgun" gfxType="tga"/>

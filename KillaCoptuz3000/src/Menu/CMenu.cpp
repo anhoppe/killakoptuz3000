@@ -52,7 +52,7 @@ bool CMenu::load(TiXmlNode* t_nodePtr)
 
    bool           r_ret          = true;
    
-   FSOUND_STREAM* a_sound;
+   FSOUND_STREAM* a_sound        = 0;
 
 
    //////////////////////////////////////////////////////////////////////////
@@ -67,7 +67,7 @@ bool CMenu::load(TiXmlNode* t_nodePtr)
    a_str = SOUND_BASE + a_str;
    a_sound = FSOUND_Stream_Open(a_str.c_str(), FSOUND_LOOP_NORMAL, 0, 0);
    
-   if (a_sound)
+   if (a_sound  && !g_mute)
    {
       FSOUND_Stream_Play(0, a_sound);
    }
@@ -189,9 +189,9 @@ void CMenu::draw()
    // draw menu item
    for(a_it = m_menuItems.begin(); a_it != m_menuItems.end(); a_it++)
    {
-      a_depth = 0.;
-      // a_yPos = static_cast<float>( static_cast<float>(m_menuItems.size())/2. - static_cast<float>(a_index)) / (static_cast<float>(m_menuItems.size())) * MENU_HEIGHT;
-      a_yPos = ((m_menuItems.size()/2.0 - a_index)/m_menuItems.size()*MENU_HEIGHT+ITEM_DIST) - (a_index * ITEM_DIST);
+      a_depth = 0.;            
+      
+      a_yPos = (((m_menuItems.size()-1)/2.0 - a_index)/m_menuItems.size()*(MENU_HEIGHT+ITEM_DIST)) - (a_index * ITEM_DIST);
       if(a_index == m_currentMenuItem)
       {
          a_depth = 1.;

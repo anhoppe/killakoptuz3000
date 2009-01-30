@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<level xmin="-10." ymin="-1.8" xmax="15." ymax="1.8" music="copter_Blackhawk.ogg">
+<level xmin="-10." ymin="-1.8" xmax="15." ymax="1.8" music="copter_Apache.ogg">
   <resources>
     <texture basefilename="sky" key="sky" gfxType="tga"/>
     <texture basefilename="ocean" key="ocean" gfxType="tga" hullpoints="8"/>
@@ -14,6 +14,7 @@
     <texture basefilename="rocketA" key="rocketA" gfxType="tga"/>
     <texture basefilename="explosion" key="explosion" gfxType="tga"/>
     <texture basefilename="puff" key="puff" gfxType="tga"/>
+    <texture basefilename="puffEx" key="puffExplosion" gfxType="tga"/>
     <texture basefilename="bombholder" key="bombholder" gfxType="tga"/>
     <texture basefilename="bombA" key="bombA" gfxType="tga"/>
 
@@ -52,10 +53,10 @@
             <texture key="water"/>
          </texturelist>
       </object>
-      <object cycleInterval="10" xpos="3.5" ypos="-1.8" width="1.0" height="1.4" damagepoints="10" hitpoints="20"  type="enemy" drawLayer="3">
+      <object cycleInterval="10" xpos="3.5" ypos="-1.8" width="1.0" height="1.4" damagepoints="10" hitpoints="30"  type="enemy" drawLayer="3">
          <texturelist>
             <texture key="puff"/>
-            <texture key="explosion" explosion="1" />
+            <texture key="puffExplosion" explosion="1" />
          </texturelist>
          <soundeffect key="bigexplosion" explosion="1"/>
       </object>

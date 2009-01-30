@@ -299,7 +299,7 @@ void CWeapon::fire()
       m_framesSinceShot = 0;
 	  
 	  // Play weapon sound      
-	  if (m_soundPtr)
+	  if (m_soundPtr && !g_mute)
 	  {        
         int    a_channel   = 0;
         float  a_dist;       

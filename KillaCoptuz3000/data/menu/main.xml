@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu music="copter_Gameover.ogg">
+<menu music="copter_Blackhawk.ogg">
    <texturelist>
       <texture basefilename="play" key="play" gfxType="tga"/>
       <texture basefilename="quit" key="quit" gfxType="tga"/>
@@ -9,5 +9,6 @@
    </menuitem>
 
    <menuitem text="Quit" action="exit" texturekey="quit">
-   </menuitem> 
+   </menuitem>
+   
 </menu>
