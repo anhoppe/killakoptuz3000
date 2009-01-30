@@ -29,10 +29,6 @@ CLevel::CLevel()
 
 CLevel::~CLevel()
 {
-	if (m_sound)
-	{
-		FSOUND_Stream_Close(m_sound);
-	}
 }
 
 

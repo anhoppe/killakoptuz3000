@@ -25,6 +25,7 @@
 #define ITEM_DIST    .5
 
 #define GFX_BASE     "data\\menugfx\\"
+#define SOUND_BASE   "data\\sound\\"
 
 //////////////////////////////////////////////////////////////////////////
 // Implementation
@@ -50,11 +51,26 @@ bool CMenu::load(TiXmlNode* t_nodePtr)
    std::string    a_str          = "";
 
    bool           r_ret          = true;
+   
+   FSOUND_STREAM* a_sound;
 
 
    //////////////////////////////////////////////////////////////////////////
    // clear old menu
    clear();
+
+   //////////////////////////////////////////////////////////////////////////
+   // Start to play level music
+
+   a_elemPtr = t_nodePtr->ToElement();
+   getAttributeStr(a_elemPtr, "music", a_str);
+   a_str = SOUND_BASE + a_str;
+   a_sound = FSOUND_Stream_Open(a_str.c_str(), FSOUND_LOOP_NORMAL, 0, 0);
+   
+   if (a_sound)
+   {
+      FSOUND_Stream_Play(0, a_sound);
+   }
 
    //////////////////////////////////////////////////////////////////////////
    // load textures for menu
@@ -68,7 +84,7 @@ bool CMenu::load(TiXmlNode* t_nodePtr)
       {
          r_ret = false;
       }
-
+ 
       if(r_ret)
       {
          if(m_textureMap[a_key] == 0)
@@ -123,7 +139,7 @@ void CMenu::next()
 {
    if(m_currentMenuItem == 0)
    {
-      m_currentMenuItem = m_menuItems.size()-1;
+      m_currentMenuItem = (unsigned int) m_menuItems.size()-1;
    }
    else
    {

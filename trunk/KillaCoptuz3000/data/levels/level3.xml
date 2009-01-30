@@ -52,7 +52,7 @@
             <texture key="water"/>
          </texturelist>
       </object>
-      <object cycleInterval="10" xpos="3.5" ypos="-1.8" width="1.0" height="1.4" damagepoints="10" hitpoints="100"  type="enemy" drawLayer="3">
+      <object cycleInterval="10" xpos="3.5" ypos="-1.8" width="1.0" height="1.4" damagepoints="10" hitpoints="20"  type="enemy" drawLayer="3">
          <texturelist>
             <texture key="puff"/>
             <texture key="explosion" explosion="1" />
@@ -75,7 +75,7 @@
          </texturelist>
       </object>
 
-      <object name="tank2" cycleInterval="7" xpos="6.5" ypos="-1.8" width="0.8" height="0.4" type="enemy" hitpoints="90" drawLayer="4" damagepoints="10">
+      <object name="tank2" cycleInterval="7" xpos="6.5" ypos="-1.8" width="0.8" height="0.4" type="enemy" hitpoints="5" drawLayer="4" damagepoints="10">
          <texturelist>
             <texture key="battletruck"/>
             <texture key="explosion" explosion="1" />
@@ -98,7 +98,7 @@
          </weapon>
       </object>
 
-      <object name="tank3" cycleInterval="7" xpos="2.5" ypos="-1.8" width="0.8" height="0.4" type="enemy" hitpoints="90" drawLayer="4" damagepoints="10">
+      <object name="tank3" cycleInterval="7" xpos="2.5" ypos="-1.8" width="0.8" height="0.4" type="enemy" hitpoints="5" drawLayer="4" damagepoints="10">
          <texturelist>
             <texture key="battletruck"/>
             <texture key="explosion" explosion="1" />
@@ -121,7 +121,7 @@
          </weapon>
       </object>
 
-      <object name="drone" cycleInterval="1" xpos="2.5" ypos="1.5" width="0.8" height="0.26" type="enemy" hitpoints="90" drawLayer="4" damagepoints="10">
+      <object name="drone" cycleInterval="1" xpos="2.5" ypos="1.5" width="0.8" height="0.26" type="enemy" hitpoints="5" drawLayer="4" damagepoints="10">
          <texturelist>
             <texture key="drone"/>
             <texture key="explosion" explosion="1" />
