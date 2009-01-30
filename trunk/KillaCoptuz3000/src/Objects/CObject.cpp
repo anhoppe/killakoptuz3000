@@ -1129,15 +1129,22 @@ void CObject::startDying()
       m_timeCounter           = 0;
       m_activeTexture         = 0;
 
-      // Set explosion speed
-      m_cycleInterval         = 20*m_maxHitPoints/(m_maxHitPoints+10);
+      // Set explosion speed      
+      m_cycleInterval         = (int)15.0*m_maxHitPoints/(m_maxHitPoints+40);
+
+      // Slow player explosion
+      if (getType() == e_player)
+      {
+         m_cycleInterval = m_cycleInterval*3;
+      }
    }
    else
    {
       // This object has no explosion texture
 
       // Set cycle interval to 0, so it will be finished with his animation very soon
-      m_cycleInterval = 0;
+      if (!m_isDying)
+         m_cycleInterval = 0;
    }
 
    // Set dying flag

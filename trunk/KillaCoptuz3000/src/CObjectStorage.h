@@ -92,6 +92,9 @@ public:
    /** Process delete objectMap */
    void processDeleteMap();
 
+   /** Removes all level objects, only executed when game over*/
+   void clearLevel();
+
    /** Checks if level is over (player won or is dead) */
    bool isGameOver();
 

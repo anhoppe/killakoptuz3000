@@ -198,6 +198,32 @@ void CObjectStorage::processDeleteMap()
    m_deleteMap.clear();
 }
 
+void CObjectStorage::clearLevel()
+{
+// Iterate over delete map and remove all objects except player
+   if (m_objectMap.iterate(true))
+   {
+      do
+      {         
+         if (((CObject*)m_objectMap.m_current.m_value)->getType() != e_player)
+         {
+            // Remove object from object map
+            m_objectMap.erase(m_objectMap.m_current.m_key);
+
+            // Remove object from draw list
+            m_drawList.remove(m_objectMap.m_current.m_key);
+
+            // Remove object from quad tree
+            m_quadTreeRootPtr->remove(m_objectMap.m_current.m_value);
+
+            // Delete the object
+            delete m_objectMap.m_current.m_value;
+         }
+      }
+      while(m_objectMap.iterate());
+   }
+}
+
 
 /** Add object read from XML node */
 unsigned int CObjectStorage::add(TiXmlNode* t_nodePtr, VeObjectType t_type, unsigned int t_parentId)
