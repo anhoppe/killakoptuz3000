@@ -17,6 +17,7 @@
     <texture basefilename="puffEx" key="puffExplosion" gfxType="tga"/>
     <texture basefilename="bombholder" key="bombholder" gfxType="tga"/>
     <texture basefilename="bombA" key="bombA" gfxType="tga"/>
+    <texture basefilename="akw" key="akw" gfxType="tga"/>
 
     <sound key="explosion" filename="boom1.mp3"/>
     <sound key="bigexplosion" filename="boom3.mp3"/> 
@@ -60,6 +61,13 @@
          </texturelist>
          <soundeffect key="bigexplosion" explosion="1"/>
       </object>
+      <object cycleInterval="10" xpos="10" ypos="-1.8" width="1.0" height="1.2" damagepoints="10" hitpoints="30"  type="enemy" drawLayer="3">
+         <texturelist>
+            <texture key="akw"/>
+            <texture key="explosion" explosion="1" />
+         </texturelist>
+         <soundeffect key="bigexplosion" explosion="1"/>
+      </object>      
       <object cycleInterval="20" xpos="3.4" ypos="-2.0" width="4.0" height="0.6" drawLayer="3">
          <texturelist>
             <texture key="shore"/>
