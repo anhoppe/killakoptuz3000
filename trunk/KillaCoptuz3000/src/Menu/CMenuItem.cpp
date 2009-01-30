@@ -54,8 +54,7 @@ bool CMenuItem::load(TiXmlNode* t_nodePtr)
 
       //////////////////////////////////////////////////////////////////////////
       // get texture ID
-      r_ret = getAttributeStr(a_elemPtr, "texturekey", m_textureKey);
-      
+      r_ret = getAttributeStr(a_elemPtr, "texturekey", m_textureKey);      
 
       //////////////////////////////////////////////////////////////////////////
       // get and save action
@@ -75,7 +74,7 @@ bool CMenuItem::load(TiXmlNode* t_nodePtr)
       else if(a_str == "exit")
       {
          m_action  = e_quitGame;
-      }
+      }      
    }
 
    return r_ret;

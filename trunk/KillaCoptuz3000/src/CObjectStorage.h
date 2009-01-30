@@ -70,12 +70,6 @@ public:
    */
    void addToDrawList(CObject* t_objectPtr);
 
-   /** Add textures into texture map */
-   bool addTextureMap(TiXmlNode* t_nodePtr);
-
-   /** Add sound effects into a map */
-   bool addSoundEffectMap(TiXmlNode* t_nodePtr);
-
    /** Loads textures and sound effects from player or level xml file,      
    adds them to m_soundMap or m_textureMap. 
    Example xml:
