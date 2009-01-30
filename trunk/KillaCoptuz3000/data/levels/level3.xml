@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<level xmin="-10." ymin="-1.8" xmax="15." ymax="1.8" music="Copter_gameover.ogg">
+<level xmin="-10." ymin="-1.8" xmax="15." ymax="1.8" music="copter_Apache.ogg">
   <resources>
     <texture basefilename="sky" key="sky" gfxType="tga"/>
     <texture basefilename="ocean" key="ocean" gfxType="tga" hullpoints="8"/>
