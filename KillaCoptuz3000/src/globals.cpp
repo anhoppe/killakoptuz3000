@@ -23,7 +23,7 @@ bool     g_showHull     = false;
 bool     g_showQuadTree = false;
 
 // Mute (==1) or not
-bool     g_mute         = true;
+bool     g_mute         = false;
 
 // The level object
 CLevel   g_level;
