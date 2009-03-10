@@ -12,6 +12,8 @@
 
 #include "wxWidgets/include/wx/wx.h"
 
+class CMainFrame;
+
 class CApp : public wxApp
 {
 public:
@@ -24,6 +26,11 @@ public:
    * WX exit method
    */
    virtual int OnExit();
+
+   /** overwrite Filter event method for key events */
+   virtual int FilterEvent(wxEvent& t_event);
+
+   CMainFrame* m_mainFramePtr;
 };
 
 

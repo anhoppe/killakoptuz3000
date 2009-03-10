@@ -14,30 +14,30 @@
 
 #include "CDataStorage.h"
 #include "CUpdateContainer.h"
+#include "CLayerControl.h"
+#include "CPropertyPanel.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Definitions
 //////////////////////////////////////////////////////////////////////////
-#define ID_COMBO_OBJECT_SELECTION   1001
 
 //////////////////////////////////////////////////////////////////////////
 // Event Table
 //////////////////////////////////////////////////////////////////////////
 BEGIN_EVENT_TABLE(CControlPanel, wxPanel)
-   EVT_COMBOBOX(ID_COMBO_OBJECT_SELECTION, onComboObjectSelection)
 END_EVENT_TABLE()
 
 //////////////////////////////////////////////////////////////////////////
 // Implementation
 //////////////////////////////////////////////////////////////////////////
 CControlPanel::CControlPanel(wxWindow* t_parentPtr)
-: wxPanel(t_parentPtr, wxID_ANY, wxDefaultPosition, wxSize(400, 360))
+: wxPanel(t_parentPtr, wxID_ANY, wxDefaultPosition, wxSize(200, 360))
 {
    wxBoxSizer*    a_sizerPtr        = 0;
    
    //////////////////////////////////////////////////////////////////////////
    // Register listener
-   CUpdateContainer::getInstance().add(this);
+   CUpdateContainer::getInstance().add((ISetObject*)this);
 
 
    //////////////////////////////////////////////////////////////////////////
@@ -45,14 +45,14 @@ CControlPanel::CControlPanel(wxWindow* t_parentPtr)
    a_sizerPtr = new wxBoxSizer(wxVERTICAL);
 
    //////////////////////////////////////////////////////////////////////////
-   // Create object selectorS
-   m_comboObjectSelectionPtr = new wxComboBox(this, ID_COMBO_OBJECT_SELECTION, "", wxPoint(10, 35), wxSize(130, 20));
-   a_sizerPtr->Add(m_comboObjectSelectionPtr, 0);
+   // set the layer control panel
+   m_panelLayerControlPtr = new CLayerControl(this);
+   a_sizerPtr->Add(m_panelLayerControlPtr, 1, wxEXPAND);
 
    //////////////////////////////////////////////////////////////////////////
    // read property sheet
    m_panelPropertyPtr = new CPropertyPanel(this);
-   a_sizerPtr->Add(m_panelPropertyPtr, 1, wxGROW|wxALIGN_BOTTOM);
+   a_sizerPtr->Add(m_panelPropertyPtr, 1, wxEXPAND|wxALIGN_BOTTOM);
 
    //////////////////////////////////////////////////////////////////////////
    // Register sizer
@@ -61,37 +61,20 @@ CControlPanel::CControlPanel(wxWindow* t_parentPtr)
 
 CControlPanel::~CControlPanel()
 {
-   CUpdateContainer::getInstance().remove(this);
+   CUpdateContainer::getInstance().remove((ISetObject*)this);
 }
 
-void CControlPanel::update()
+
+void CControlPanel::setObject(int t_index)
 {
-   std::vector<CObject*>::iterator  a_it;
-   wxString                         a_str    = "";
-   int                              a_count  = 0;
+   CDataStorage::getInstance().setActiveObjectByIndex(t_index);
+}
 
-
-   //////////////////////////////////////////////////////////////////////////
-   // Delete content of the object list
-   m_comboObjectSelectionPtr->Clear();
-
-   for(a_it = CDataStorage::getInstance().m_objects.begin(); a_it != CDataStorage::getInstance().m_objects.end(); a_it++)
-   {
-      a_str.sprintf("Object%d", a_count);
-      m_comboObjectSelectionPtr->Append(a_str);
-
-      a_count++;
-   }
+void CControlPanel::insertLayers(std::vector<int>& t_layerIndices)
+{
+   m_panelLayerControlPtr->insertLayers(t_layerIndices);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // Events
 //////////////////////////////////////////////////////////////////////////
-void CControlPanel::onComboObjectSelection(wxCommandEvent& t_event)
-{
-   int a_index = 0;
-
-   a_index = m_comboObjectSelectionPtr->GetSelection();
-
-   m_panelPropertyPtr->setData(a_index);
-}

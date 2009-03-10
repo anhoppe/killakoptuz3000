@@ -12,6 +12,8 @@
 
 #include <wx/wx.h>
 
+#include <vector>
+
 struct STextureDesc
 {
    /** Base file */

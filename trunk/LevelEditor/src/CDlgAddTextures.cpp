@@ -117,7 +117,7 @@ void CDlgAddTextures::onButtonAdd(wxCommandEvent& t_event)
    wxArrayString  a_fileNames;
    wxFileName     a_fileName;
 
-   int            a_index     = 0;
+   unsigned int   a_index     = 0;
    STextureDesc   a_desc;
 
    if(a_fd.ShowModal())
@@ -128,7 +128,7 @@ void CDlgAddTextures::onButtonAdd(wxCommandEvent& t_event)
       {
          a_fileName = a_fileNames[a_index];
 
-         a_desc.m_baseFileName = CDataStorage::getInstance().getKey(a_fileNames[a_index]);
+         a_desc.m_baseFileName = CDataStorage::getInstance().getKey(a_fileNames[a_index].c_str());
          a_desc.m_hullPoints   = 5;
          a_desc.m_gfxType      = a_fileName.GetExt();
 

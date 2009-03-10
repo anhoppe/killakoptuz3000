@@ -41,7 +41,7 @@
 				Name="VCCLCompilerTool"
 				UseUnicodeResponseFiles="false"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;;&quot;$(ProjectDir)/..&quot;;&quot;$(ProjectDir)/../..&quot;;&quot;$(ProjectDir)/../../wxWidgets/include&quot;;&quot;$(ProjectDir)/../../wxWidgets/include/msvc&quot;"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;;&quot;$(ProjectDir)/..&quot;;&quot;$(ProjectDir)/../..&quot;;&quot;$(ProjectDir)/../wxWidgets/include&quot;;&quot;$(ProjectDir)/../wxWidgets/include/msvc&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -65,7 +65,7 @@
 				UseUnicodeResponseFiles="false"
 				AdditionalDependencies="wxmsw28d_core.lib wxmsw28d_gl.lib wxbase28d.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxregexd.lib opengl32.lib wxexpatd.lib winmm.lib comctl32.lib rpcrt4.lib wsock32.lib oleacc.lib odbc32.lib glut32.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;$(ProjectDir)/../glut&quot;;&quot;$(ProjectDir)/../../wxWidgets/lib/vc_lib&quot;;&quot;$(ProjectDir)/../../wxWidgets/lib&quot;"
+				AdditionalLibraryDirectories="&quot;$(ProjectDir)/../glut&quot;;&quot;$(ProjectDir)/../wxWidgets/lib/vc_lib&quot;;&quot;$(ProjectDir)/../wxWidgets/lib&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -204,7 +204,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\CLayerControl.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\CMainFrame.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\CObjectControl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\CObjectPropertyPanel.cpp"
 				>
 			</File>
 			<File
@@ -213,6 +225,10 @@
 			</File>
 			<File
 				RelativePath=".\src\CUpdateContainer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\CWeaponPropertyPanel.cpp"
 				>
 			</File>
 		</Filter>
@@ -246,7 +262,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\CLayerControl.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\CMainFrame.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\CObjectControl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\CObjectPropertyPanel.h"
 				>
 			</File>
 			<File
@@ -258,7 +286,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\CWeaponPropertyPanel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\ISetObject.h"
+				>
+			</File>
+			<File
 				RelativePath=".\IUpdate.h"
+				>
+			</File>
+			<File
+				RelativePath=".\resource.h"
 				>
 			</File>
 			<File
@@ -383,6 +423,10 @@
 			</File>
 			<File
 				RelativePath="..\KillaCoptuz3000\src\globals.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\KillaCoptuz3000\src\globals.h"
 				>
 			</File>
 			<File
