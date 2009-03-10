@@ -25,13 +25,22 @@ CPolygon::CPolygon()
 CPolygon::CPolygon(CPolygon* t_polygonPtr)
 {
    unsigned int a_i;
-   for (a_i = 0; a_i < t_polygonPtr->m_points.size(); a_i++)
-   {
-      m_points.push_back(new CPoint(t_polygonPtr->m_points[a_i]->x, t_polygonPtr->m_points[a_i]->y));
-   }
 
-   m_width  = t_polygonPtr->m_width;
-   m_height = t_polygonPtr->m_height;
+   if(0 != t_polygonPtr)
+   {
+       for (a_i = 0; a_i < t_polygonPtr->m_points.size(); a_i++)
+       {
+           m_points.push_back(new CPoint(t_polygonPtr->m_points[a_i]->x, t_polygonPtr->m_points[a_i]->y));
+       }
+
+       m_width  = t_polygonPtr->m_width;
+       m_height = t_polygonPtr->m_height;
+   }
+   else
+   {
+       printf("what the hell\n");
+       assert(false);
+   }
 }
 
 

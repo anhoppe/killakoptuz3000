@@ -100,7 +100,13 @@ void CMenuItem::draw(float t_yPos, float t_depth)
    glTranslatef(0., 0., t_depth);
 
    glEnable( GL_TEXTURE_2D );
-   glBindTexture(GL_TEXTURE_2D, m_parentPtr->m_textureMap[m_textureKey]->m_textureIdVector[m_textureIndex]);
+
+   CTexture* a_texturePtr = m_parentPtr->m_textureMap[m_textureKey];
+
+   if(0 != a_texturePtr)
+   {
+       glBindTexture(GL_TEXTURE_2D, a_texturePtr->m_textureIdVector[m_textureIndex]);
+   }
 
    glBegin( GL_QUADS );
    glTexCoord2d(0.0,0.0); 

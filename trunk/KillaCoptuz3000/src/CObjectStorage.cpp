@@ -400,6 +400,7 @@ bool CObjectStorage::addResources(TiXmlNode* t_nodePtr)
 		} 
 	}
 
+#if(PRODUCT == KK3000)
 	// Iterate over all sound effects
 	for(a_nodePtr = t_nodePtr->FirstChild("sound"); a_nodePtr; a_nodePtr = t_nodePtr->IterateChildren("sound", a_nodePtr))
 	{
@@ -426,7 +427,7 @@ bool CObjectStorage::addResources(TiXmlNode* t_nodePtr)
          }
       }
 	}
-	
+#endif
 	return r_ret;
 }
 

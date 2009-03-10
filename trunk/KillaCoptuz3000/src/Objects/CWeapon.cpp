@@ -200,6 +200,7 @@ float CWeapon::trackAngle(float t_xTrg, float t_yTrg)
 
 void CWeapon::fire()
 {
+#if(PRODUCT == KK3000)
    float                   a_angle        = 0.;
    unsigned int            a_newId        = 0;
    CShot*                  a_newShotPtr   = 0;
@@ -321,4 +322,5 @@ void CWeapon::fire()
         FSOUND_SetVolume(a_channel, a_volume);
 	  }
    }   
+#endif
 }

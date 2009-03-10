@@ -24,6 +24,7 @@
 
 #if(PRODUCT == LE3000)
 #include "../LevelEditor/src/CDataStorage.h"
+#include "../LevelEditor/src/CObjectControl.h"
 #endif
 
 #include <stdio.h>
@@ -113,6 +114,79 @@ size_t CObject::getTextureCount()
 #endif
 }
 
+#if(PRODUCT == LE3000)
+CObject* CObject::create(TiXmlNode* t_rootPtr)
+{
+   CObject* r_objectPtr = 0;
+
+   if(0 != t_rootPtr)
+   {
+      // load the texture keys
+      std::vector<std::string>            a_textureKeys;
+      std::vector<std::string>::iterator  a_it;
+      std::string                         a_key          = "";
+      TiXmlNode*                          a_nodePtr      = 0;
+      TiXmlNode*                          a_subNodePtr   = 0;
+      TiXmlElement*                       a_elemPtr      = 0;
+
+
+      a_nodePtr = t_rootPtr->FirstChild("texturelist");
+      if(0 != a_nodePtr)
+      {
+         r_objectPtr = new CObject();
+
+         for(a_subNodePtr = a_nodePtr->FirstChild("texture"); a_subNodePtr; a_subNodePtr = a_nodePtr->IterateChildren("texture", a_subNodePtr))
+         {
+            a_elemPtr = a_subNodePtr->ToElement();
+            a_key = a_elemPtr->Attribute("key");
+            if("" != a_key)
+            {
+               a_textureKeys.push_back(a_key);
+            }
+         }
+         
+         a_elemPtr = t_rootPtr->ToElement();
+
+         a_elemPtr->Attribute("cycleInterval", &r_objectPtr->m_cycleInterval);
+
+         // store position
+         double a_floatVal  = 0.0;
+         a_elemPtr->Attribute("xpos", &a_floatVal);
+         r_objectPtr->m_xPos = (float)a_floatVal;
+
+         a_elemPtr->Attribute("ypos", &a_floatVal);
+         r_objectPtr->m_yPos= (float)a_floatVal;
+
+         // store size
+         a_elemPtr->Attribute("width", &a_floatVal);
+         r_objectPtr->m_width = (float)a_floatVal;
+
+         a_elemPtr->Attribute("height", &a_floatVal);
+         r_objectPtr->m_height = (float)a_floatVal;
+
+         // store draw layer
+         int a_intVal = 0;
+         a_elemPtr->Attribute("drawLayer", &a_intVal);
+         r_objectPtr->m_drawLayer = (unsigned int)a_intVal;
+
+         // store background flag
+         int a_backgrnd = 0;
+         a_elemPtr->Attribute("background", &a_backgrnd);
+         r_objectPtr->m_isBackground = a_backgrnd != 0;
+
+         // append the texture keys
+         for(a_it = a_textureKeys.begin(); a_it != a_textureKeys.end(); a_it++)
+         {
+            r_objectPtr->m_textureKeys.push_back(*a_it);
+         }
+      }
+   }
+
+   return r_objectPtr;
+}
+#endif
+
+
 bool CObject::load(TiXmlNode* t_nodePtr)
 {
    TiXmlNode*     a_nodePtr         = 0;
@@ -130,7 +204,7 @@ bool CObject::load(TiXmlNode* t_nodePtr)
    
 
    a_elemPtr = t_nodePtr->ToElement();
-   
+
    r_ret = r_ret & getAttributeStr(a_elemPtr, "xpos", a_str);
    m_xPos         = atof(a_str.c_str());
 
@@ -231,8 +305,79 @@ bool CObject::load(TiXmlNode* t_nodePtr)
       }
    }
 
+
+
    return r_ret;
 }
+
+#if(PRODUCT == LE3000)
+void CObject::save(TiXmlNode* t_rootPtr)
+{
+   TiXmlElement*  a_elemPtr   = 0;
+   char           a_str[1024];
+
+
+   a_elemPtr = new TiXmlElement("object");
+
+   // store the cycle interval
+   a_elemPtr->SetAttribute("cycleInterval", m_cycleInterval);
+
+   // store position
+   sprintf_s(a_str, "%f", m_xPos);
+   a_elemPtr->SetAttribute("xpos", a_str);
+   sprintf_s(a_str, "%f", m_yPos);
+   a_elemPtr->SetAttribute("ypos", a_str);
+   
+   // store size
+   sprintf_s(a_str, "%f", m_width);
+   a_elemPtr->SetAttribute("width", a_str);
+
+   sprintf_s(a_str, "%f", m_height);
+   a_elemPtr->SetAttribute("height", a_str);
+
+   // store draw layer
+   a_elemPtr->SetAttribute("drawLayer", m_drawLayer);
+
+   // store background flag
+   if(m_isBackground)
+   {
+      a_elemPtr->SetAttribute("background", 1);
+   }
+   else
+   {
+      a_elemPtr->SetAttribute("background", 0);
+   }
+
+   // save texture list
+   saveTextureList(a_elemPtr);
+
+   // append the node
+   t_rootPtr->InsertEndChild(*a_elemPtr);
+
+   delete a_elemPtr;
+}
+
+void CObject::saveTextureList(TiXmlNode* t_rootPtr)
+{
+   TiXmlElement*                       a_elemPtr      = new TiXmlElement("texturelist");
+   TiXmlElement*                       a_subElemPtr   = 0;
+   std::vector<std::string>::iterator  a_textureIt;
+
+   for(a_textureIt = m_textureKeys.begin(); a_textureIt != m_textureKeys.end(); a_textureIt++)
+   {
+      a_subElemPtr   = new TiXmlElement("texture");
+      a_subElemPtr->SetAttribute("key", (*a_textureIt).c_str());
+
+      a_elemPtr->InsertEndChild(*a_subElemPtr);
+      delete a_subElemPtr;
+   }
+
+   t_rootPtr->InsertEndChild(*a_elemPtr);
+   delete a_elemPtr;
+
+}
+
+#endif
 
 #if(PRODUCT == KK3000)
 void CObject::draw()
@@ -477,10 +622,10 @@ void CObject::draw()
 #else
 void CObject::draw()
 {
-   if(m_texture != "")
+   if(m_textureKeys.size() > 0)
    {
-      std::string a0       = m_texture;
-      CTexture*   a1       = CDataStorage::getInstance().m_textureMap[m_texture.c_str()];
+      std::string a0       = m_textureKeys[0];
+      CTexture*   a1       = CDataStorage::getInstance().m_textureMap[a0];
       assert(a1 && "No valid CTexture object in texture map");
       GLuint      a2       = a1->m_textureIdVector[m_activeTexture];
 
@@ -697,6 +842,13 @@ void CObject::draw()
 
       glPopMatrix();
    }
+
+   //////////////////////////////////////////////////////////////////////////
+   // Draw the object control
+   if(CDataStorage::getInstance().isActiveObject(this))
+   {
+      CObjectControl::getInstance().draw();
+   }
 }
 #endif
 
@@ -815,7 +967,6 @@ int CObject::ccw(CPoint& p0, CPoint& p1, CPoint& p2)
 bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
 {   
    bool           r_ret = false;
-   unsigned int   a_n;
    CPoint         a_p1, a_p2, a_p3, a_p4;
    CPoint         a_o1, a_o2, a_o3, a_o4;
    CLine          a_pl1, a_pl2, a_pl3, a_pl4;
@@ -961,6 +1112,7 @@ bool CObject::isCollided(CObject* t_firstPtr, CObject* t_secondPtr)
          }         
 
          // Check polygon A for having points in B
+         int a_n = 0;
          for (a_n = 0; a_n < a_polygonAPtr->m_points.size(); a_n++)
          {
             if (a_polygonBPtr->isInside(a_polygonAPtr->m_points[a_n]))
@@ -1094,6 +1246,7 @@ bool CObject::intersects(CObject* t_objectPtr, float t_top, float t_left, float 
 
 void CObject::startDying()
 {   
+#if(PRODUCT == KK3000)
    std::vector<CObject*>::iterator  a_it;
 
    // Initiate explosion
@@ -1152,4 +1305,5 @@ void CObject::startDying()
 
    // Delete all children
    CObjectStorage::getInstance().deleteChildren(m_id);
+#endif
 }

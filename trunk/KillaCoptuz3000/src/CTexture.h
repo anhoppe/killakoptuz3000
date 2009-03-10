@@ -22,6 +22,7 @@ class CTexture
 {
 public:
    CTexture();
+   CTexture(TiXmlElement* t_elemPtr);
    CTexture(TiXmlElement* t_elemPtr, const std::string& t_texturePath);
    ~CTexture();
 
@@ -34,6 +35,12 @@ public:
    *  @param t_hullPoints hull points for the file
    */
    void loadFromBaseFile(const std::string& t_texturePath, const std::string& t_baseFileName, const std::string& t_gfxType, int t_hullPoints);
+
+   /**
+   *  Saves the texture to an XML document
+   */
+   void save(TiXmlNode* t_rootPtr, const std::string t_key);
+
    std::string m_baseFileName;
    std::string m_gfxType;
    int         m_hullPoints;

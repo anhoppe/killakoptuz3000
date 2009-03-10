@@ -44,7 +44,6 @@ CPlayer::CPlayer()
 
    m_velocityMax  = .018;
    m_isBackground = false;
-
 }
 
 void CPlayer::update(CLevel* t_levelPtr)

@@ -59,6 +59,7 @@ bool CLevel::load(TiXmlNode* t_nodePtr)
    r_ret = r_ret & getAttributeStr(a_elemPtr, "ymax", a_str);
    m_maxY         = atof(a_str.c_str());
 
+#if(PRODUCT == KK3000)
    if (getAttributeStr(a_elemPtr, "music", a_str))
    {
        std::string a_path = "data\\sound\\";
@@ -71,6 +72,7 @@ bool CLevel::load(TiXmlNode* t_nodePtr)
 		   FSOUND_Stream_Play(0, m_sound);
 	   }
    }
+#endif
 
    // Iterate over all elements in objectlist
    a_nodePtr = t_nodePtr->FirstChild("objectlist");
