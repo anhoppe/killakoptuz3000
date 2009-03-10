@@ -13,13 +13,15 @@
 
 #include "wx/wx.h"
 
+#include <vector>
 
-#include "IUpdate.h"
+#include "ISetObject.h"
 
-#include "CPropertyPanel.h"
+class CLayerControl;
+class CPropertyPanel;
 
 class CControlPanel : public wxPanel,
-                             IUpdate
+                             ISetObject
 {
    //////////////////////////////////////////////////////////////////////////
    // Methods
@@ -28,19 +30,20 @@ public:
    CControlPanel(wxWindow* t_parentPtr);
    ~CControlPanel();
 
-   virtual void update();
+   virtual void setObject(int t_index);
 
+   /** Insert layers into the layer control panel after loading a level */
+   void insertLayers(std::vector<int>& t_layerIndices);
    //////////////////////////////////////////////////////////////////////////
    // Events
    //////////////////////////////////////////////////////////////////////////
    DECLARE_EVENT_TABLE()
-   void onComboObjectSelection(wxCommandEvent& tevent);
 
    //////////////////////////////////////////////////////////////////////////
    // Variables
    //////////////////////////////////////////////////////////////////////////
-   /** Combo Box containing all object graphics */
-   wxComboBox*       m_comboObjectSelectionPtr;
+   /** Layer control allows adding objects and defines layer indices of objects */
+   CLayerControl*    m_panelLayerControlPtr;
 
    /** Property panel displays all properties of currently selected object */
    CPropertyPanel*   m_panelPropertyPtr;

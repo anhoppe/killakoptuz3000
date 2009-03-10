@@ -14,6 +14,7 @@
 #include <list>
 
 #include "IUpdate.h"
+#include "ISetObject.h"
 
 class CUpdateContainer
 {
@@ -33,15 +34,25 @@ public:
    /** Removes a listener */
    void remove(IUpdate* t_listenerPtr);
 
+   /** Registers a listener */
+   void add(ISetObject* t_listenerPtr);
+
+   /** Removes a listener */
+   void remove(ISetObject* t_listenerPtr);
+
    /** Updates all listeners */
    void update();
+
+   /** Updats all set object listeners */
+   void setObject(int t_index);
 
    //////////////////////////////////////////////////////////////////////////
    // Variables
    //////////////////////////////////////////////////////////////////////////
 public:
 private:
-   std::list<IUpdate*>  m_container;
+   std::list<IUpdate*>     m_container;
+   std::list<ISetObject*>  m_setObjectContainer;
 };
 
 #endif

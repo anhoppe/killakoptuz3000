@@ -17,9 +17,9 @@ IMPLEMENT_APP(CApp)
 
 bool CApp::OnInit()
 {
-   CMainFrame* a_framePtr = new CMainFrame();
+   m_mainFramePtr = new CMainFrame();
 
-   a_framePtr->Show();
+   m_mainFramePtr->Show();
 
    return true;
 }
@@ -27,4 +27,18 @@ bool CApp::OnInit()
 int CApp::OnExit()
 {
    return 69;
+}
+
+int CApp::FilterEvent(wxEvent& t_event)
+{
+   int r_result = -1;
+
+   if(t_event.GetEventType() == wxEVT_KEY_DOWN)
+   {
+      wxKeyEvent* a_keyEvent = dynamic_cast<wxKeyEvent*>(&t_event);
+      m_mainFramePtr->onKeyDown(*a_keyEvent);
+      r_result = FALSE;
+   }
+
+   return r_result;
 }

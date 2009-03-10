@@ -40,6 +40,16 @@ void CUpdateContainer::remove(IUpdate* t_listenerPtr)
    m_container.remove(t_listenerPtr);
 }
 
+void CUpdateContainer::add(ISetObject* t_listenerPtr)
+{
+   m_setObjectContainer.push_back(t_listenerPtr);
+}
+
+void CUpdateContainer::remove(ISetObject* t_listenerPtr)
+{
+   m_setObjectContainer.remove(t_listenerPtr);
+}
+
 void CUpdateContainer::update()
 {
    std::list<IUpdate*>::iterator a_it;
@@ -48,5 +58,16 @@ void CUpdateContainer::update()
    for(a_it = m_container.begin(); a_it != m_container.end(); a_it++)
    {
       (*a_it)->update();
+   }
+}
+
+void CUpdateContainer::setObject(int t_index)
+{
+   std::list<ISetObject*>::iterator a_it;
+
+
+   for(a_it = m_setObjectContainer.begin(); a_it != m_setObjectContainer.end(); a_it++)
+   {
+      (*a_it)->setObject(t_index);
    }
 }
