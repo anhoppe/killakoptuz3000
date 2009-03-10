@@ -59,11 +59,22 @@ public:
 
    ~CObject();
 
+#if(PRODUCT == LE3000)
+   static CObject* create(TiXmlNode* t_rootPtr);
+#endif
+
    /** returns the type of the object */
    virtual VeObjectType getType() { return e_object; };
 
    /** loads object content from XML file */
    virtual bool load(TiXmlNode* t_nodePtr);    
+
+   /** Stores object in XML file */
+#if(PRODUCT == LE3000)
+   virtual void save(TiXmlNode* t_rootPtr);
+
+   void saveTextureList(TiXmlNode* t_rootPtr);
+#endif
 
    /** Draws the object via OpenGL */
    virtual void draw();
@@ -169,7 +180,8 @@ public:
    // LE3000 does not need the hull polygon
    std::vector<std::string>   m_textureKeys;
 
-   std::string                m_texture;
+   // the level editor assigns a name to the objectyy
+   std::string                m_name;
 protected:  
 #endif
 

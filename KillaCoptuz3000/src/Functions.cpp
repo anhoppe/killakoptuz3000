@@ -15,15 +15,18 @@ bool getAttributeStr(TiXmlElement* t_elemPtr, std::string t_attributeStr, std::s
 {
    bool r_ret;
 
-   if (t_elemPtr->Attribute(t_attributeStr.c_str()))
+   if(0 != t_elemPtr)
    {
-      t_resultStr = t_elemPtr->Attribute(t_attributeStr.c_str());
-      r_ret = true;
-   }
-   else
-   {      
-      t_resultStr = "";
-      r_ret = false;
+      if (t_elemPtr->Attribute(t_attributeStr.c_str()))
+      {
+          t_resultStr = t_elemPtr->Attribute(t_attributeStr.c_str());
+          r_ret = true;
+      }
+      else
+      {      
+          t_resultStr = "";
+          r_ret = false;
+      }
    }
 
    return r_ret;

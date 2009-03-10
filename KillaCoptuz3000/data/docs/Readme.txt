@@ -12,7 +12,8 @@ Game features
 - Hubirennen
 - Drop special forces. Spieler kann Bodenkampfeinheiten kaufen und absetzen
 - Wertvolle Gegenstände klauen
-
+- Ausrüstung für Hostages abwerfen
+- regelmässige Bombardements
 
 Programming issues
 ------------------

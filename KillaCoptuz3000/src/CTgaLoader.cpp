@@ -47,7 +47,6 @@ bool CTGALoader::LoadTGA(const char* file)
 {
    FILE*          pfile;
 
-   unsigned char  tempColor;
    unsigned char  bitCount;
 
    int            colorMode;

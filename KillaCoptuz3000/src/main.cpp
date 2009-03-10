@@ -14,7 +14,7 @@
 #include "fmod.h"
 #include "CHashMap.h"
 #include "CGame.h"
- #include "globals.h"
+#include "globals.h"
 
 // 
 // //////////////////////////////////////////////////////////////////////////   

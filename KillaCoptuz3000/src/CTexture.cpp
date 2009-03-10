@@ -25,6 +25,15 @@ CTexture::CTexture()
 
 }
 
+#if(PRODUCT == LE3000)
+CTexture::CTexture(TiXmlElement* t_elemPtr)
+{
+   m_baseFileName = t_elemPtr->Attribute("basefilename");
+   m_gfxType      = t_elemPtr->Attribute("gfxType");
+   t_elemPtr->Attribute("hullpoints", &m_hullPoints);
+}
+#endif
+
 CTexture::CTexture(TiXmlElement* t_elemPtr, const std::string& t_texturePath)
 {
    TiXmlNode*     a_nodePtr      = 0;
@@ -46,17 +55,32 @@ CTexture::CTexture(TiXmlElement* t_elemPtr, const std::string& t_texturePath)
    {
       if(getAttributeStr(t_elemPtr, "basefilename", a_baseFileName))
       {
+#if(PRODUCT == LE3000)
+         m_baseFileName = a_baseFileName;
+#endif
          if (getAttributeStr(t_elemPtr, "hullpoints", a_str))
          {
+#if(PRODUCT == LE3000)
+            m_hullPoints = atoi(a_str.c_str());
+#endif
             if(getAttributeStr(t_elemPtr, "gfxType", a_gfxType))
             {
+#if(PRODUCT == LE3000)
+               m_gfxType = a_gfxType;
+#endif
                assert(loadTextureBase(this, t_texturePath, a_baseFileName, a_gfxType, atoi(a_str.c_str())));
             }
          }                 
          else
          {
+#if(PRODUCT == LE3000)
+            m_hullPoints = -1;
+#endif
             if(getAttributeStr(t_elemPtr, "gfxType", a_gfxType))
             {
+#if(PRODUCT == LE3000)
+               m_gfxType = a_gfxType;
+#endif
                assert(loadTextureBase(this, t_texturePath, a_baseFileName, a_gfxType));
             }
          }
@@ -81,6 +105,27 @@ void CTexture::loadFromBaseFile(const std::string& t_texturePath, const std::str
    
    loadTextureBase(this, t_texturePath, t_baseFileName, t_gfxType, t_hullPoints);
 }
+
+void CTexture::save(TiXmlNode* t_rootPtr, const std::string t_key)
+{
+   TiXmlElement*  a_elemPtr   = 0;
+
+   a_elemPtr = new TiXmlElement("texture");
+
+   a_elemPtr->SetAttribute("basefilename", m_baseFileName.c_str());
+   a_elemPtr->SetAttribute("key", t_key.c_str());
+   a_elemPtr->SetAttribute("gfxType", m_gfxType.c_str());
+
+   if(-1 != m_hullPoints)
+   {
+      a_elemPtr->SetAttribute("hullpoints", m_hullPoints);
+   }
+
+   t_rootPtr->InsertEndChild(*a_elemPtr);
+   
+   delete a_elemPtr;
+}
+
 #endif
 
 //////////////////////////////////////////////////////////////////////////

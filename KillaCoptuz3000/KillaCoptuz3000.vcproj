@@ -140,7 +140,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="opengl32.lib glut32.lib glu32.lib fmodvc.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../fmod375;../glut"
+				AdditionalLibraryDirectories="..;../fmod375;../glut"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
