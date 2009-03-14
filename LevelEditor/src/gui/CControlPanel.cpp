@@ -12,8 +12,9 @@
 
 #include "../KillaCoptuz3000/src/Objects/CObject.h"
 
-#include "CDataStorage.h"
-#include "CUpdateContainer.h"
+#include "../data/CDataStorage.h"
+#include "../data/CUpdateContainer.h"
+
 #include "CLayerControl.h"
 #include "CPropertyPanel.h"
 

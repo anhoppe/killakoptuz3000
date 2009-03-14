@@ -23,8 +23,8 @@
 #include <math.h>
 
 #if(PRODUCT == LE3000)
-#include "../LevelEditor/src/CDataStorage.h"
-#include "../LevelEditor/src/CObjectControl.h"
+#include "../LevelEditor/src/data/CDataStorage.h"
+#include "../LevelEditor/src/data/CObjectControl.h"
 #endif
 
 #include <stdio.h>

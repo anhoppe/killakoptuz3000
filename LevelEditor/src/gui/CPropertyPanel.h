@@ -14,7 +14,7 @@
 #include "wx/wx.h"
 #include "wx/notebook.h"
 
-#include "ISetObject.h"
+#include "../data/ISetObject.h"
 
 class CObjectPropertyPanel;
 class CWeaponPropertyPanel;

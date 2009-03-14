@@ -11,4 +11,4 @@ Do following steps in this order
 6. Open LE3000 sln. Open globals.h and make sure that #define PRODUCT LE3000 (not #define PRODUCT KK3000) is inserted.
 
 
-Please report to me if the following does not work.
+Please report to me if this does not work.

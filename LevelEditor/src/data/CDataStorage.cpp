@@ -10,8 +10,9 @@
 
 #include "CDataStorage.h"
 #include "CObjectControl.h"
-#include "CLayerControl.h"
 #include "CUpdateContainer.h"
+
+#include "../gui/CLayerControl.h"
 
 #include "KillaCoptuz3000/src/Objects/CEnemy.h"
 
