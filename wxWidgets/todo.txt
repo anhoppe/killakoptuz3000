@@ -1,0 +1,14 @@
+How to compile LE3000 by anhoppe
+--------------------------------
+
+Do following steps in this order
+
+1. Download and unpack wxWidgets 2.8.7 (or higher??)
+2. search for file 'setup0.h' in wxWidgets folder.
+3. relace the setup.h in the same directory where setup0.h is located (msw version, of course)
+4. compile wxWidgets (open wxWidgets/build/msw/wx.dsp and compile). Compile both Debug and Release versions. Make sure that in the project settings under configuration->C++->Code Generation -> Run Time Libraries 'Multi Threaded (Debug) DLL' is selected.
+5. copy the include directory with all files / directories to the ordner where this file is located.
+6. Open LE3000 sln. Open globals.h and make sure that #define PRODUCT LE3000 (not #define PRODUCT KK3000) is inserted.
+
+
+Please report to me if the following does not work.
