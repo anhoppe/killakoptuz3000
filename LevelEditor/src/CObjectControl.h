@@ -7,7 +7,7 @@
 	file ext:	h
 	author:		anhoppe
 	
-	purpose:	Draws controller widgets for the objects in the GL window
+	purpose:	Draws controllers for the objects in the GL window
 *********************************************************************/
 #ifndef C_OBJECT_CONTROL_H
 #define C_OBJECT_CONTROL_H
