@@ -15,8 +15,8 @@
 #include "wx/wx.h"
 #include "wx/tglbtn.h"
 
-#include "IUpdate.h"
-#include "ISetObject.h"
+#include "../data/IUpdate.h"
+#include "../data/ISetObject.h"
 
 #include <vector>
 

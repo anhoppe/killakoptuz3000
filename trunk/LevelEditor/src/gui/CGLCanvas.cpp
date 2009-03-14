@@ -10,10 +10,9 @@
 
 #include "CGLCanvas.h"
 
-#include "CDataStorage.h"
-#include "CObjectControl.h"
-
-#include "CUpdateContainer.h"
+#include "../data/CDataStorage.h"
+#include "../data/CObjectControl.h"
+#include "../data/CUpdateContainer.h"
 
 #include "glut/glut.h"
 

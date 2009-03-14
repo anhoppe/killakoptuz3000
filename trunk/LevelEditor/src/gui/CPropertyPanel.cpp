@@ -10,12 +10,12 @@
 
 #include "CPropertyPanel.h"
 
+#include "../data/CDataStorage.h"
+#include "../data/CUpdateContainer.h"
+
 #include "CObjectPropertyPanel.h"
 #include "CWeaponPropertyPanel.h"
 
-#include "CDataStorage.h"
-
-#include "CUpdateContainer.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Implementation

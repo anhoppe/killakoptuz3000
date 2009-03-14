@@ -10,7 +10,7 @@
 
 #include "CApp.h"
 
-#include "CMainFrame.h"
+#include "gui/CMainFrame.h"
 
 IMPLEMENT_APP(CApp)
 

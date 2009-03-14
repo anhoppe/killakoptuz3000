@@ -14,7 +14,7 @@
 #include "wx/wx.h"
 #include "wx/glcanvas.h"
 
-#include "IUpdate.h"
+#include "../data/IUpdate.h"
 
 class CGLCanvas : public wxGLCanvas,
                          IUpdate

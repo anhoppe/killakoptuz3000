@@ -10,14 +10,13 @@
 
 #include "CMainFrame.h"
 
+#include "../data/CDataStorage.h"
+#include "../data/CUpdateContainer.h"
+
 #include "CControlPanel.h"
 #include "CGLCanvas.h"
 
-#include "CDataStorage.h"
 #include "CDlgTypeSelection.h"
-
-#include "CUpdateContainer.h"
-
 #include "CDlgAddTextures.h"
 
 #include "wx/sizer.h"

@@ -19,8 +19,8 @@
 
 #include <vector>
 
-#include "IUpdate.h"
-#include "ISetObject.h"
+#include "../data/IUpdate.h"
+#include "../data/ISetObject.h"
 
 #include "CPropertyPanel.h"
 

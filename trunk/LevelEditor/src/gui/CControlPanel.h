@@ -15,7 +15,7 @@
 
 #include <vector>
 
-#include "ISetObject.h"
+#include "../data/ISetObject.h"
 
 class CLayerControl;
 class CPropertyPanel;

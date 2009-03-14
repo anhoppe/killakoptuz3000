@@ -11,8 +11,8 @@
 *********************************************************************/
 #include "CObjectPropertyPanel.h"
 
-#include "CDataStorage.h"
-#include "CUpdateContainer.h"
+#include "../data/CDataStorage.h"
+#include "../data/CUpdateContainer.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Definitions

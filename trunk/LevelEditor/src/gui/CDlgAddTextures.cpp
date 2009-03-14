@@ -10,7 +10,7 @@
 
 #include "CDlgAddTextures.h"
 
-#include "CDataStorage.h"
+#include "../data/CDataStorage.h"
 
 #include "../KillaCoptuz3000/src/CTexture.h "
 
