@@ -17,38 +17,37 @@
 #include <wx/wx.h>
 #include <wx/grid.h>
 
-#include <vector>
-
 #include "../data/IUpdate.h"
 #include "../data/ISetObject.h"
 
-#include "CPropertyPanel.h"
+#include "CBasePropertyPanel.h"
 
-//////////////////////////////////////////////////////////////////////////
-// Enumerations for object properties
-//////////////////////////////////////////////////////////////////////////
-enum EObjectProperties
-{
-   e_xPos            = 0,
-   e_yPos            = 1,
-   e_width           = 2,
-   e_height          = 3,
-   e_cycleInterval   = 4,
-   e_isBackground    = 5,
-   e_gfxType         = 6,
-   e_explosionIndex  = 7,
-   e_startAngle      = 8,
-   e_maxHitpoints    = 9,
-   e_damagePoints    = 10,
-};
 
 //////////////////////////////////////////////////////////////////////////
 // Class Declaration
 //////////////////////////////////////////////////////////////////////////
-class CObjectPropertyPanel : public wxPanel, 
+class CObjectPropertyPanel : public CBasePropertyPanel, 
    IUpdate, 
    ISetObject
 {
+   //////////////////////////////////////////////////////////////////////////
+   // Enumerations for object properties
+   //////////////////////////////////////////////////////////////////////////
+   enum EObjectProperties
+   {
+      e_xPos            = 0,
+      e_yPos            = 1,
+      e_width           = 2,
+      e_height          = 3,
+      e_cycleInterval   = 4,
+      e_isBackground    = 5,
+      e_gfxType         = 6,
+      e_explosionIndex  = 7,
+      e_startAngle      = 8,
+      e_maxHitpoints    = 9,
+      e_damagePoints    = 10,
+   };
+
    //////////////////////////////////////////////////////////////////////////
    // Methods
    //////////////////////////////////////////////////////////////////////////
@@ -66,26 +65,12 @@ private:
    *  !! Caution !! If ever attributes of an CObject changes in KK3000,
    *     T-H-I-S    function must be altered
    */
-   void initObjectProperties();
-
-   /**
-   *  Appends object properties to the property sheet
-   */
-   void appendProperties(CObject* t_objectPtr, std::vector<SPropDesc>& t_popertyMap);
-
-   /**
-   *  Sets object properties according to the currently selected object
-   */
-   void setProperties();
-
-   /** Initializes the grid cell choice for textures */
-   void fillComboTexture();
+   virtual void initProperties();
 
    //////////////////////////////////////////////////////////////////////////
    // Events
    //////////////////////////////////////////////////////////////////////////
    DECLARE_EVENT_TABLE()
-   void onGridChange(wxGridEvent& t_event);
    void onButtonAddTexture(wxCommandEvent& t_event);
    void onButtonDelTexture(wxCommandEvent& t_event);
 
@@ -94,14 +79,8 @@ private:
    //////////////////////////////////////////////////////////////////////////
 public:
 private:
-   /** A wxGrid contains the properties */
-   wxGrid*                                m_gridPropertyPtr;
-
    /** Index of currently selected object in CDataStorage */
    int                                    m_selectedObjectIndex;
-
-   /** Map with property description */
-   std::vector<SPropDesc>                 m_objectProperties;
 
    /** Start index of object properties */
    int                                    m_startIndexObject;
@@ -111,7 +90,6 @@ private:
 
    /** Combo Box for all textures (NOT selection depended) */
    wxComboBox*                            m_comboTextureKeysPtr;
-
 };
 
 #endif

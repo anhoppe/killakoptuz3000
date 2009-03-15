@@ -49,6 +49,17 @@ public:
 
    CShot*            m_shotPtr;
 
+#if(PRODUCT == LE3000)
+   // in the level editor the weapon holds the information about the shots
+   float             m_shotX;
+   float             m_shotY;
+   float             m_shotWidth;
+   float             m_shotHeight;
+   int               m_shotCycleInterval;
+   float             m_shotVelocity;
+   int               m_shotHitPoints;
+#endif
+
    /** Auto tracking of weapon on / off*/
    bool              m_isTracking;   
   

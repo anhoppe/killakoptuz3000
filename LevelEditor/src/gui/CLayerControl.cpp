@@ -19,18 +19,20 @@
 //////////////////////////////////////////////////////////////////////////
 #define ID_LIST_OBJECTS          1000
 #define ID_BUTTON_ADD_OBJECT     1001
-#define ID_BUTTON_INSERT_LAYER   1002
-#define ID_BUTTON_DELETE_LAYER   1003
-#define ID_BUTTON_OBJECT_UP      1004
-#define ID_BUTTON_OBJECT_DOWN    1005
+#define ID_BUTTON_ADD_ENEMY      1002
+#define ID_BUTTON_INSERT_LAYER   1003
+#define ID_BUTTON_DELETE_LAYER   1004
+#define ID_BUTTON_OBJECT_UP      1005
+#define ID_BUTTON_OBJECT_DOWN    1006
 
-#define BUTTON_SIZE              wxSize(50, 20)
+#define BUTTON_SIZE              wxSize(35, 20)
 
 //////////////////////////////////////////////////////////////////////////
 // Event Table
 //////////////////////////////////////////////////////////////////////////
 BEGIN_EVENT_TABLE(CLayerControl, wxPanel)
    EVT_TOGGLEBUTTON(ID_BUTTON_ADD_OBJECT, onButtonAddObject)
+   EVT_TOGGLEBUTTON(ID_BUTTON_ADD_ENEMY, onButtonAddEnemy)
    EVT_BUTTON(ID_BUTTON_INSERT_LAYER, onButtonInsertLayer)
    EVT_BUTTON(ID_BUTTON_DELETE_LAYER, onButtonDeleteLayer)
    EVT_BUTTON(ID_BUTTON_OBJECT_UP, onButtonObjectUp)
@@ -122,10 +124,15 @@ void CLayerControl::createControls()
    wxBoxSizer* a_buttonSizerPtr  = new wxBoxSizer(wxHORIZONTAL);
    wxBitmap*   a_bitmapPtr       = 0;
 
+   // create the add object mode button
    m_buttonAddObjectPtr = new wxToggleButton(this, ID_BUTTON_ADD_OBJECT, "Obj", wxDefaultPosition, BUTTON_SIZE);
    a_buttonSizerPtr->Add(m_buttonAddObjectPtr, 0, wxALIGN_LEFT, 0);
 
-   // create the insert button
+   // create the add enemy mode button
+   m_buttonAddEnemyPtr = new wxToggleButton(this, ID_BUTTON_ADD_ENEMY, "Enemy", wxDefaultPosition, BUTTON_SIZE);
+   a_buttonSizerPtr->Add(m_buttonAddEnemyPtr, 0, wxALIGN_LEFT, 0);
+
+   // create the add layer button
    a_buttonSizerPtr->Add(new wxButton(this, ID_BUTTON_INSERT_LAYER, "Layer", wxDefaultPosition, BUTTON_SIZE), 0, wxALIGN_LEFT, 0);
 
    // create the delete button
@@ -356,7 +363,24 @@ void CLayerControl::deleteLayerByIndex(int t_index)
 //////////////////////////////////////////////////////////////////////////
 void CLayerControl::onButtonAddObject(wxCommandEvent& t_event)
 {
-   CDataStorage::getInstance().setAddObjectMode(m_buttonAddObjectPtr->GetValue());
+   bool a_state = m_buttonAddObjectPtr->GetValue();
+
+   CDataStorage::getInstance().setAddObjectMode(a_state);
+   if(a_state)
+   {
+      m_buttonAddEnemyPtr->SetValue(false);
+   }
+}
+
+void CLayerControl::onButtonAddEnemy(wxCommandEvent& t_event)
+{
+   bool a_state = m_buttonAddEnemyPtr->GetValue();
+
+   CDataStorage::getInstance().setAddEnemyMode(a_state);
+   if(a_state)
+   {
+      m_buttonAddObjectPtr->SetValue(false);
+   }
 }
 
 void CLayerControl::onButtonInsertLayer(wxCommandEvent& t_event)

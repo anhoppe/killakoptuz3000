@@ -37,11 +37,30 @@ CWeapon::CWeapon()
    m_maxAngle        = 0.0;
    m_minAngle        = 0.0;
    m_maxShots        = 1;
+   m_shotRadius      = 0.0;
    m_framesSinceShot = 0;
    m_framesPerShot   = 100;
+
    m_shotPtr         = 0;
    m_isTracking      = true;  
    m_soundPtr        = 0;
+
+#if(PRODUCT == LE3000)
+   m_xPos               = 0.0f;
+   m_yPos               = 0.0f;
+   m_width              = 0.0f;
+   m_height             = 0.0f;
+   m_cycleInterval      = 0;
+
+   m_shotX              = 0.0f;
+   m_shotY              = 0.0f;
+   m_shotWidth          = 0.0f;
+   m_shotHeight         = 0.0f;
+   m_shotCycleInterval  = 0;
+   m_shotVelocity       = 0.0f;
+   m_shotHitPoints      = 0;
+#endif
+
 }
 
 CWeapon::~CWeapon()

@@ -35,7 +35,7 @@ int CApp::FilterEvent(wxEvent& t_event)
 
    if(t_event.GetEventType() == wxEVT_KEY_DOWN)
    {
-      wxKeyEvent* a_keyEvent = dynamic_cast<wxKeyEvent*>(&t_event);
+      wxKeyEvent* a_keyEvent = static_cast<wxKeyEvent*>(&t_event);
       m_mainFramePtr->onKeyDown(*a_keyEvent);
       r_result = FALSE;
    }

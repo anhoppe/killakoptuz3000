@@ -78,6 +78,7 @@ public:
    //////////////////////////////////////////////////////////////////////////
    DECLARE_EVENT_TABLE()
    void onButtonAddObject(wxCommandEvent& t_event);
+   void onButtonAddEnemy(wxCommandEvent& t_event);
    void onButtonInsertLayer(wxCommandEvent& t_event);
    void onButtonDeleteLayer(wxCommandEvent& t_event);
    void onButtonObjectUp(wxCommandEvent& t_event);
@@ -91,6 +92,7 @@ private:
    wxListBox*        m_listLayersPtr;
 
    wxToggleButton*   m_buttonAddObjectPtr;
+   wxToggleButton*   m_buttonAddEnemyPtr;
 
    /** Vector with layer positions in the object list */
    std::vector<int>  m_layerPositions;

@@ -23,11 +23,12 @@
 //////////////////////////////////////////////////////////////////////////
 CDataStorage::CDataStorage()
 {
-   m_xPos = 0;
-   m_yPos = 0;
-   m_fileName = "";
-   m_activeObjectPtr = 0;
-   m_addObjectModeActive = false;
+   m_xPos                  = 0;
+   m_yPos                  = 0;
+   m_fileName              = "";
+   m_activeObjectPtr       = 0;
+   m_addObjectModeActive   = false;
+   m_addEnemyModeActive    = false;
 }
 
 CDataStorage::~CDataStorage()
@@ -161,17 +162,41 @@ void CDataStorage::getObjectsAsStrings(std::vector<std::string>& t_objects)
    }
 }
 
+void CDataStorage::setAddObjectMode(bool t_enabled)
+{
+   if(t_enabled)
+   {
+      m_addEnemyModeActive = false;
+   }
+
+   m_addObjectModeActive = t_enabled;
+}
+
+void CDataStorage::setAddEnemyMode(bool t_enabled)
+{
+   if(t_enabled)
+   {
+      m_addObjectModeActive = false;
+   }
+
+   m_addEnemyModeActive = t_enabled;
+}
+
+
 void CDataStorage::add(int t_objectId, double t_x, double t_y)
 {
    CObject* a_objectPtr = 0;
+   char     a_str[1024];
 
    switch(t_objectId)
    {
    case OBJ_OBJECT:
       a_objectPtr = new CObject();
+      sprintf_s(a_str, "Object%d", m_objects.size());
       break;
    case OBJ_ENEMY:
       a_objectPtr = new CEnemy();
+      sprintf_s(a_str, "Enemy%d", m_objects.size());
       break;
    }
 
@@ -185,8 +210,6 @@ void CDataStorage::add(int t_objectId, double t_x, double t_y)
       a_objectPtr->m_width    = 1.;
       a_objectPtr->m_height   = 1.;
 
-      char a_str[1024];
-      sprintf_s(a_str, "Object%d", m_objects.size());
       a_objectPtr->m_name = a_str;
       
       m_objects.push_back(a_objectPtr);

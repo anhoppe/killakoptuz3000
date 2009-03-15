@@ -107,7 +107,8 @@ void CGLCanvas::onLButtonUp(wxMouseEvent& t_event)
 {
    m_lButtonDown = false;
 
-   if(!CDataStorage::getInstance().isAddObjectModeEnabled())
+   if(!CDataStorage::getInstance().isAddObjectModeEnabled() && 
+      !CDataStorage::getInstance().isAddEnemyModeEnabled())
    {
       CObjectControl::getInstance().releaseControl();
    }
@@ -120,7 +121,15 @@ void CGLCanvas::onLButtonUp(wxMouseEvent& t_event)
 
       getCoordinates(a_x, a_y, t_event.m_x, t_event.m_y);
 
-      CDataStorage::getInstance().add(OBJ_OBJECT, a_x, a_y);
+      if(CDataStorage::getInstance().isAddObjectModeEnabled())
+      {
+         CDataStorage::getInstance().add(OBJ_OBJECT, a_x, a_y);
+      }
+      else if(CDataStorage::getInstance().isAddEnemyModeEnabled())
+      {
+         CDataStorage::getInstance().add(OBJ_ENEMY, a_x, a_y);
+      }
+
       CUpdateContainer::getInstance().update();
 
    }

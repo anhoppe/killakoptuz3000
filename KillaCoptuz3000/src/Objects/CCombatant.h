@@ -46,9 +46,18 @@ public:
    unsigned int                m_trackIndex;
 
 
+#if(PRODUCT == KK3000)
 protected:
    /** List of ID's of weapons */
    std::vector<unsigned int>   m_weaponList;
+
+#else
+
+public:
+   /** in LE3000 the enemy holds the weapon objects */
+   std::vector<CWeapon*>       m_weaponList;
+#endif
+
 
    /** Index of active weapon */
    unsigned int                m_activeWeapon;

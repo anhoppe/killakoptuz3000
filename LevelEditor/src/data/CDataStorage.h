@@ -55,12 +55,18 @@ public:
    /** Checks for active object */
    bool isActiveObject(CObject* t_objectPtr) { return m_activeObjectPtr == t_objectPtr; }
 
+   CObject* getActiveObject() { return m_activeObjectPtr; }
+
    /** Retrieves the object list as string vector */
    void getObjectsAsStrings(std::vector<std::string>& t_objects);
 
    /** Checks if the add object mode is on */
-   void setAddObjectMode(bool t_enabled) { m_addObjectModeActive = t_enabled; }
+   void setAddObjectMode(bool t_enabled);
    bool isAddObjectModeEnabled() { return m_addObjectModeActive; }
+
+   /** Checks if the add enemy mode is on */
+   void setAddEnemyMode(bool t_enable);
+   bool isAddEnemyModeEnabled() { return m_addEnemyModeActive; }
 
    /** Adds an object */
    void add(int t_objectId, double t_x, double t_y);
@@ -125,6 +131,9 @@ public:
 
    /** Indicates if the add object mode is enabled */
    bool                             m_addObjectModeActive;
+
+   /** Indicates if the add weapon mode is enabled (Mutual exclusive with add object mode) */
+   bool                             m_addEnemyModeActive;
 };
 
 #endif
