@@ -30,11 +30,13 @@ CPropertyPanel::CPropertyPanel(wxWindow* t_parentPtr)
    
    // add the object panel to the notebook
    m_objectPanelPtr = new CObjectPropertyPanel(m_notebookPtr);
-   m_notebookPtr->AddPage(m_objectPanelPtr, "Object", true);
+   m_objectPanelPtr->Hide();
+   //m_notebookPtr->AddPage(m_objectPanelPtr, "Object", true);
 
    // add the weapon panel to the notebook
    m_weaponPanelPtr = new CWeaponPropertyPanel(m_notebookPtr);
-   m_notebookPtr->AddPage(m_weaponPanelPtr, "Weapons", false);
+   m_weaponPanelPtr->Hide();
+   //m_notebookPtr->AddPage(m_weaponPanelPtr, "Weapons", false);
 
    // add the notebook to the sizer
    a_sizerPtr->Add(m_notebookPtr, 1, wxGROW|wxEXPAND);
@@ -55,13 +57,35 @@ void CPropertyPanel::setObject(int t_index)
 
    if(0 != a_objectPtr)
    {
+      // remove all pages from the notebook
+      while(m_notebookPtr->GetPageCount() > 0)
+      {
+         m_notebookPtr->RemovePage(0);
+      }
+
+      // add the object page
+      m_notebookPtr->AddPage(m_objectPanelPtr, "Object", true);
+
+      // display the weapons panel
       if(a_objectPtr->getType() == e_enemy)
       {
-         m_weaponPanelPtr->Enable(true);
+         if(!m_weaponPanelPtr->IsShown())
+         {
+            m_weaponPanelPtr->Show();
+         }
+         m_notebookPtr->AddPage(m_weaponPanelPtr, "Weapon", false);
       }
       else
       {
-         m_weaponPanelPtr->Enable(false);
+         m_weaponPanelPtr->Hide();
       }
+
+      if(!m_objectPanelPtr->IsShown())
+      {
+         m_objectPanelPtr->Show();
+      }
+
+      m_notebookPtr->Update();
+      m_notebookPtr->Refresh();
    }
 }
